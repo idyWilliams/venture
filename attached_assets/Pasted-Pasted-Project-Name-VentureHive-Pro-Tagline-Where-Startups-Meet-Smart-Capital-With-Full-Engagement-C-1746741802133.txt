@@ -1,0 +1,127 @@
+Pasted-Project-Name-VentureHive-Pro-Tagline-Where-Startups-Meet-Smart-Capital-With-Full-Engagement-Con-1746740656881.txt
+Project Name: VentureHive Pro
+Tagline: "Where Startups Meet Smart Capital – With Full Engagement Control"
+
+🔥 MUST-HAVE FEATURES ADDED
+1. Founder Engagement Toolkit
+Project View Tracking:
+
+Investors/VCs leave "view footprints" (like LinkedIn profile views).
+
+Founders see: "Sequoia Capital viewed your AI SaaS project 3 times".
+
+Interaction Features:
+
+Likes/Saves: Heart button + bookmarking (stored in PostgreSQL engagement table).
+
+Comments Section: Threaded discussions (moderated via OpenAI for toxicity).
+
+FAQ Tab: Founder-curated Q&A (Markdown-supported).
+
+Community Tab: Embedded Discord-like chat (Socket.io rooms).
+
+2. Controlled Communication Protocol
+Contact Rules:
+
+Investors/VCs cannot message founders directly unless:
+
+Founder enables "Open for Outreach" in settings.
+
+Investor sends connection request (like LinkedIn).
+
+First Contact: Initiated via structured form:
+
+typescript
+interface ContactRequest {
+  sender: Investor; 
+  recipient: Founder;
+  message: string; 
+  attachments: TermSheet[]; // Optional
+  status: 'pending' | 'accepted'; // Founder must approve
+}
+3. Notification System
+Real-Time Alerts (via Firebase Cloud Messaging or Pusher):
+
+New view on your project: Andreessen Horowitz
+
+3 new comments on [ProjectX]
+
+Accel Partners requested contact
+
+Email Digests: Daily/weekly summaries (Resend API).
+
+📌 TECH STACK UPDATES
+New Backend Modules
+Engagement Service (Node.js):
+
+bash
+npm install pusher-js # Real-time notifications
+Tracks: project_views, likes, comment_activity.
+
+Permission Middleware:
+
+javascript
+// blocks unauthorized DMs
+app.post('/api/contact', verifyInvestor, checkFounderAvailability, sendContactRequest);
+Frontend Components
+New Tabs UI (ShadCN):
+
+tsx
+<Tabs defaultValue="overview">
+  <TabsList>
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="faqs">FAQs</TabsTrigger>
+    <TabsTrigger value="community">Community</TabsTrigger>
+  </TabsList>
+</Tabs>
+Favorites System:
+
+javascript
+// PostgreSQL schema
+model SavedProjects {
+  id      String @id
+  userId  String // Investor ID
+  projectId String @relation(fields: [projectId], references: [Project])
+}
+⚡ Replit-Specific Implementation Guide
+Step 1: Clone + Setup
+
+bash
+git clone https://github.com/template/venturehive-pro.git
+pnpm install # Install all deps
+Step 2: Configure Notifications
+
+bash
+# Add to .env
+PUSHER_APP_ID=your_id
+PUSHER_KEY=your_key
+Step 3: Seed Engagement Data
+
+typescript
+// prisma/seed.ts
+await prisma.projectView.create({
+  data: {
+    projectId: 'startup-123',
+    viewerId: 'vc-456',
+    count: 3 
+  }
+});
+✅ Acceptance Test Cases
+Investor Views Project → Founder sees "YC viewed you" in dashboard.
+
+Comment Posted → Triggers real-time badge counter.
+
+Contact Request → Founder must approve before chat unlocks.
+
+💡 Pro Tip for Replit Agent:
+*"Prioritize these milestones:
+
+Build view-tracking middleware
+
+Implement ShadCN tabs system
+
+Add Pusher alerts
+
+Code contact permission flow"*
+
+This ensures every social and security nuance is captured. Want to add AI-powered contact filtering (e.g., block spammy VCs)? Let me know! 🔒
