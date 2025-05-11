@@ -3,27 +3,29 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useUserRole } from '@/contexts/UserRoleContext';
-import { useApiQuery } from '@/hooks/useApi';
-import { 
-  DealRoom, 
+// import { useUserRole } from '@/src/contexts/UserRoleContext';
+import { useApiQuery } from '@/src/hooks/useApi';
+import {
+  DealRoom,
   DealRoomStatus
-} from '@/lib/services/dealRoomService';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Plus, 
-  Archive, 
-  MessageSquare, 
-  Users, 
-  Filter, 
+} from '@/src/lib/services/dealRoomService';
+import { Button } from '@/src/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
+import {
+  Plus,
+  Archive,
+  MessageSquare,
+  Users,
+  Filter,
   Search,
   Loader2,
   ArrowUpDown,
   AlertCircle
 } from 'lucide-react';
 import { format } from 'date-fns';
-import CreateDealRoomModal from '@/components/deal-room/CreateDealRoomModal';
+import CreateDealRoomModal from '@/src/components/deal-room/CreateDealRoomModal';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
+// import { useUserRole } from '@/src/src/contexts/UserRoleContext';
 
 // Get the badge color and text for deal status
 function getStatusBadge(status: DealRoomStatus) {
@@ -62,11 +64,11 @@ export default function DealRoomsPage() {
   const [filter, setFilter] = useState<'active' | 'archived' | 'all'>('active');
   const [sortBy, setSortBy] = useState<'lastActivity' | 'createdAt'>('lastActivity');
   const [sortOrder, setSortOrder] = useState<'desc' | 'asc'>('desc');
-  
+
   // Using test user IDs for demo purposes
   // In a real app, this would come from authentication
   const userId = role === 'founder' ? 'founder-1' : 'investor-1';
-  
+
   // Fetch deal rooms
   const { data: dealRooms, isLoading, error, refetch } = useApiQuery<DealRoom[]>(
     `/api/deal-rooms?userId=${userId}&role=${role}&filter=${filter}`,
@@ -78,7 +80,7 @@ export default function DealRoomsPage() {
       refetchInterval: 30000
     }
   );
-  
+
   // Handle sort toggle
   const toggleSort = (key: 'lastActivity' | 'createdAt') => {
     if (sortBy === key) {
@@ -88,7 +90,7 @@ export default function DealRoomsPage() {
       setSortOrder('desc');
     }
   };
-  
+
   // Sort deal rooms
   const sortedDealRooms = dealRooms
     ? [...dealRooms].sort((a, b) => {
@@ -97,19 +99,19 @@ export default function DealRoomsPage() {
         return sortOrder === 'desc' ? dateB - dateA : dateA - dateB;
       })
     : [];
-  
+
   // Handle filter change
   const handleFilterChange = (value: 'active' | 'archived' | 'all') => {
     setFilter(value);
   };
-  
+
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Deal Rooms</h1>
         <CreateDealRoomModal />
       </div>
-      
+
       <Tabs defaultValue="active" value={filter} onValueChange={handleFilterChange as any} className="w-full">
         <div className="flex justify-between items-center mb-6">
           <TabsList>
@@ -117,7 +119,7 @@ export default function DealRoomsPage() {
             <TabsTrigger value="archived">Archived</TabsTrigger>
             <TabsTrigger value="all">All</TabsTrigger>
           </TabsList>
-          
+
           <div className="flex items-center space-x-2">
             <div className="relative">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
@@ -127,32 +129,32 @@ export default function DealRoomsPage() {
                 className="h-10 w-full rounded-md border pl-9 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            
+
             <Button variant="outline" size="sm" title="Sort by last activity">
-              <ArrowUpDown 
-                className="h-4 w-4 mr-1" 
+              <ArrowUpDown
+                className="h-4 w-4 mr-1"
                 onClick={() => toggleSort('lastActivity')}
               />
               Activity
             </Button>
           </div>
         </div>
-        
+
         <TabsContent value="active" className="mt-0">
           {renderDealRooms(false)}
         </TabsContent>
-        
+
         <TabsContent value="archived" className="mt-0">
           {renderDealRooms(true)}
         </TabsContent>
-        
+
         <TabsContent value="all" className="mt-0">
           {renderDealRooms(null)}
         </TabsContent>
       </Tabs>
     </div>
   );
-  
+
   // Render deal rooms based on filter
   function renderDealRooms(archived: boolean | null) {
     if (isLoading) {
@@ -163,7 +165,7 @@ export default function DealRoomsPage() {
         </div>
       );
     }
-    
+
     if (error) {
       return (
         <div className="flex justify-center items-center py-16 text-center">
@@ -182,11 +184,11 @@ export default function DealRoomsPage() {
         </div>
       );
     }
-    
-    const filteredRooms = archived !== null 
+
+    const filteredRooms = archived !== null
       ? sortedDealRooms.filter(room => room.isArchived === archived)
       : sortedDealRooms;
-    
+
     if (!filteredRooms || filteredRooms.length === 0) {
       return (
         <div className="text-center py-16 border rounded-lg bg-gray-50">
@@ -195,30 +197,30 @@ export default function DealRoomsPage() {
             No deal rooms found
           </h3>
           <p className="text-gray-600 mb-4">
-            {archived 
-              ? "You don't have any archived deal rooms." 
+            {archived
+              ? "You don't have any archived deal rooms."
               : "Start a conversation with an investor to create a deal room."}
           </p>
           <Button>
             <Plus className="h-4 w-4 mr-2" />
-            {archived 
-              ? "View Active Deal Rooms" 
+            {archived
+              ? "View Active Deal Rooms"
               : "Create New Deal Room"}
           </Button>
         </div>
       );
     }
-    
+
     return (
       <div className="grid grid-cols-1 gap-4">
         {filteredRooms.map((dealRoom) => {
           const statusBadge = getStatusBadge(dealRoom.status);
           const otherPartyName = role === 'founder' ? dealRoom.investorName : dealRoom.founderName;
           const otherPartyRole = role === 'founder' ? 'Investor' : 'Founder';
-          
+
           return (
-            <Link 
-              href={`/deal-rooms/${dealRoom.id}`} 
+            <Link
+              href={`/deal-rooms/${dealRoom.id}`}
               key={dealRoom.id}
               className="block"
             >
@@ -238,7 +240,7 @@ export default function DealRoomsPage() {
                     </span>
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-3 gap-4 mt-4">
                   <div>
                     <p className="text-xs text-gray-500">Created</p>
@@ -259,7 +261,7 @@ export default function DealRoomsPage() {
                     </p>
                   </div>
                 </div>
-                
+
                 {dealRoom.terms.investmentAmount && (
                   <div className="mt-4 pt-4 border-t">
                     <p className="text-xs text-gray-500">Investment Amount</p>

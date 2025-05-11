@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUserRole } from '@/contexts/UserRoleContext';
-import { QuickActions } from '@/components/ui/quick-actions';
+
 import { Button } from '@/components/ui/button';
 import {
   BarChart3,
@@ -17,12 +16,15 @@ import {
   Users,
 } from 'lucide-react';
 import Link from 'next/link';
-import CreateDealRoomModal from '@/components/deal-room/CreateDealRoomModal';
+import { QuickActions } from '@/src/components/ui/quick-actions';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
+import CreateDealRoomModal from '@/src/components/deal-room/CreateDealRoomModal';
+// import CreateDealRoomModal from '@/components/deal-room/CreateDealRoomModal';
 
 export default function Dashboard() {
   const router = useRouter();
   const { role, isAuthenticated } = useUserRole();
-  
+
   const isFounder = role === 'founder';
   const isInvestor = role === 'investor';
 
@@ -40,7 +42,7 @@ export default function Dashboard() {
     ],
     dealRooms: 2,
   };
-  
+
   const investorStats = {
     discoveredProjects: 125,
     savedProjects: 17,
@@ -247,8 +249,8 @@ export default function Dashboard() {
               } />
             </div>
             <div className="space-y-3">
-              <Link 
-                href="/deal-rooms/dr-1" 
+              <Link
+                href="/deal-rooms/dr-1"
                 className="block p-3 rounded-md border hover:bg-gray-50 transition-colors"
               >
                 <div className="flex justify-between items-start">
@@ -264,9 +266,9 @@ export default function Dashboard() {
                 </div>
                 <p className="text-xs text-gray-500 mt-2">Last activity: 3 hours ago</p>
               </Link>
-              
-              <Link 
-                href="/deal-rooms/dr-2" 
+
+              <Link
+                href="/deal-rooms/dr-2"
                 className="block p-3 rounded-md border hover:bg-gray-50 transition-colors"
               >
                 <div className="flex justify-between items-start">

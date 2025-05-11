@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  transpilePackages: ['@/components', '@/app'],
-}
+  transpilePackages: ["@/components", "@/app"],
+};
 
-module.exports = nextConfig
+// Using ES Module syntax instead of CommonJS
+export default nextConfig;

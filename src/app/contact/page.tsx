@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/src/components/ui/card';
+// import { Input } from '@/components/ui/input';
+import { Label } from '@/src/components/ui/label';
+import { Textarea } from '@/src/components/ui/textarea';
+import { Input } from '@/src/components/ui/input';
 
 export default function ContactPage() {
   const [formState, setFormState] = useState({
@@ -43,7 +44,7 @@ export default function ContactPage() {
 
       // Simulate network delay
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       setSubmitted(true);
       setFormState({
         name: '',
@@ -92,7 +93,7 @@ export default function ContactPage() {
                 <p className="text-sm text-gray-500 mt-2">For general inquiries and support</p>
               </CardContent>
             </Card>
-            
+
             <Card className="bg-purple-50 border-purple-100">
               <CardHeader>
                 <CardTitle className="flex items-center text-purple-700">
@@ -107,7 +108,7 @@ export default function ContactPage() {
                 <p className="text-sm text-gray-500 mt-2">For pricing and enterprise plans</p>
               </CardContent>
             </Card>
-            
+
             <Card className="bg-green-50 border-green-100">
               <CardHeader>
                 <CardTitle className="flex items-center text-green-700">
@@ -122,7 +123,7 @@ export default function ContactPage() {
                 <p className="text-sm text-gray-500 mt-2">For accelerators and strategic partnerships</p>
               </CardContent>
             </Card>
-            
+
             <Card className="bg-indigo-50 border-indigo-100">
               <CardHeader>
                 <CardTitle className="flex items-center text-indigo-700">

@@ -4,22 +4,23 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { useUserRole } from '@/contexts/UserRoleContext';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
+// import { useUserRole } from '@/contexts/UserRoleContext';
 
 export default function Navbar() {
   const { role, isAuthenticated, setRole, setIsAuthenticated } = useUserRole();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+
   // For demo purposes, let's add a way to toggle between roles
   // In a real app, this would come from the authentication system
   useEffect(() => {
     const path = window.location.pathname;
     if (path.includes('/founder/')) {
-      setRole('FOUNDER');
+      setRole("founder");
       setIsAuthenticated(true);
     } else if (path.includes('/investor/')) {
-      setRole('INVESTOR');
+      setRole("investor");
       setIsAuthenticated(true);
     }
   }, [setRole, setIsAuthenticated]);
@@ -34,7 +35,9 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link href="/" className="flex-shrink-0 flex items-center">
-              <span className="text-xl font-bold text-blue-600">VentureHive Pro</span>
+              <span className="text-xl font-bold text-blue-600">
+                VentureHive Pro
+              </span>
             </Link>
           </div>
 
@@ -42,63 +45,99 @@ export default function Navbar() {
           <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
             {!isAuthenticated && (
               <>
-                <Link href="/" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600">
+                <Link
+                  href="/"
+                  className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600"
+                >
                   Home
                 </Link>
-                <Link href="/features" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600">
+                <Link
+                  href="/features"
+                  className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600"
+                >
                   Features
                 </Link>
-                <Link href="/pricing" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600">
+                <Link
+                  href="/pricing"
+                  className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600"
+                >
                   Pricing
                 </Link>
-                <Link href="/about" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600">
+                <Link
+                  href="/about"
+                  className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600"
+                >
                   About
                 </Link>
-                <Link href="/contact" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600">
+                <Link
+                  href="/contact"
+                  className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600"
+                >
                   Contact
                 </Link>
               </>
             )}
-            
+
             {/* These links are shown regardless of auth state */}
-            <Link href="/projects" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600">
+            <Link
+              href="/projects"
+              className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600"
+            >
               Discover
             </Link>
-            <Link href="/matchmaking" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600">
+            <Link
+              href="/matchmaking"
+              className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600"
+            >
               AI Matchmaking
             </Link>
             {isAuthenticated ? (
               <>
-                {role === 'FOUNDER' ? (
+                {role === "founder" ? (
                   <>
-                    <Link href="/founder/dashboard" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600">
+                    <Link
+                      href="/founder/dashboard"
+                      className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600"
+                    >
                       Founder Dashboard
                     </Link>
-                    <Link href="/analytics/dashboard" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600">
+                    <Link
+                      href="/analytics/dashboard"
+                      className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600"
+                    >
                       Analytics
                     </Link>
                   </>
-                ) : role === 'INVESTOR' ? (
+                ) : role === "investor" ? (
                   <>
-                    <Link href="/investor/dashboard" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600">
+                    <Link
+                      href="/investor/dashboard"
+                      className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600"
+                    >
                       Investor Dashboard
                     </Link>
-                    <Link href="/projects" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600">
+                    <Link
+                      href="/projects"
+                      className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600"
+                    >
                       Browse Projects
                     </Link>
                   </>
                 ) : (
-                  <Link href="/dashboard" className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600">
+                  <Link
+                    href="/dashboard"
+                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600"
+                  >
                     Dashboard
                   </Link>
                 )}
-                <Button 
+                <Button
                   variant="ghost"
                   onClick={() => {
                     // Handle logout
-                    setRole(null);
+                    // setRole(null);
                     setIsAuthenticated(false);
-                    router.push('/');
+                    router.push("/");
                   }}
                 >
                   Sign Out
@@ -126,12 +165,36 @@ export default function Navbar() {
             >
               <span className="sr-only">Open main menu</span>
               {!isMenuOpen ? (
-                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                <svg
+                  className="block h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
                 </svg>
               ) : (
-                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="block h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               )}
             </button>
@@ -145,36 +208,36 @@ export default function Navbar() {
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {!isAuthenticated && (
               <>
-                <Link 
-                  href="/" 
+                <Link
+                  href="/"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Home
                 </Link>
-                <Link 
-                  href="/features" 
+                <Link
+                  href="/features"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Features
                 </Link>
-                <Link 
-                  href="/pricing" 
+                <Link
+                  href="/pricing"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Pricing
                 </Link>
-                <Link 
-                  href="/about" 
+                <Link
+                  href="/about"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   About
                 </Link>
-                <Link 
-                  href="/contact" 
+                <Link
+                  href="/contact"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -182,17 +245,17 @@ export default function Navbar() {
                 </Link>
               </>
             )}
-            
+
             {/* These links are always shown */}
-            <Link 
-              href="/projects" 
+            <Link
+              href="/projects"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
               onClick={() => setIsMenuOpen(false)}
             >
               Discover
             </Link>
-            <Link 
-              href="/matchmaking" 
+            <Link
+              href="/matchmaking"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
               onClick={() => setIsMenuOpen(false)}
             >
@@ -200,34 +263,34 @@ export default function Navbar() {
             </Link>
             {isAuthenticated ? (
               <>
-                {role === 'FOUNDER' ? (
+                {role === "founder" ? (
                   <>
-                    <Link 
-                      href="/founder/dashboard" 
+                    <Link
+                      href="/founder/dashboard"
                       className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Founder Dashboard
                     </Link>
-                    <Link 
-                      href="/analytics/dashboard" 
+                    <Link
+                      href="/analytics/dashboard"
                       className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Analytics
                     </Link>
                   </>
-                ) : role === 'INVESTOR' ? (
+                ) : role === "investor" ? (
                   <>
-                    <Link 
-                      href="/investor/dashboard" 
+                    <Link
+                      href="/investor/dashboard"
                       className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Investor Dashboard
                     </Link>
-                    <Link 
-                      href="/projects" 
+                    <Link
+                      href="/projects"
                       className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                       onClick={() => setIsMenuOpen(false)}
                     >
@@ -235,8 +298,8 @@ export default function Navbar() {
                     </Link>
                   </>
                 ) : (
-                  <Link 
-                    href="/dashboard" 
+                  <Link
+                    href="/dashboard"
                     className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                     onClick={() => setIsMenuOpen(false)}
                   >
@@ -248,9 +311,9 @@ export default function Navbar() {
                   onClick={() => {
                     // Handle logout
                     setIsMenuOpen(false);
-                    setRole(null);
+                    // setRole(null);
                     setIsAuthenticated(false);
-                    router.push('/');
+                    router.push("/");
                   }}
                 >
                   Sign Out
@@ -258,15 +321,15 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <Link 
-                  href="/auth/login" 
+                <Link
+                  href="/auth/login"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Sign In
                 </Link>
-                <Link 
-                  href="/auth/register" 
+                <Link
+                  href="/auth/register"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                   onClick={() => setIsMenuOpen(false)}
                 >

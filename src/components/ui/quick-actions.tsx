@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { useUserRole } from "@/contexts/UserRoleContext";
+// import { useUserRole } from "@/contexts/UserRoleContext";
 import { Button } from "@/components/ui/button";
 import {
   Plus,
@@ -16,7 +16,9 @@ import {
   Lightbulb,
   Search,
 } from "lucide-react";
-import CreateDealRoomModal from "@/components/deal-room/CreateDealRoomModal";
+import { useUserRole } from "@/src/contexts/UserRoleContext";
+import CreateDealRoomModal from "../deal-room/CreateDealRoomModal";
+// import CreateDealRoomModal from "@/components/deal-room/CreateDealRoomModal";
 
 interface QuickActionProps {
   title: string;

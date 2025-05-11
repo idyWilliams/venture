@@ -3,25 +3,26 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { useUserRole } from '@/contexts/UserRoleContext';
+// import { Button } from '@/src/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/src/components/ui/card';
+import { Input } from '@/src/components/ui/input';
+import { Label } from '@/src/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/src/components/ui/radio-group';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
+import { Button } from '@/src/components/ui/button';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState<'FOUNDER' | 'INVESTOR'>('FOUNDER');
+  const [role, setRole] = useState<'founder' | 'investor'>('founder');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const router = useRouter();
   const { setRole: setGlobalRole, setIsAuthenticated } = useUserRole();
-  
+
   // Redirect if already logged in
   useEffect(() => {
     // Check if user is already authenticated
@@ -29,7 +30,7 @@ export default function RegisterPage() {
       try {
         const response = await fetch('/api/user');
         if (response.ok) {
-          if (role === 'FOUNDER') {
+          if (role === 'founder') {
             router.push('/founder/dashboard');
           } else {
             router.push('/investor/dashboard');
@@ -39,32 +40,32 @@ export default function RegisterPage() {
         console.error('Error checking authentication:', error);
       }
     };
-    
+
     checkAuth();
   }, [router, role]);
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError('');
-    
+
     // Basic validation
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       setIsLoading(false);
       return;
     }
-    
+
     try {
       // For demo purposes, just simulate registration
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       // Set authenticated state and role
       setGlobalRole(role);
       setIsAuthenticated(true);
-      
+
       // Redirect to appropriate dashboard
-      if (role === 'FOUNDER') {
+      if (role === 'founder') {
         router.push('/founder/dashboard');
       } else {
         router.push('/investor/dashboard');
@@ -92,67 +93,67 @@ export default function RegisterPage() {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name</Label>
-                <Input 
-                  id="name" 
+                <Input
+                  id="name"
                   placeholder="John Doe"
                   value={name}
-                  onChange={(e) => setName(e.target.value)} 
+                  onChange={(e) => setName(e.target.value)}
                   required
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
-                <Input 
-                  id="email" 
-                  type="email" 
+                <Input
+                  id="email"
+                  type="email"
                   placeholder="you@example.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)} 
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
-                <Input 
-                  id="password" 
-                  type="password" 
+                <Input
+                  id="password"
+                  type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="confirm-password">Confirm Password</Label>
-                <Input 
-                  id="confirm-password" 
-                  type="password" 
+                <Input
+                  id="confirm-password"
+                  type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label>Account Type</Label>
-                <RadioGroup 
-                  defaultValue={role} 
-                  onValueChange={(value) => setRole(value as 'FOUNDER' | 'INVESTOR')}
+                <RadioGroup
+                  defaultValue={role}
+                  onValueChange={(value) => setRole(value as 'founder' | 'investor')}
                   className="flex space-x-2"
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="FOUNDER" id="founder" />
+                    <RadioGroupItem value="founder" id="founder" />
                     <Label htmlFor="founder">Founder</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="INVESTOR" id="investor" />
+                    <RadioGroupItem value="investor" id="investor" />
                     <Label htmlFor="investor">Investor</Label>
                   </div>
                 </RadioGroup>
               </div>
-              
+
               {error && (
                 <div className="bg-red-50 p-3 rounded-md text-sm text-red-600">
                   {error}
@@ -170,7 +171,7 @@ export default function RegisterPage() {
           </form>
         </Card>
       </div>
-      
+
       {/* Right Column - Hero */}
       <div className="hidden lg:block lg:flex-1 bg-blue-600 text-white">
         <div className="flex flex-col justify-center h-full p-12">

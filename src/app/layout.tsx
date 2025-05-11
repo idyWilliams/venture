@@ -1,9 +1,13 @@
 import { Inter } from "next/font/google";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import "@/styles/globals.css";
-import { UserRoleProvider } from "@/contexts/UserRoleContext";
-import QueryProvider from "@/providers/QueryProvider";
+// import Navbar from "@/components/layout/Navbar";
+// import Footer from "@/components/layout/Footer";
+import "../styles/globals.css";
+// import { UserRoleProvider } from "@/contexts/UserRoleContext";
+// import QueryProvider from "@/providers/QueryProvider";
+import Navbar from "../components/layout/Navbar";
+import Footer from "../components/layout/Footer";
+import { UserRoleProvider } from "../contexts/UserRoleContext";
+import QueryProvider from "../providers/QueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 

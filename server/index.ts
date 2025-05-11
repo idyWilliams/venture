@@ -4,15 +4,37 @@ import cors from "cors";
 import { Server } from "socket.io";
 import dotenv from "dotenv";
 import Pusher from "pusher";
-import projectRoutes from "./routes/projects";
-import userRoutes from "./routes/users";
-import engagementRoutes from "./routes/engagement";
-import commentRoutes from "./routes/comments";
-import contactRoutes from "./routes/contact";
-import notificationRoutes from "./routes/notifications";
-import { authMiddleware } from "./middleware/auth";
-import { trackEngagement } from "./middleware/engagement";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 import { PrismaClient } from "@prisma/client";
+
+// ESM __dirname equivalent (needed in ESM)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Dynamic imports for routes (due to ESM)
+const importRoutes = async () => {
+  const projectRoutes = (await import("./routes/projects.js")).default;
+  const userRoutes = (await import("./routes/users.js")).default;
+  const engagementRoutes = (await import("./routes/engagement.js")).default;
+  const commentRoutes = (await import("./routes/comments.js")).default;
+  const contactRoutes = (await import("./routes/contact.js")).default;
+  const notificationRoutes = (await import("./routes/notifications.js"))
+    .default;
+  const { authMiddleware } = await import("./middleware/auth.js");
+  const { trackEngagement } = await import("./middleware/engagement.js");
+
+  return {
+    projectRoutes,
+    userRoutes,
+    engagementRoutes,
+    commentRoutes,
+    contactRoutes,
+    notificationRoutes,
+    authMiddleware,
+    trackEngagement,
+  };
+};
 
 dotenv.config();
 
@@ -54,13 +76,27 @@ app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({ status: "ok" });
 });
 
-// API routes
-app.use("/api/projects", authMiddleware, trackEngagement, projectRoutes);
-app.use("/api/users", authMiddleware, userRoutes);
-app.use("/api/engagement", authMiddleware, engagementRoutes);
-app.use("/api/comments", authMiddleware, commentRoutes);
-app.use("/api/contact", authMiddleware, contactRoutes);
-app.use("/api/notifications", authMiddleware, notificationRoutes);
+// Setup routes after imports are complete
+const setupRoutes = async () => {
+  const routes = await importRoutes();
+
+  // API routes
+  app.use(
+    "/api/projects",
+    routes.authMiddleware,
+    routes.trackEngagement,
+    routes.projectRoutes
+  );
+  app.use("/api/users", routes.authMiddleware, routes.userRoutes);
+  app.use("/api/engagement", routes.authMiddleware, routes.engagementRoutes);
+  app.use("/api/comments", routes.authMiddleware, routes.commentRoutes);
+  app.use("/api/contact", routes.authMiddleware, routes.contactRoutes);
+  app.use(
+    "/api/notifications",
+    routes.authMiddleware,
+    routes.notificationRoutes
+  );
+};
 
 // Socket.io setup
 io.on("connection", (socket) => {
@@ -137,11 +173,21 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ error: "Something broke!" });
 });
 
-// Start server
-const PORT = process.env.PORT ? parseInt(process.env.PORT) : 8000;
-server.listen(PORT, "0.0.0.0", () => {
-  console.log(`Server running on http://0.0.0.0:${PORT}`);
-});
+// Initialize routes and start server
+const startServer = async () => {
+  try {
+    await setupRoutes();
+
+    // Start server
+    const PORT = process.env.PORT ? parseInt(process.env.PORT) : 8000;
+    server.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on http://0.0.0.0:${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+};
 
 // Handle graceful shutdown
 process.on("SIGTERM", async () => {
@@ -161,5 +207,8 @@ process.on("SIGINT", async () => {
     process.exit(0);
   });
 });
+
+// Start the server
+startServer();
 
 export { app, io, pusher };
