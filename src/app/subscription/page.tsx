@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUserRole } from '@/contexts/UserRoleContext';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { Button } from '@/components/ui/button';
 import {
   Check,
@@ -115,7 +115,7 @@ export default function SubscriptionPage() {
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly');
   const [yearlyDiscount] = useState(20); // 20% discount for yearly billing
   const [processingPayment, setProcessingPayment] = useState(false);
-  
+
   // Redirect if not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
@@ -152,7 +152,7 @@ export default function SubscriptionPage() {
   // Handle subscription checkout
   const handleCheckout = (plan: PricingPlan) => {
     setProcessingPayment(true);
-    
+
     // In a real implementation, we would call the API
     // For demo purposes, we'll just redirect to a checkout page
     setTimeout(() => {
@@ -165,17 +165,17 @@ export default function SubscriptionPage() {
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-2">Subscription Plans</h1>
         <p className="text-gray-600 max-w-2xl mx-auto">
-          Choose the right plan to accelerate your {role === 'founder' ? 'fundraising journey' : 'investment strategy'} 
+          Choose the right plan to accelerate your {role === 'founder' ? 'fundraising journey' : 'investment strategy'}
           with our AI-powered tools and expert community.
         </p>
-        
+
         {/* Billing period toggle */}
         <div className="flex justify-center mt-6">
           <div className="bg-gray-100 p-1 rounded-lg inline-flex">
             <button
               className={`px-4 py-2 text-sm rounded-md ${
-                billingPeriod === 'monthly' 
-                  ? 'bg-white shadow-sm' 
+                billingPeriod === 'monthly'
+                  ? 'bg-white shadow-sm'
                   : 'text-gray-500 hover:text-gray-700'
               }`}
               onClick={() => setBillingPeriod('monthly')}
@@ -184,8 +184,8 @@ export default function SubscriptionPage() {
             </button>
             <button
               className={`px-4 py-2 text-sm rounded-md flex items-center ${
-                billingPeriod === 'yearly' 
-                  ? 'bg-white shadow-sm' 
+                billingPeriod === 'yearly'
+                  ? 'bg-white shadow-sm'
                   : 'text-gray-500 hover:text-gray-700'
               }`}
               onClick={() => setBillingPeriod('yearly')}
@@ -203,13 +203,13 @@ export default function SubscriptionPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
         {relevantPlans.map((plan) => {
           const price = getDiscountedPrice(plan.price);
-          
+
           return (
-            <div 
+            <div
               key={plan.id}
               className={`border rounded-xl overflow-hidden ${
-                plan.popular 
-                  ? 'border-blue-200 shadow-md relative' 
+                plan.popular
+                  ? 'border-blue-200 shadow-md relative'
                   : 'border-gray-200'
               }`}
             >
@@ -220,7 +220,7 @@ export default function SubscriptionPage() {
                   </div>
                 </div>
               )}
-              
+
               <div className="p-6">
                 <div className="flex justify-between items-start">
                   <div>
@@ -231,7 +231,7 @@ export default function SubscriptionPage() {
                     <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
                   )}
                 </div>
-                
+
                 <div className="mt-5">
                   <div className="flex items-baseline">
                     <span className="text-3xl font-bold">{formatPrice(price)}</span>
@@ -239,7 +239,7 @@ export default function SubscriptionPage() {
                       {billingPeriod === 'monthly' ? '/month' : '/year'}
                     </span>
                   </div>
-                  
+
                   {plan.price === 0 ? (
                     <p className="text-sm text-gray-500 mt-1">No credit card required</p>
                   ) : (
@@ -248,8 +248,8 @@ export default function SubscriptionPage() {
                     </p>
                   )}
                 </div>
-                
-                <Button 
+
+                <Button
                   className={`w-full mt-6 ${plan.popular ? 'bg-blue-600 hover:bg-blue-700' : ''}`}
                   disabled={processingPayment}
                   onClick={() => handleCheckout(plan)}
@@ -268,7 +268,7 @@ export default function SubscriptionPage() {
                     </>
                   )}
                 </Button>
-                
+
                 <div className="mt-6 space-y-4">
                   <h4 className="text-sm font-medium">What's included:</h4>
                   <ul className="space-y-3">
@@ -297,11 +297,11 @@ export default function SubscriptionPage() {
           );
         })}
       </div>
-      
+
       {/* FAQ Section */}
       <div className="mt-16 max-w-3xl mx-auto">
         <h2 className="text-2xl font-bold text-center mb-8">Frequently Asked Questions</h2>
-        
+
         <div className="space-y-6">
           <div className="border-b pb-4">
             <div className="flex justify-between items-center cursor-pointer">
@@ -312,7 +312,7 @@ export default function SubscriptionPage() {
               Yes, you can upgrade or downgrade your plan at any time. Changes to your plan will take effect immediately, and any price differences will be prorated.
             </p>
           </div>
-          
+
           <div className="border-b pb-4">
             <div className="flex justify-between items-center cursor-pointer">
               <h3 className="font-medium">What payment methods are accepted?</h3>
@@ -322,7 +322,7 @@ export default function SubscriptionPage() {
               We accept all major credit cards, debit cards, and local payment methods through Paystack. Bank transfers are also available for annual subscriptions.
             </p>
           </div>
-          
+
           <div className="border-b pb-4">
             <div className="flex justify-between items-center cursor-pointer">
               <h3 className="font-medium">Is there a refund policy?</h3>
@@ -332,7 +332,7 @@ export default function SubscriptionPage() {
               If you're not satisfied with your subscription, you can cancel within the first 14 days for a full refund. After that, you can cancel anytime but refunds are not provided for partial months.
             </p>
           </div>
-          
+
           <div className="border-b pb-4">
             <div className="flex justify-between items-center cursor-pointer">
               <h3 className="font-medium">Do you offer special pricing for accelerators or incubators?</h3>
@@ -344,7 +344,7 @@ export default function SubscriptionPage() {
           </div>
         </div>
       </div>
-      
+
       {/* Need help box */}
       <div className="mt-16 max-w-3xl mx-auto bg-blue-50 rounded-xl p-6 text-center">
         <HelpCircle className="h-8 w-8 text-blue-600 mx-auto mb-3" />

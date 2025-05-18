@@ -6,40 +6,46 @@ import { Button } from '@/components/ui/button';
 export default function AboutPage() {
   const teamMembers = [
     {
-      name: "Emily Chen",
+      name: "Williams Idorenyin",
       role: "Co-Founder & CEO",
       bio: "Former VC partner with 10+ years of experience connecting startups with investors. Led investments in 30+ companies with 5 exits.",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=600&q=80",
+      image:
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=600&q=80",
     },
     {
-      name: "David Rodriguez",
+      name: "Williams Idorenyin",
       role: "Co-Founder & CTO",
       bio: "Serial entrepreneur with two successful exits. Built machine learning systems for financial markets and investment analytics.",
-      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=600&q=80",
+      image:
+        "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=600&q=80",
     },
     {
-      name: "Sarah Johnson",
+      name: "Williams Idorenyin",
       role: "Chief Product Officer",
       bio: "Previously led product at a Y Combinator startup acquired for $150M. Expert in user experience design and product development.",
-      image: "https://images.unsplash.com/photo-1541647376583-8934aaf3448a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=600&q=80",
+      image:
+        "https://images.unsplash.com/photo-1541647376583-8934aaf3448a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=600&q=80",
     },
     {
-      name: "Michael Wong",
+      name: "Williams Idorenyin",
       role: "VP of Engineering",
       bio: "Full-stack developer with 15 years of experience building enterprise SaaS platforms. Led engineering teams at Microsoft and Shopify.",
-      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=600&q=80",
+      image:
+        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=600&q=80",
     },
     {
-      name: "Jessica Martinez",
+      name: "Williams Idorenyin",
       role: "Head of Customer Success",
       bio: "Passionate about helping founders succeed. Previously led startup accelerator programs in Silicon Valley and New York.",
-      image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=600&q=80",
+      image:
+        "https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=600&q=80",
     },
     {
-      name: "Alex Thompson",
+      name: "Williams Idorenyin",
       role: "Head of AI & Data Science",
       bio: "PhD in Machine Learning from Stanford. Developed AI systems for investment analysis and market prediction at Goldman Sachs.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=600&q=80",
+      image:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&h=600&q=80",
     },
   ];
 

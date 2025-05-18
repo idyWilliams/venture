@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useApiMutation } from '@/hooks/useApi';
-import { useUserRole } from '@/contexts/UserRoleContext';
+import { useApiMutation } from '@/src/hooks/useApi';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
 
 // Define the props for the PaymentForm component
@@ -43,10 +43,10 @@ export default function PaymentForm({
     onSuccess: (data) => {
       // Redirect to Paystack's checkout page
       window.location.href = data.authorizationUrl;
-      
+
       // Store reference in localStorage for verification later
       localStorage.setItem('paymentReference', data.reference);
-      
+
       if (onSuccess) {
         onSuccess(data.reference);
       }
@@ -54,7 +54,7 @@ export default function PaymentForm({
     onError: (error) => {
       setError('Payment initialization failed. Please try again.');
       console.error('Payment error:', error);
-      
+
       if (onError) {
         onError(error);
       }
@@ -65,13 +65,13 @@ export default function PaymentForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    
+
     // Simple email validation
     if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
       setError('Please enter a valid email address');
       return;
     }
-    
+
     // Initialize payment
     initPaymentMutation.mutate({
       email,
@@ -89,7 +89,7 @@ export default function PaymentForm({
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const reference = urlParams.get('reference');
-    
+
     if (reference) {
       // Verify payment if reference exists
       verifyPayment(reference);
@@ -104,13 +104,13 @@ export default function PaymentForm({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reference })
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         setSuccess('Payment successful! Thank you for your purchase.');
         localStorage.removeItem('paymentReference');
-        
+
         // Redirect after 3 seconds
         setTimeout(() => {
           router.push('/dashboard');
@@ -129,7 +129,7 @@ export default function PaymentForm({
       <h2 className="text-2xl font-bold mb-6">{planName}</h2>
       <p className="mb-4 text-gray-600">{description}</p>
       <div className="text-3xl font-bold mb-6">₦{amount.toLocaleString()}</div>
-      
+
       {success ? (
         <div className="mb-4 p-3 bg-green-100 text-green-700 rounded flex items-center">
           <CheckCircle className="mr-2 h-5 w-5" />
@@ -141,7 +141,7 @@ export default function PaymentForm({
           {error}
         </div>
       ) : null}
-      
+
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
@@ -157,7 +157,7 @@ export default function PaymentForm({
             required
           />
         </div>
-        
+
         <button
           type="submit"
           disabled={initPaymentMutation.isPending}
@@ -173,7 +173,7 @@ export default function PaymentForm({
           )}
         </button>
       </form>
-      
+
       <div className="mt-4 text-xs text-gray-500 text-center">
         Secured by Paystack. Your payment information is secure.
       </div>

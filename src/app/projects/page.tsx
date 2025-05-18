@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
+import { Input } from '@/src/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '@/src/components/ui/radio-group';
+import { Label } from '@/src/components/ui/label';
 
 // Types for AI matching algorithm
 interface MatchScore {
@@ -66,31 +66,31 @@ export default function DiscoverProjectsPage() {
         !project.description.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
     }
-    
+
     // Apply industry filter
     if (industryFilter && project.industry !== industryFilter) {
       return false;
     }
-    
+
     // Apply funding model filter
     if (fundingModelFilter && project.fundingModel !== fundingModelFilter) {
       return false;
     }
-    
+
     // Apply stage filter
     if (stageFilter && project.fundingStage !== stageFilter) {
       return false;
     }
-    
+
     // Apply tab filter
     if (activeTab === 'aiRecommended' && (project.aiMatchScore || 0) < 75) {
       return false;
     }
-    
+
     if (activeTab === 'impact' && project.esgImpact !== 'high') {
       return false;
     }
-    
+
     return true;
   }).sort((a, b) => {
     // Sort projects
@@ -110,7 +110,7 @@ export default function DiscoverProjectsPage() {
   const industriesSet = new Set<string>();
   projects.forEach(p => industriesSet.add(p.industry));
   const industries = Array.from(industriesSet);
-  
+
   // Get unique funding stages for filter
   const stagesSet = new Set<string>();
   projects.forEach(p => stagesSet.add(p.fundingStage));
@@ -124,7 +124,7 @@ export default function DiscoverProjectsPage() {
           <p className="text-xl text-blue-100 max-w-2xl mb-8">
             Find promising startups that match your investment criteria using our AI-powered matching algorithm
           </p>
-          
+
           <div className="relative">
             <Input
               type="text"
@@ -141,12 +141,12 @@ export default function DiscoverProjectsPage() {
           </div>
         </div>
       </div>
-      
+
       <div className="container mx-auto px-4 -mt-6">
         <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <h2 className="text-lg font-bold">Filter & Sort</h2>
-            
+
             <div className="flex flex-wrap gap-4">
               <div className="w-full md:w-auto">
                 <Label htmlFor="industry" className="mb-2 block text-sm font-medium">Industry</Label>
@@ -162,7 +162,7 @@ export default function DiscoverProjectsPage() {
                   ))}
                 </select>
               </div>
-              
+
               <div className="w-full md:w-auto">
                 <Label htmlFor="stage" className="mb-2 block text-sm font-medium">Funding Stage</Label>
                 <select
@@ -177,7 +177,7 @@ export default function DiscoverProjectsPage() {
                   ))}
                 </select>
               </div>
-              
+
               <div className="w-full md:w-auto">
                 <Label htmlFor="fundingModel" className="mb-2 block text-sm font-medium">Funding Model</Label>
                 <select
@@ -193,7 +193,7 @@ export default function DiscoverProjectsPage() {
                   <option value="corporate-vc">Corporate VC</option>
                 </select>
               </div>
-              
+
               <div className="w-full md:w-auto">
                 <Label htmlFor="sortBy" className="mb-2 block text-sm font-medium">Sort By</Label>
                 <select
@@ -211,7 +211,7 @@ export default function DiscoverProjectsPage() {
           </div>
         </div>
       </div>
-      
+
       <div className="container mx-auto px-4">
         <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab} className="mb-8">
           <TabsList className="mb-6 bg-white/70 backdrop-blur-sm">
@@ -220,7 +220,7 @@ export default function DiscoverProjectsPage() {
             <TabsTrigger value="impact">ESG & Impact</TabsTrigger>
           </TabsList>
         </Tabs>
-        
+
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map(i => (
@@ -246,8 +246,8 @@ export default function DiscoverProjectsPage() {
                 <Card className="bg-white border-0 shadow-md hover:shadow-xl transition-all overflow-hidden h-full flex flex-col">
                   <div className="h-40 bg-gradient-to-r from-blue-50 to-indigo-50 relative overflow-hidden">
                     {project.logo ? (
-                      <img 
-                        src={project.logo} 
+                      <img
+                        src={project.logo}
                         alt={project.title}
                         className="w-full h-full object-cover"
                       />
@@ -256,7 +256,7 @@ export default function DiscoverProjectsPage() {
                         <span className="text-5xl font-bold text-gray-200">{project.title.charAt(0)}</span>
                       </div>
                     )}
-                    
+
                     {/* Badge for funding model */}
                     <div className={`absolute top-3 right-3 text-xs font-semibold px-2 py-1 rounded-full ${
                       project.fundingModel === 'impact' ? 'bg-green-100 text-green-800' :
@@ -269,7 +269,7 @@ export default function DiscoverProjectsPage() {
                        project.fundingModel === 'impact' ? 'Impact' :
                        'Corporate VC'}
                     </div>
-                    
+
                     {/* AI Match Score */}
                     {project.aiMatchScore && (
                       <div className="absolute bottom-3 left-3 bg-white rounded-lg shadow-md px-2 py-1 flex items-center space-x-1 text-sm font-medium">
@@ -280,7 +280,7 @@ export default function DiscoverProjectsPage() {
                       </div>
                     )}
                   </div>
-                  
+
                   <CardContent className="flex-grow pt-6 pb-2">
                     <div className="flex items-center justify-between mb-2">
                       <div className="bg-gray-100 text-gray-700 text-xs rounded-full px-2 py-1">
@@ -296,7 +296,7 @@ export default function DiscoverProjectsPage() {
                     <p className="text-gray-600 text-sm mb-4 line-clamp-3">
                       {project.description}
                     </p>
-                    
+
                     {/* Tags */}
                     <div className="flex flex-wrap gap-1 mb-3">
                       {project.tags.slice(0, 3).map((tag, i) => (
@@ -310,7 +310,7 @@ export default function DiscoverProjectsPage() {
                         </span>
                       )}
                     </div>
-                    
+
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center font-medium">
                         <span className="text-gray-700">{project.fundingStage}</span>
@@ -324,7 +324,7 @@ export default function DiscoverProjectsPage() {
                       </div>
                     </div>
                   </CardContent>
-                  
+
                   <CardFooter className="border-t border-gray-100 flex justify-between py-4">
                     <div className="text-sm text-gray-500">
                       {project.founderName}

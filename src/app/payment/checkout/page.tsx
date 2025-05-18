@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import PaymentForm from '@/components/payment/PaymentForm';
+import PaymentForm from '@/src/components/payment/PaymentForm';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
@@ -70,7 +70,7 @@ export default function CheckoutPage() {
           Back to pricing
         </Link>
       </div>
-      
+
       <div className="text-center mb-12">
         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
           Complete your purchase
@@ -91,7 +91,7 @@ export default function CheckoutPage() {
             <div className="text-sm text-gray-600 mb-4">
               {planDetails.isSubscription ? 'Monthly subscription' : 'One-time payment'}
             </div>
-            
+
             <div className="border-t border-gray-200 pt-4 mt-4">
               <div className="flex justify-between font-bold">
                 <span>Total</span>
@@ -100,7 +100,7 @@ export default function CheckoutPage() {
             </div>
           </div>
         </div>
-        
+
         <div>
           <PaymentForm
             amount={planDetails.price}
