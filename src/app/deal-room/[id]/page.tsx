@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
+import { Input } from '@/src/components/ui/input';
+import { Textarea } from '@/src/components/ui/textarea';
+import { Label } from '@/src/components/ui/label';
 
 interface DealRoom {
   id: string;
@@ -240,7 +240,7 @@ export default function DealRoomPage() {
       // formData.append('name', documentName);
       // formData.append('documentType', documentType);
       // formData.append('uploadedBy', currentUserId);
-      
+
       // const response = await fetch(`/api/deal-room/${dealRoomId}/documents`, {
       //   method: 'POST',
       //   body: formData
@@ -276,7 +276,7 @@ export default function DealRoomPage() {
       setDocumentName('');
       setDocumentType('');
       setDocumentFile(null);
-      
+
       setTimeout(() => {
         setUploadingDocument(false);
       }, 1000);
@@ -352,7 +352,7 @@ export default function DealRoomPage() {
           <TabsTrigger value="participants">Participants</TabsTrigger>
           <TabsTrigger value="details">Deal Details</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="conversations">
           <Card>
             <CardHeader>
@@ -367,8 +367,8 @@ export default function DealRoomPage() {
                   {messages.map((message) => (
                     <div key={message.id} className={`flex ${message.senderId === currentUserId ? 'justify-end' : 'justify-start'}`}>
                       <div className={`max-w-[70%] rounded-lg p-3 ${
-                        message.senderId === currentUserId 
-                          ? 'bg-blue-500 text-white' 
+                        message.senderId === currentUserId
+                          ? 'bg-blue-500 text-white'
                           : 'bg-gray-100 text-gray-900'
                       }`}>
                         <div className="font-medium text-sm mb-1">
@@ -376,8 +376,8 @@ export default function DealRoomPage() {
                         </div>
                         <p className="text-sm">{message.content}</p>
                         <div className={`text-xs mt-1 ${
-                          message.senderId === currentUserId 
-                            ? 'text-blue-200' 
+                          message.senderId === currentUserId
+                            ? 'text-blue-200'
                             : 'text-gray-500'
                         }`}>
                           {new Date(message.createdAt).toLocaleString()}
@@ -399,7 +399,7 @@ export default function DealRoomPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="documents">
           <Card>
             <CardHeader>
@@ -440,18 +440,18 @@ export default function DealRoomPage() {
                   </Card>
                 ))}
               </div>
-              
+
               <div className="border-t pt-6">
                 <h3 className="font-medium text-lg mb-4">Upload New Document</h3>
                 <form onSubmit={handleUploadDocument} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="documentName">Document Name</Label>
-                      <Input 
-                        id="documentName" 
-                        value={documentName} 
-                        onChange={(e) => setDocumentName(e.target.value)} 
-                        required 
+                      <Input
+                        id="documentName"
+                        value={documentName}
+                        onChange={(e) => setDocumentName(e.target.value)}
+                        required
                       />
                     </div>
                     <div>
@@ -476,15 +476,15 @@ export default function DealRoomPage() {
                   </div>
                   <div>
                     <Label htmlFor="documentFile">File</Label>
-                    <Input 
-                      id="documentFile" 
-                      type="file" 
+                    <Input
+                      id="documentFile"
+                      type="file"
                       onChange={(e) => {
                         if (e.target.files && e.target.files[0]) {
                           setDocumentFile(e.target.files[0]);
                         }
-                      }} 
-                      required 
+                      }}
+                      required
                     />
                   </div>
                   <Button type="submit" disabled={uploadingDocument}>
@@ -495,7 +495,7 @@ export default function DealRoomPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="participants">
           <Card>
             <CardHeader>
@@ -534,7 +534,7 @@ export default function DealRoomPage() {
                           <h4 className="font-medium">{participant.name}</h4>
                           <p className="text-sm text-gray-500">{participant.email}</p>
                           <p className="text-xs text-gray-400 mt-1">
-                            {participant.role === 'FOUNDER' ? 'Founder' : 
+                            {participant.role === 'FOUNDER' ? 'Founder' :
                              participant.role === 'INVESTOR' ? 'Investor' : participant.role}
                           </p>
                         </div>
@@ -543,7 +543,7 @@ export default function DealRoomPage() {
                   ))}
                 </div>
               </div>
-              
+
               <div className="mt-8 pt-6 border-t">
                 <Button variant="outline">
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
@@ -558,7 +558,7 @@ export default function DealRoomPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="details">
           <Card>
             <CardHeader>
@@ -598,7 +598,7 @@ export default function DealRoomPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div>
                   <h3 className="font-medium text-lg mb-4">Founder Information</h3>
                   <div className="space-y-3">
@@ -617,7 +617,7 @@ export default function DealRoomPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="mt-8 pt-6 border-t">
                 <h3 className="font-medium text-lg mb-4">Deal Status</h3>
                 <div className="flex items-center gap-4">
@@ -628,7 +628,7 @@ export default function DealRoomPage() {
                   }`}>
                     {dealRoom.status.charAt(0).toUpperCase() + dealRoom.status.slice(1)}
                   </div>
-                  
+
                   <div className="space-x-2">
                     <Button variant="outline" size="sm">
                       Change Status

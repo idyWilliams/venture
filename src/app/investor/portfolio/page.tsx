@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUserRole } from '@/contexts/UserRoleContext';
+// import { useUserRole } from '@/contexts/UserRoleContext';
 import { Button } from '@/components/ui/button';
 import {
   BarChart3,
@@ -19,6 +19,7 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
 
 // Mock portfolio data
 const portfolioData = [
@@ -78,7 +79,7 @@ export default function InvestorPortfolioPage() {
   const [filter, setFilter] = useState('all');
   const [sortBy, setSortBy] = useState('roi');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
-  
+
   // Redirect if not authenticated or not an investor
   useEffect(() => {
     if (!isAuthenticated) {
@@ -96,17 +97,17 @@ export default function InvestorPortfolioPage() {
   const sortedPortfolio = [...portfolioData].sort((a, b) => {
     const aValue = a[sortBy as keyof typeof a];
     const bValue = b[sortBy as keyof typeof b];
-    
+
     if (typeof aValue === 'number' && typeof bValue === 'number') {
       return sortOrder === 'desc' ? bValue - aValue : aValue - bValue;
-    } 
-    
+    }
+
     if (typeof aValue === 'string' && typeof bValue === 'string') {
-      return sortOrder === 'desc' 
+      return sortOrder === 'desc'
         ? bValue.localeCompare(aValue)
         : aValue.localeCompare(bValue);
     }
-    
+
     return 0;
   });
 
@@ -174,22 +175,22 @@ export default function InvestorPortfolioPage() {
             <span className="text-sm font-medium">Filter:</span>
           </div>
           <div className="flex space-x-2">
-            <Button 
-              variant={filter === 'all' ? 'default' : 'outline'} 
+            <Button
+              variant={filter === 'all' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setFilter('all')}
             >
               All
             </Button>
-            <Button 
-              variant={filter === 'active' ? 'default' : 'outline'} 
+            <Button
+              variant={filter === 'active' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setFilter('active')}
             >
               Active
             </Button>
-            <Button 
-              variant={filter === 'exited' ? 'default' : 'outline'} 
+            <Button
+              variant={filter === 'exited' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setFilter('exited')}
             >
@@ -197,13 +198,13 @@ export default function InvestorPortfolioPage() {
             </Button>
           </div>
         </div>
-        
+
         <div className="flex items-center space-x-4">
           <div className="flex items-center">
             <Sliders className="h-4 w-4 text-gray-500 mr-2" />
             <span className="text-sm font-medium">Sort by:</span>
           </div>
-          <select 
+          <select
             className="text-sm border rounded-md p-1"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
@@ -214,8 +215,8 @@ export default function InvestorPortfolioPage() {
             <option value="aiScore">AI Score</option>
             <option value="companyName">Company</option>
           </select>
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             size="sm"
             onClick={() => setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc')}
           >
@@ -277,13 +278,13 @@ export default function InvestorPortfolioPage() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <span className={`px-3 py-1 inline-flex text-md leading-5 font-semibold rounded-full ${
-                        investment.aiScore >= 85 ? 'bg-green-100 text-green-800' : 
-                        investment.aiScore >= 70 ? 'bg-yellow-100 text-yellow-800' : 
+                        investment.aiScore >= 85 ? 'bg-green-100 text-green-800' :
+                        investment.aiScore >= 70 ? 'bg-yellow-100 text-yellow-800' :
                         'bg-red-100 text-red-800'
                       }`}>
                         {investment.aiScore}
                       </span>
-                      <Link 
+                      <Link
                         href={`/analytics/project/${investment.id}`}
                         className="ml-2 text-blue-600 hover:text-blue-800"
                       >
@@ -293,7 +294,7 @@ export default function InvestorPortfolioPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <div className="flex space-x-2">
-                      <Link 
+                      <Link
                         href={`/deal-rooms?project=${investment.id}`}
                         className="text-indigo-600 hover:text-indigo-900 inline-flex items-center"
                       >
