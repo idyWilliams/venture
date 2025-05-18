@@ -86,7 +86,7 @@ export async function findMatchingInvestors(
       if (
         investor.investmentSectors.length > 0 &&
         !investor.investmentSectors.includes(project.industry) &&
-        !investor.investmentSectors.some(sector => 
+        !investor.investmentSectors.some(sector =>
           project.marketSegments.includes(sector)
         )
       ) {
@@ -150,10 +150,10 @@ export async function findMatchingInvestors(
  */
 async function calculateInvestorMatchScore(project: any, investor: any): Promise<InvestorMatchResult> {
   const matchingPrompt = `
-  You are an expert in matching startups with the right investors. 
-  
+  You are an expert in matching startups with the right investors.
+
   Analyze the compatibility between this startup project and potential investor:
-  
+
   PROJECT DETAILS:
   Title: ${project.title}
   Description: ${project.description}
@@ -168,7 +168,7 @@ async function calculateInvestorMatchScore(project: any, investor: any): Promise
   Competitor Analysis: ${project.competitorAnalysis || "Not specified"}
   Market Segments: ${project.marketSegments.join(", ") || "Not specified"}
   Technical Stack: ${project.technicalStack.join(", ") || "Not specified"}
-  
+
   INVESTOR DETAILS:
   Name: ${investor.name}
   Company: ${investor.companyName || "Independent investor"}
@@ -176,7 +176,7 @@ async function calculateInvestorMatchScore(project: any, investor: any): Promise
   Investment Stages: ${investor.investmentStage.join(", ")}
   Minimum Investment Size: ${investor.investmentMinSize || "Not specified"}
   Maximum Investment Size: ${investor.investmentMaxSize || "Not specified"}
-  
+
   Please analyze and rate the compatibility between this project and investor as JSON in this format:
   {
     "matchScore": (number between 1-10, with 10 being perfect match),
@@ -184,7 +184,7 @@ async function calculateInvestorMatchScore(project: any, investor: any): Promise
     "potentialInterest": "explanation of why the investor might be interested",
     "keyInsights": "key points or questions the investor might have"
   }
-  
+
   Focus on strategic alignment, market potential, and investment thesis fit.
   `;
 
@@ -194,7 +194,7 @@ async function calculateInvestorMatchScore(project: any, investor: any): Promise
     response_format: { type: "json_object" },
     temperature: 0.7,
   });
-
+//@ts-ignore
   return JSON.parse(response.choices[0].message.content) as InvestorMatchResult;
 }
 
@@ -205,17 +205,17 @@ async function calculateInvestorMatchScore(project: any, investor: any): Promise
 export async function updateProjectMatchScores(projectId: string): Promise<void> {
   try {
     const matchingInvestors = await findMatchingInvestors(projectId, 20);
-    
+
     // Calculate overall match score based on top investors
     let avgScore = 0;
     if (matchingInvestors.length > 0) {
       avgScore = matchingInvestors.reduce((sum, match) => sum + match.investor.matchScore, 0) / matchingInvestors.length;
     }
-    
+
     // Extract key insights to generate tags
     const allMatchReasons = matchingInvestors.flatMap(match => match.investor.matchReasons);
     const aiTags = extractKeyTerms(allMatchReasons);
-    
+
     // Update the project with AI insights
     await prisma.project.update({
       where: { id: projectId },
@@ -260,9 +260,9 @@ function generateApproachSuggestion(matches: ProjectInvestorMatch[]): string {
   if (matches.length === 0) {
     return "Consider refining your pitch to better highlight your market opportunity and business model.";
   }
-  
+
   const avgScore = matches.reduce((sum, m) => sum + m.investor.matchScore, 0) / matches.length;
-  
+
   if (avgScore > 8) {
     return "Your project has strong investor appeal. Focus on highlighting your traction and team expertise when contacting these investors.";
   } else if (avgScore > 6) {

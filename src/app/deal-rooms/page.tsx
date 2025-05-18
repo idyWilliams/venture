@@ -93,6 +93,7 @@ export default function DealRoomsPage() {
 
   // Sort deal rooms
   const sortedDealRooms = dealRooms
+    //@ts-ignore
     ? [...dealRooms].sort((a, b) => {
         const dateA = new Date(a[sortBy]).getTime();
         const dateB = new Date(b[sortBy]).getTime();

@@ -23,6 +23,7 @@ export function useApiQuery<T>(
     },
     enabled: options?.enabled,
     refetchInterval: options?.refetchInterval,
+    //@ts-ignore
     onSuccess: options?.onSuccess,
     onError: options?.onError,
   });

@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Input } from '@/src/components/ui/input';
+import { Label } from '@/src/components/ui/label';
 
 interface AcceleratorProgram {
   id: string;
@@ -118,23 +118,23 @@ export default function AcceleratorProgramsPage() {
 
   // Filter programs based on search term and industry filter
   const filteredPrograms = programs.filter(program => {
-    const matchesSearch = searchTerm === '' || 
+    const matchesSearch = searchTerm === '' ||
       program.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       program.description.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesIndustry = !industryFilter || 
+
+    const matchesIndustry = !industryFilter ||
       program.description.toLowerCase().includes(industryFilter.toLowerCase());
-    
+
     return matchesSearch && matchesIndustry;
   });
 
   // Format date for display
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
     });
   };
 
@@ -187,7 +187,7 @@ export default function AcceleratorProgramsPage() {
         <p className="text-gray-600 mb-6">
           Discover and apply to top accelerator programs to help your startup grow
         </p>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="col-span-1 md:col-span-2">
             <div className="relative">
@@ -198,15 +198,15 @@ export default function AcceleratorProgramsPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
               />
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="24" 
-                height="24" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
                 strokeLinejoin="round"
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
               >
@@ -230,7 +230,7 @@ export default function AcceleratorProgramsPage() {
           </div>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
         {filteredPrograms.map((program) => (
           <Card key={program.id} className="flex flex-col h-full">
@@ -283,18 +283,18 @@ export default function AcceleratorProgramsPage() {
           </Card>
         ))}
       </div>
-      
+
       <div className="flex justify-center">
         <Button variant="outline">
           Load More Programs
         </Button>
       </div>
-      
+
       <div className="mt-20 bg-gray-50 p-8 rounded-lg">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-2xl font-bold mb-4">Run Your Own Accelerator Program</h2>
           <p className="text-gray-600 mb-6">
-            Are you a venture capital firm, corporation, or institution looking to launch an accelerator program? 
+            Are you a venture capital firm, corporation, or institution looking to launch an accelerator program?
             VentureHive Pro provides tools to help you manage applications, engage with founders, and track portfolio companies.
           </p>
           <Button variant="outline">Create an Accelerator</Button>

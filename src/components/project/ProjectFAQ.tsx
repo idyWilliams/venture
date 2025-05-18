@@ -2,15 +2,15 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/src/components/ui/input';
+import { Textarea } from '@/src/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion';
+} from '@/src/components/ui/accordion';
 
 interface FAQ {
   id: string;
@@ -26,12 +26,12 @@ interface ProjectFAQProps {
   onDeleteFAQ: (id: string) => void;
 }
 
-export default function ProjectFAQ({ 
-  faqs, 
+export default function ProjectFAQ({
+  faqs,
   isFounder,
   onAddFAQ,
   onUpdateFAQ,
-  onDeleteFAQ 
+  onDeleteFAQ
 }: ProjectFAQProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [isEditing, setIsEditing] = useState<string | null>(null);
@@ -42,7 +42,7 @@ export default function ProjectFAQ({
 
   const handleAddFAQ = () => {
     if (!newQuestion.trim() || !newAnswer.trim()) return;
-    
+
     onAddFAQ(newQuestion, newAnswer);
     setNewQuestion('');
     setNewAnswer('');
@@ -51,7 +51,7 @@ export default function ProjectFAQ({
 
   const handleUpdateFAQ = (id: string) => {
     if (!editQuestion.trim() || !editAnswer.trim()) return;
-    
+
     onUpdateFAQ(id, editQuestion, editAnswer);
     setIsEditing(null);
   };
@@ -68,8 +68,8 @@ export default function ProjectFAQ({
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-medium">Frequently Asked Questions</h3>
           {isFounder && !isAdding && (
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="sm"
               onClick={() => setIsAdding(true)}
             >
@@ -81,7 +81,7 @@ export default function ProjectFAQ({
             </Button>
           )}
         </div>
-        
+
         {/* Add new FAQ form */}
         {isAdding && (
           <div className="mb-8 p-4 border rounded-md">
@@ -98,7 +98,7 @@ export default function ProjectFAQ({
                   placeholder="e.g., What problem does your product solve?"
                 />
               </div>
-              
+
               <div>
                 <label htmlFor="new-answer" className="block text-sm font-medium text-gray-700 mb-1">
                   Answer
@@ -111,10 +111,10 @@ export default function ProjectFAQ({
                   className="h-24"
                 />
               </div>
-              
+
               <div className="flex justify-end space-x-2">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   onClick={() => {
                     setIsAdding(false);
                     setNewQuestion('');
@@ -130,7 +130,7 @@ export default function ProjectFAQ({
             </div>
           </div>
         )}
-        
+
         {/* FAQ list */}
         {faqs.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
@@ -141,8 +141,8 @@ export default function ProjectFAQ({
             </svg>
             <p>No FAQs available yet.</p>
             {isFounder && (
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="mt-4"
                 onClick={() => setIsAdding(true)}
               >
@@ -168,7 +168,7 @@ export default function ProjectFAQ({
                           onChange={(e) => setEditQuestion(e.target.value)}
                         />
                       </div>
-                      
+
                       <div>
                         <label htmlFor="edit-answer" className="block text-sm font-medium text-gray-700 mb-1">
                           Answer
@@ -180,16 +180,16 @@ export default function ProjectFAQ({
                           className="h-24"
                         />
                       </div>
-                      
+
                       <div className="flex justify-end space-x-2">
-                        <Button 
-                          variant="outline" 
+                        <Button
+                          variant="outline"
                           onClick={() => setIsEditing(null)}
                         >
                           Cancel
                         </Button>
-                        <Button 
-                          onClick={() => handleUpdateFAQ(faq.id)} 
+                        <Button
+                          onClick={() => handleUpdateFAQ(faq.id)}
                           disabled={!editQuestion.trim() || !editAnswer.trim()}
                         >
                           Update
@@ -205,7 +205,7 @@ export default function ProjectFAQ({
                     <AccordionContent>
                       <div className="pt-2 pb-4">
                         <div className="text-gray-700 whitespace-pre-line">{faq.answer}</div>
-                        
+
                         {isFounder && (
                           <div className="flex mt-4 justify-end space-x-2">
                             <Button

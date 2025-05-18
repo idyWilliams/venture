@@ -2,11 +2,18 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Input } from '@/src/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
-import { formatDate } from '@/lib/utils';
-import { joinCommunityRoom, leaveCommunityRoom, sendCommunityMessage, listenToCommunityMessages, initializeSocket } from '@/lib/socket';
-
+// import { formatDate } from '@/lib/utils';
+import { joinCommunityRoom, leaveCommunityRoom, sendCommunityMessage, listenToCommunityMessages, initializeSocket } from '@/src/lib/socket';
+ const formatDate = (dateString: string) => {
+   const date = new Date(dateString);
+   return date.toLocaleDateString("en-US", {
+     year: "numeric",
+     month: "short",
+     day: "numeric",
+   });
+ };
 interface Message {
   id: string;
   userId: string;
@@ -33,17 +40,17 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
     name: 'You', // This would come from auth in a real app
     role: 'INVESTOR', // This would come from auth in a real app
   });
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Initialize socket connection
     const socket = initializeSocket(currentUser.id);
     setIsConnected(true);
-    
+
     // Join the community room for this project
     joinCommunityRoom(projectId);
-    
+
     // Listen for new messages
     const unsubscribe = listenToCommunityMessages((data) => {
       const newMessage: Message = {
@@ -54,13 +61,13 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
         content: data.message,
         timestamp: new Date().toISOString(),
       };
-      
+
       setMessages(prev => [...prev, newMessage]);
     });
-    
+
     // In a real app, we would fetch previous messages from the API
     // fetchCommunityMessages(projectId).then(setMessages);
-    
+
     // For demo purposes, let's add some mock messages
     const mockMessages: Message[] = [
       {
@@ -96,27 +103,27 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 6).toISOString(), // 6 hours ago
       },
     ];
-    
+
     setMessages(mockMessages);
-    
+
     return () => {
       // Clean up when component unmounts
       leaveCommunityRoom(projectId);
       if (unsubscribe) unsubscribe();
     };
   }, [projectId, currentUser.id]);
-  
+
   // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-  
+
   const handleSendMessage = () => {
     if (!newMessage.trim() || !isConnected) return;
-    
+
     // In a real app, this would send the message through the socket
     sendCommunityMessage(projectId, newMessage);
-    
+
     // For demo purposes, let's add the message locally too
     const message: Message = {
       id: Date.now().toString(),
@@ -126,11 +133,11 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
       content: newMessage,
       timestamp: new Date().toISOString(),
     };
-    
+
     setMessages([...messages, message]);
     setNewMessage('');
   };
-  
+
   return (
     <Card>
       <CardContent className="p-6">
@@ -141,7 +148,7 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
             {isConnected ? 'Connected' : 'Connecting...'}
           </div>
         </div>
-        
+
         {/* Messages container */}
         <div className="bg-gray-50 rounded-md p-4 h-96 overflow-y-auto mb-4">
           {messages.length === 0 ? (
@@ -154,14 +161,14 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
           ) : (
             <div className="space-y-4">
               {messages.map((message) => (
-                <div 
-                  key={message.id} 
+                <div
+                  key={message.id}
                   className={`flex ${message.userId === currentUser.id ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div 
+                  <div
                     className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                      message.userId === currentUser.id 
-                        ? 'bg-blue-500 text-white' 
+                      message.userId === currentUser.id
+                        ? 'bg-blue-500 text-white'
                         : message.userRole === 'FOUNDER'
                           ? 'bg-blue-100'
                           : 'bg-gray-200'
@@ -169,8 +176,8 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
                   >
                     <div className="flex justify-between items-start mb-1">
                       <span className={`font-medium text-sm ${
-                        message.userId === currentUser.id 
-                          ? 'text-blue-100' 
+                        message.userId === currentUser.id
+                          ? 'text-blue-100'
                           : message.userRole === 'FOUNDER'
                             ? 'text-blue-800'
                             : 'text-gray-800'
@@ -178,16 +185,16 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
                         {message.userName}
                       </span>
                       <span className={`text-xs ml-2 ${
-                        message.userId === currentUser.id 
-                          ? 'text-blue-200' 
+                        message.userId === currentUser.id
+                          ? 'text-blue-200'
                           : 'text-gray-500'
                       }`}>
                         {formatDate(message.timestamp)}
                       </span>
                     </div>
                     <p className={`${
-                      message.userId === currentUser.id 
-                        ? 'text-white' 
+                      message.userId === currentUser.id
+                        ? 'text-white'
                         : 'text-gray-800'
                     }`}>
                       {message.content}
@@ -199,7 +206,7 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
             </div>
           )}
         </div>
-        
+
         {/* Message input */}
         <div className="flex items-center">
           <Input
@@ -214,7 +221,7 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
               }
             }}
           />
-          <Button 
+          <Button
             onClick={handleSendMessage}
             disabled={!newMessage.trim() || !isConnected}
           >
@@ -225,7 +232,7 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
             Send
           </Button>
         </div>
-        
+
         <p className="text-xs text-gray-500 mt-2">
           This is a real-time community discussion. Be respectful and follow our community guidelines.
         </p>

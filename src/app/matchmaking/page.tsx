@@ -3,14 +3,14 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import InvestorMatchesList from '@/components/matchmaking/InvestorMatchesList';
-import { MatchResult, InvestorProfile, StartupProfile } from '@/lib/services/matchmakingService';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
+import InvestorMatchesList from '@/src/components/matchmaking/InvestorMatchesList';
+import { MatchResult, InvestorProfile, StartupProfile } from '@/src/lib/services/matchmakingService';
 
 export default function MatchmakingPage() {
   const [activeTab, setActiveTab] = useState('investor-matching');
   const [isLoading, setIsLoading] = useState(true);
-  
+
   // Mock data for demonstration
   const [matches, setMatches] = useState<MatchResult[]>([
     {
@@ -33,7 +33,7 @@ export default function MatchmakingPage() {
       recommendationStrength: "medium",
       reasons: [
         "Investor focuses on Seed stage companies",
-        "Investor supports equity funding model", 
+        "Investor supports equity funding model",
         "Partial overlap with preferred technologies",
         "Geographic focus includes your region"
       ],
@@ -80,7 +80,7 @@ export default function MatchmakingPage() {
       explanation: "This investor has limited experience in your sector and your funding needs are at the upper end of their typical range. However, their interest in AI technologies might make your startup of peripheral interest to them."
     }
   ]);
-  
+
   const [investors, setInvestors] = useState<InvestorProfile[]>([
     {
       id: "inv-1",
@@ -148,7 +148,7 @@ export default function MatchmakingPage() {
       esgFocus: false
     }
   ]);
-  
+
   const [startupProfile, setStartupProfile] = useState<StartupProfile>({
     id: "startup-1",
     name: "MediConnect Health Platform",
@@ -176,7 +176,7 @@ export default function MatchmakingPage() {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 1500);
-    
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -209,7 +209,7 @@ export default function MatchmakingPage() {
           </div>
         </div>
       </div>
-      
+
       <div className="container mx-auto px-4 py-8">
         <Tabs
           defaultValue="investor-matching"
@@ -228,7 +228,7 @@ export default function MatchmakingPage() {
               Personalized Recommendations
             </TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="investor-matching" className="space-y-8">
             <div className="bg-white rounded-xl p-6 shadow mb-8">
               <h2 className="text-2xl font-bold mb-4">Your Project Profile</h2>
@@ -262,7 +262,7 @@ export default function MatchmakingPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div>
                   <h3 className="font-semibold text-gray-700 mb-2">Traction & Team</h3>
                   <div className="space-y-2">
@@ -293,13 +293,13 @@ export default function MatchmakingPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="mt-6 pt-6 border-t border-gray-100">
                 <h3 className="font-semibold text-gray-700 mb-2">Description</h3>
                 <p className="text-gray-600">{startupProfile.description}</p>
               </div>
             </div>
-            
+
             <div>
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold">AI-Recommended Investors</h2>
@@ -307,7 +307,7 @@ export default function MatchmakingPage() {
                   Refresh Recommendations
                 </Button>
               </div>
-              
+
               {isLoading ? (
                 <div className="space-y-4">
                   {[1, 2, 3].map(i => (
@@ -315,15 +315,15 @@ export default function MatchmakingPage() {
                   ))}
                 </div>
               ) : (
-                <InvestorMatchesList 
-                  matches={matches} 
+                <InvestorMatchesList
+                  matches={matches}
                   investors={investors}
                   onContact={handleContactRequest}
                 />
               )}
             </div>
           </TabsContent>
-          
+
           <TabsContent value="diverse-funding">
             <div className="bg-white rounded-xl shadow-lg overflow-hidden">
               <div className="p-6">
@@ -331,7 +331,7 @@ export default function MatchmakingPage() {
                 <p className="text-gray-600 mb-6">
                   VentureHive Pro supports multiple funding models to match your startup's unique needs and growth trajectory.
                 </p>
-                
+
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {[
                     {
@@ -392,7 +392,7 @@ export default function MatchmakingPage() {
                   ))}
                 </div>
               </div>
-              
+
               <div className="border-t border-gray-100 bg-gray-50 p-6">
                 <h3 className="font-semibold mb-4">Not sure which funding model is right for you?</h3>
                 <Button>
@@ -401,7 +401,7 @@ export default function MatchmakingPage() {
               </div>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="personalized">
             <div className="bg-white rounded-xl shadow-lg p-6">
               <h2 className="text-2xl font-bold mb-6">Personalized Recommendations</h2>
@@ -415,14 +415,14 @@ export default function MatchmakingPage() {
                         Based on your traction metrics and team experience, your startup shows strong investment readiness for seed-stage funding.
                       </p>
                     </div>
-                    
+
                     <div className="bg-green-50 p-4 rounded-lg border border-green-100">
                       <h4 className="font-medium text-green-700 mb-2">Funding Model Fit</h4>
                       <p className="text-gray-700 text-sm">
                         Given your focus on healthcare impact in rural areas, consider exploring impact investors alongside traditional equity funding.
                       </p>
                     </div>
-                    
+
                     <div className="bg-purple-50 p-4 rounded-lg border border-purple-100">
                       <h4 className="font-medium text-purple-700 mb-2">Pitch Enhancement</h4>
                       <p className="text-gray-700 text-sm">
@@ -431,7 +431,7 @@ export default function MatchmakingPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div>
                   <h3 className="text-lg font-medium mb-4">Recommended Next Steps</h3>
                   <ul className="space-y-4">

@@ -1,24 +1,24 @@
 // Deal Room Service
 // Handles creation, access, and management of deal rooms between founders and investors
 
-import { db } from '@/lib/db';
-import { openai } from '@/lib/openai';
+// import { db } from '@/src/lib/db';
+// import { openai } from '@/src/lib/openai';
 
-export type DealRoomStatus = 
-  | 'pending' 
-  | 'active' 
-  | 'negotiation' 
-  | 'due_diligence' 
-  | 'signed' 
-  | 'closed' 
+export type DealRoomStatus =
+  | 'pending'
+  | 'active'
+  | 'negotiation'
+  | 'due_diligence'
+  | 'signed'
+  | 'closed'
   | 'rejected';
 
-export type DealType = 
-  | 'equity' 
-  | 'convertible_note' 
-  | 'safe' 
-  | 'revenue_share' 
-  | 'grant' 
+export type DealType =
+  | 'equity'
+  | 'convertible_note'
+  | 'safe'
+  | 'revenue_share'
+  | 'grant'
   | 'other';
 
 export interface DealTerms {
@@ -106,7 +106,7 @@ export async function createDealRoom(
   try {
     const now = new Date().toISOString();
     const dealRoomId = `dr-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    
+
     // Create initial system message
     const initialMessage: DealRoomMessage = {
       id: `msg-${Date.now()}`,
@@ -117,7 +117,7 @@ export async function createDealRoom(
       timestamp: now,
       isSystemMessage: true
     };
-    
+
     // Create initial activity record
     const initialActivity: DealRoomActivity = {
       id: `act-${Date.now()}`,
@@ -130,7 +130,7 @@ export async function createDealRoom(
         message: `Deal room created for project "${projectName}"`
       }
     };
-    
+
     // Create the new deal room
     const newDealRoom: DealRoom = {
       id: dealRoomId,
@@ -150,10 +150,10 @@ export async function createDealRoom(
       isArchived: false,
       lastActivity: now
     };
-    
+
     // TODO: Save to database once schema is implemented
     // await db.dealRooms.create({ data: newDealRoom });
-    
+
     return newDealRoom;
   } catch (error) {
     console.error('Error creating deal room:', error);
@@ -182,8 +182,8 @@ export async function getUserDealRooms(
 ): Promise<DealRoom[]> {
   try {
     // TODO: Implement database query when schema is ready
-    // const query = { 
-    //   where: { 
+    // const query = {
+    //   where: {
     //     [role === 'founder' ? 'founderUserId' : 'investorUserId']: userId,
     //     ...(filter === 'active' ? { isArchived: false } : {}),
     //     ...(filter === 'archived' ? { isArchived: true } : {})
@@ -212,7 +212,7 @@ export async function updateDealTerms(
     if (!dealRoom) {
       throw new Error('Deal room not found');
     }
-    
+
     // Check if user has permission to update
     if (userRole === 'founder' && dealRoom.founderUserId !== userId) {
       throw new Error('You do not have permission to update this deal room');
@@ -220,9 +220,9 @@ export async function updateDealTerms(
     if (userRole === 'investor' && dealRoom.investorUserId !== userId) {
       throw new Error('You do not have permission to update this deal room');
     }
-    
+
     const now = new Date().toISOString();
-    
+
     // Create a record of the terms update
     const termUpdateActivity: DealRoomActivity = {
       id: `act-${Date.now()}`,
@@ -236,7 +236,7 @@ export async function updateDealTerms(
         newTerms: updatedTerms
       }
     };
-    
+
     // Create a system message about the terms update
     const termUpdateMessage: DealRoomMessage = {
       id: `msg-${Date.now()}`,
@@ -247,7 +247,7 @@ export async function updateDealTerms(
       timestamp: now,
       isSystemMessage: true
     };
-    
+
     // Update the deal room
     const updatedDealRoom: DealRoom = {
       ...dealRoom,
@@ -257,13 +257,13 @@ export async function updateDealTerms(
       updatedAt: now,
       lastActivity: now
     };
-    
+
     // TODO: Save to database once schema is implemented
-    // await db.dealRooms.update({ 
+    // await db.dealRooms.update({
     //   where: { id: dealRoomId },
     //   data: updatedDealRoom
     // });
-    
+
     return updatedDealRoom;
   } catch (error) {
     console.error('Error updating deal terms:', error);
@@ -285,7 +285,7 @@ export async function updateDealStatus(
     if (!dealRoom) {
       throw new Error('Deal room not found');
     }
-    
+
     // Check if user has permission to update
     if (userRole === 'founder' && dealRoom.founderUserId !== userId) {
       throw new Error('You do not have permission to update this deal room');
@@ -293,9 +293,9 @@ export async function updateDealStatus(
     if (userRole === 'investor' && dealRoom.investorUserId !== userId) {
       throw new Error('You do not have permission to update this deal room');
     }
-    
+
     const now = new Date().toISOString();
-    
+
     // Create a record of the status update
     const statusUpdateActivity: DealRoomActivity = {
       id: `act-${Date.now()}`,
@@ -309,7 +309,7 @@ export async function updateDealStatus(
         newStatus
       }
     };
-    
+
     // Create a system message about the status update
     const statusMessage: DealRoomMessage = {
       id: `msg-${Date.now()}`,
@@ -320,7 +320,7 @@ export async function updateDealStatus(
       timestamp: now,
       isSystemMessage: true
     };
-    
+
     // Update the deal room
     const updatedDealRoom: DealRoom = {
       ...dealRoom,
@@ -330,13 +330,13 @@ export async function updateDealStatus(
       updatedAt: now,
       lastActivity: now
     };
-    
+
     // TODO: Save to database once schema is implemented
-    // await db.dealRooms.update({ 
+    // await db.dealRooms.update({
     //   where: { id: dealRoomId },
     //   data: updatedDealRoom
     // });
-    
+
     return updatedDealRoom;
   } catch (error) {
     console.error('Error updating deal status:', error);
@@ -359,7 +359,7 @@ export async function sendMessage(
     if (!dealRoom) {
       throw new Error('Deal room not found');
     }
-    
+
     // Check if user has permission to send messages
     if (userRole === 'founder' && dealRoom.founderUserId !== userId) {
       throw new Error('You do not have permission to send messages in this deal room');
@@ -367,9 +367,9 @@ export async function sendMessage(
     if (userRole === 'investor' && dealRoom.investorUserId !== userId) {
       throw new Error('You do not have permission to send messages in this deal room');
     }
-    
+
     const now = new Date().toISOString();
-    
+
     // Create the new message
     const newMessage: DealRoomMessage = {
       id: `msg-${Date.now()}`,
@@ -381,7 +381,7 @@ export async function sendMessage(
       isSystemMessage: false,
       attachments
     };
-    
+
     // Add message to deal room
     const updatedDealRoom: DealRoom = {
       ...dealRoom,
@@ -389,15 +389,15 @@ export async function sendMessage(
       updatedAt: now,
       lastActivity: now
     };
-    
+
     // TODO: Save to database once schema is implemented
-    // await db.dealRooms.update({ 
+    // await db.dealRooms.update({
     //   where: { id: dealRoomId },
     //   data: updatedDealRoom
     // });
-    
+
     // TODO: Send notifications to other party
-    
+
     return newMessage;
   } catch (error) {
     console.error('Error sending message:', error);
@@ -413,11 +413,11 @@ export async function analyzeDealTerms(terms: DealTerms, projectDetails: any): P
     const valuation = terms.valuation || 'unknown';
     const equity = terms.equity || 'unknown';
     const investmentAmount = terms.investmentAmount || 'unknown';
-    
+
     // Construct a prompt for the AI
     const prompt = `
       I need an analysis of the following startup investment deal terms:
-      
+
       Deal Type: ${dealType}
       Valuation: ${valuation}
       Equity Offered: ${equity}%
@@ -426,19 +426,19 @@ export async function analyzeDealTerms(terms: DealTerms, projectDetails: any): P
       ${terms.valuationCap ? `Valuation Cap: ${terms.valuationCap}` : ''}
       ${terms.interestRate ? `Interest Rate: ${terms.interestRate}%` : ''}
       ${terms.revenuePercentage ? `Revenue Percentage: ${terms.revenuePercentage}%` : ''}
-      
+
       Project Information:
       Industry: ${projectDetails.industry || 'Unknown'}
       Stage: ${projectDetails.stage || 'Unknown'}
       Revenue: ${projectDetails.revenue || 'No revenue yet'}
       Team Size: ${projectDetails.teamSize || 'Unknown'}
-      
-      Please provide a balanced analysis of these terms from both the investor and founder perspective. 
+
+      Please provide a balanced analysis of these terms from both the investor and founder perspective.
       Identify if any terms are particularly favorable or unfavorable to either party compared to market standards.
-      Include recommendations for potential negotiation points. 
+      Include recommendations for potential negotiation points.
       Keep the analysis concise and professional.
     `;
-    
+
     // TODO: Use OpenAI to analyze the terms
     // const response = await openai.chat.completions.create({
     //   model: "gpt-4",
@@ -446,9 +446,9 @@ export async function analyzeDealTerms(terms: DealTerms, projectDetails: any): P
     //   temperature: 0.7,
     //   max_tokens: 1000
     // });
-    
+
     // return response.choices[0].message.content || "Unable to generate analysis.";
-    
+
     // Placeholder until OpenAI integration is complete
     return "Deal terms analysis will be available once AI integration is complete.";
   } catch (error) {
@@ -473,7 +473,7 @@ export async function uploadDocument(
     if (!dealRoom) {
       throw new Error('Deal room not found');
     }
-    
+
     // Check if user has permission
     if (userRole === 'founder' && dealRoom.founderUserId !== userId) {
       throw new Error('You do not have permission to upload documents to this deal room');
@@ -481,12 +481,12 @@ export async function uploadDocument(
     if (userRole === 'investor' && dealRoom.investorUserId !== userId) {
       throw new Error('You do not have permission to upload documents to this deal room');
     }
-    
+
     const now = new Date().toISOString();
-    
+
     // TODO: Implement actual file upload to storage service
     // const uploadResult = await uploadToStorage(file);
-    
+
     // Create document record
     const newDocument: DocumentInfo = {
       id: `doc-${Date.now()}`,
@@ -499,7 +499,7 @@ export async function uploadDocument(
       description,
       isConfidential
     };
-    
+
     // Create activity record
     const documentActivity: DealRoomActivity = {
       id: `act-${Date.now()}`,
@@ -514,7 +514,7 @@ export async function uploadDocument(
         action: 'uploaded'
       }
     };
-    
+
     // Create system message
     const documentMessage: DealRoomMessage = {
       id: `msg-${Date.now()}`,
@@ -525,7 +525,7 @@ export async function uploadDocument(
       timestamp: now,
       isSystemMessage: true
     };
-    
+
     // Update deal room
     const updatedDealRoom: DealRoom = {
       ...dealRoom,
@@ -535,13 +535,13 @@ export async function uploadDocument(
       updatedAt: now,
       lastActivity: now
     };
-    
+
     // TODO: Save to database once schema is implemented
-    // await db.dealRooms.update({ 
+    // await db.dealRooms.update({
     //   where: { id: dealRoomId },
     //   data: updatedDealRoom
     // });
-    
+
     return newDocument;
   } catch (error) {
     console.error('Error uploading document:', error);
@@ -561,25 +561,25 @@ export async function toggleArchiveDealRoom(
     if (!dealRoom) {
       throw new Error('Deal room not found');
     }
-    
+
     // Check if user has permission
     if (dealRoom.founderUserId !== userId && dealRoom.investorUserId !== userId) {
       throw new Error('You do not have permission to archive/unarchive this deal room');
     }
-    
+
     // Update archive status
     const updatedDealRoom: DealRoom = {
       ...dealRoom,
       isArchived: archive,
       updatedAt: new Date().toISOString()
     };
-    
+
     // TODO: Save to database once schema is implemented
-    // await db.dealRooms.update({ 
+    // await db.dealRooms.update({
     //   where: { id: dealRoomId },
     //   data: { isArchived: archive }
     // });
-    
+
     return updatedDealRoom;
   } catch (error) {
     console.error('Error toggling archive status:', error);
@@ -594,35 +594,35 @@ export async function getDealRoomStats(userId: string, role: 'founder' | 'invest
     // const totalDealRooms = await db.dealRooms.count({
     //   where: { [role === 'founder' ? 'founderUserId' : 'investorUserId']: userId }
     // });
-    
+
     // const activeDealRooms = await db.dealRooms.count({
-    //   where: { 
+    //   where: {
     //     [role === 'founder' ? 'founderUserId' : 'investorUserId']: userId,
     //     isArchived: false,
     //     status: { notIn: ['closed', 'rejected'] }
     //   }
     // });
-    
+
     // const closedDeals = await db.dealRooms.count({
-    //   where: { 
+    //   where: {
     //     [role === 'founder' ? 'founderUserId' : 'investorUserId']: userId,
     //     status: 'closed'
     //   }
     // });
-    
+
     // // Get status distribution
     // const statusDistribution = await db.dealRooms.groupBy({
     //   by: ['status'],
     //   where: { [role === 'founder' ? 'founderUserId' : 'investorUserId']: userId },
     //   _count: true
     // });
-    
+
     // // Format the status distribution
     // const formattedStatusDistribution = statusDistribution.reduce((acc, item) => {
     //   acc[item.status] = item._count;
     //   return acc;
     // }, {});
-    
+
     return {
       totalDealRooms: 0,
       activeDealRooms: 0,

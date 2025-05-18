@@ -2,8 +2,15 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { formatDate } from '@/lib/utils';
-
+// import { formatDate } from '@/lib/utils';
+ const formatDate = (dateString: string) => {
+   const date = new Date(dateString);
+   return date.toLocaleDateString("en-US", {
+     year: "numeric",
+     month: "short",
+     day: "numeric",
+   });
+ };
 interface Project {
   id: string;
   title: string;
@@ -37,10 +44,10 @@ interface ProjectDetailsProps {
   onSaveToggle: () => void;
 }
 
-export default function ProjectDetails({ 
-  project, 
-  isLiked, 
-  isSaved, 
+export default function ProjectDetails({
+  project,
+  isLiked,
+  isSaved,
   onLikeToggle,
   onSaveToggle
 }: ProjectDetailsProps) {
@@ -69,7 +76,7 @@ export default function ProjectDetails({
               )}
             </div>
             <p className="mt-4 text-gray-600">{project.description}</p>
-            
+
             <div className="mt-6 flex items-center text-sm text-gray-500">
               <div className="flex items-center">
                 <div className="h-6 w-6 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 mr-2">
@@ -98,12 +105,12 @@ export default function ProjectDetails({
               <span>Updated {formatDate(project.updatedAt)}</span>
             </div>
           </div>
-          
+
           {project.logo && (
             <div className="ml-6">
               <div className="h-24 w-24 bg-gray-100 rounded overflow-hidden flex items-center justify-center">
-                <img 
-                  src={project.logo} 
+                <img
+                  src={project.logo}
                   alt={`${project.title} logo`}
                   className="max-h-full max-w-full object-contain"
                 />
@@ -111,7 +118,7 @@ export default function ProjectDetails({
             </div>
           )}
         </div>
-        
+
         <div className="mt-8 flex items-center gap-4">
           <Button
             variant="outline"
@@ -131,7 +138,7 @@ export default function ProjectDetails({
             <span>Like</span>
             <span className="text-gray-500">({project.stats.likes})</span>
           </Button>
-          
+
           <Button
             variant="outline"
             size="sm"
@@ -149,7 +156,7 @@ export default function ProjectDetails({
             )}
             <span>{isSaved ? 'Saved' : 'Save'}</span>
           </Button>
-          
+
           <div className="flex items-center gap-1 text-sm text-gray-500">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>

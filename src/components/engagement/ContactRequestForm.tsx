@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
+import { Textarea } from '@/src/components/ui/textarea';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -13,7 +13,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from '@/src/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -21,7 +21,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from '@/src/components/ui/form';
 
 // Form schema
 const formSchema = z.object({
@@ -36,13 +36,13 @@ interface ContactRequestFormProps {
   onCancel: () => void;
 }
 
-export default function ContactRequestForm({ 
-  founderName, 
+export default function ContactRequestForm({
+  founderName,
   onSubmit,
   onCancel
 }: ContactRequestFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Initialize form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,7 +50,7 @@ export default function ContactRequestForm({
       message: '',
     },
   });
-  
+
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     try {
@@ -61,7 +61,7 @@ export default function ContactRequestForm({
       setIsSubmitting(false);
     }
   };
-  
+
   return (
     <Dialog open={true} onOpenChange={onCancel}>
       <DialogContent className="sm:max-w-[500px]">
@@ -71,7 +71,7 @@ export default function ContactRequestForm({
             Send a message to {founderName} to express your interest
           </DialogDescription>
         </DialogHeader>
-        
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
             <FormField
@@ -81,7 +81,7 @@ export default function ContactRequestForm({
                 <FormItem>
                   <FormLabel>Message</FormLabel>
                   <FormControl>
-                    <Textarea 
+                    <Textarea
                       placeholder={`Explain why you're interested in ${founderName}'s project and what you would like to discuss`}
                       className="h-40 resize-none"
                       {...field}
@@ -91,17 +91,17 @@ export default function ContactRequestForm({
                 </FormItem>
               )}
             />
-            
+
             <DialogFooter>
               <Button
-                type="button" 
+                type="button"
                 variant="outline"
                 onClick={onCancel}
                 disabled={isSubmitting}
               >
                 Cancel
               </Button>
-              <Button 
+              <Button
                 type="submit"
                 disabled={isSubmitting}
                 className="ml-2"
@@ -111,7 +111,7 @@ export default function ContactRequestForm({
             </DialogFooter>
           </form>
         </Form>
-        
+
         <div className="text-sm text-gray-500 mt-4">
           <p>Note: The founder must approve your request before you can exchange direct messages.</p>
         </div>

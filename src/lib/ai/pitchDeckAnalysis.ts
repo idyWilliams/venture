@@ -58,7 +58,7 @@ export async function analyzePitchDeck(
   try {
     // For demo purposes, we'd typically extract text from the PDF or presentation
     // Here we'll use a simplified version where we assume the deckUrl is accessible
-    
+
     // Get the project details to provide more context
     const project = await prisma.project.findUnique({
       where: { id: projectId },
@@ -77,16 +77,16 @@ export async function analyzePitchDeck(
     // In a real implementation, we would extract text from the deck
     // For now, we'll use the project details as context
     const analysisPrompt = `
-    You are an expert venture capital analyst assessing a startup pitch deck. 
-    
+    You are an expert venture capital analyst assessing a startup pitch deck.
+
     Project Title: ${project.title}
     Industry: ${project.industry}
     Funding Stage: ${project.fundingStage}
     Description: ${project.description}
     Additional Context: ${projectDescription}
-    
+
     The pitch deck is available at: ${deckUrl}
-    
+
     Please provide a comprehensive analysis of this pitch in JSON format with the following structure:
     {
       "overallScore": (a number between 1-10),
@@ -122,7 +122,7 @@ export async function analyzePitchDeck(
       "areasForImprovement": ["area1", "area2", "area3"],
       "investorAppealSummary": "A concise summary of why investors would or wouldn't be interested"
     }
-    
+
     Be critical but constructive, focusing on actionable improvements. Keep each feedback section under 150 words.
     `;
 
@@ -132,7 +132,7 @@ export async function analyzePitchDeck(
       response_format: { type: "json_object" },
       temperature: 0.7,
     });
-
+//@ts-ignore
     const analysisResult = JSON.parse(response.choices[0].message.content) as PitchDeckAnalysisResult;
 
     // Save the analysis to the database

@@ -4,13 +4,13 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import ProjectDetails from '@/components/project/ProjectDetails';
-import ProjectComments from '@/components/project/ProjectComments';
-import ProjectFAQ from '@/components/project/ProjectFAQ';
-import ProjectCommunity from '@/components/project/ProjectCommunity';
-import ContactRequestForm from '@/components/engagement/ContactRequestForm';
-import { subscribeToProjectActivity } from '@/lib/pusher';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
+import ProjectDetails from '@/src/components/project/ProjectDetails';
+import ProjectComments from '@/src/components/project/ProjectComments';
+import ProjectFAQ from '@/src/components/project/ProjectFAQ';
+import ProjectCommunity from '@/src/components/project/ProjectCommunity';
+import ContactRequestForm from '@/src/components/engagement/ContactRequestForm';
+import { subscribeToProjectActivity } from '@/src/lib/pusher';
 
 // Mock project data - in a real app, this would come from an API call
 const mockProject = {
@@ -104,7 +104,7 @@ const mockComments = [
 export default function ProjectPage() {
   const params = useParams();
   const projectId = params.id as string;
-  
+
   const [project, setProject] = useState(mockProject);
   const [faqs, setFaqs] = useState(mockFAQs);
   const [comments, setComments] = useState(mockComments);
@@ -112,7 +112,7 @@ export default function ProjectPage() {
   const [isSaved, setIsSaved] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
   const [userRole, setUserRole] = useState<'FOUNDER' | 'INVESTOR'>('INVESTOR'); // For demo purposes
-  
+
   // In a real app, fetch project data from the API
   useEffect(() => {
     // Simulate API calls
@@ -122,7 +122,7 @@ export default function ProjectPage() {
     // checkLikeStatus(projectId).then(setIsLiked);
     // checkSaveStatus(projectId).then(setIsSaved);
     // getCurrentUserRole().then(setUserRole);
-    
+
     // Record a view - in a real app, this would be an API call
     const recordView = async () => {
       try {
@@ -132,13 +132,13 @@ export default function ProjectPage() {
         console.error('Failed to record view:', error);
       }
     };
-    
+
     recordView();
-    
+
     // Subscribe to real-time updates
     const unsubscribe = subscribeToProjectActivity(projectId, (data) => {
       console.log('Project activity:', data);
-      
+
       // Update the UI based on the activity type
       if (data.type === 'new-comment') {
         // Fetch latest comments
@@ -154,21 +154,21 @@ export default function ProjectPage() {
         }));
       }
     });
-    
+
     return () => {
       if (unsubscribe) unsubscribe();
     };
   }, [projectId]);
-  
+
   const handleLikeToggle = async () => {
     setIsLiked(!isLiked);
-    
+
     try {
       // In a real app, this would be an API call
       // const response = await fetch(`/api/projects/${projectId}/like`, {
       //   method: isLiked ? 'DELETE' : 'POST',
       // });
-      
+
       // Update like count
       setProject(prev => ({
         ...prev,
@@ -183,10 +183,10 @@ export default function ProjectPage() {
       console.error('Failed to toggle like:', error);
     }
   };
-  
+
   const handleSaveToggle = async () => {
     setIsSaved(!isSaved);
-    
+
     try {
       // In a real app, this would be an API call
       // const response = await fetch(`/api/projects/${projectId}/save`, {
@@ -198,7 +198,7 @@ export default function ProjectPage() {
       console.error('Failed to toggle save:', error);
     }
   };
-  
+
   const handleContactRequest = async (message: string) => {
     try {
       // In a real app, this would be an API call
@@ -210,7 +210,7 @@ export default function ProjectPage() {
       //     message
       //   }),
       // });
-      
+
       setShowContactModal(false);
       // Show success message
     } catch (error) {
@@ -218,7 +218,7 @@ export default function ProjectPage() {
       // Show error message
     }
   };
-  
+
   const handleAddComment = async (content: string, parentId?: string) => {
     try {
       // In a real app, this would be an API call
@@ -230,9 +230,9 @@ export default function ProjectPage() {
       //     parentId
       //   }),
       // });
-      
+
       // const newComment = await response.json();
-      
+
       // For demonstration, we'll create a mock new comment
       const newComment = {
         id: Date.now().toString(),
@@ -246,7 +246,7 @@ export default function ProjectPage() {
         createdAt: new Date().toISOString(),
         replies: []
       };
-      
+
       if (parentId) {
         // Add reply to existing comment
         setComments(comments.map(comment => {
@@ -262,7 +262,7 @@ export default function ProjectPage() {
         // Add new top-level comment
         setComments([...comments, newComment]);
       }
-      
+
       // Update comment count
       setProject(prev => ({
         ...prev,
@@ -275,9 +275,9 @@ export default function ProjectPage() {
       console.error('Failed to add comment:', error);
     }
   };
-  
+
   const isFounder = userRole === 'FOUNDER' && project.founder.id === 'current-user';
-  
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -290,7 +290,7 @@ export default function ProjectPage() {
             onLikeToggle={handleLikeToggle}
             onSaveToggle={handleSaveToggle}
           />
-          
+
           <div className="mt-8">
             <Tabs defaultValue="overview">
               <TabsList>
@@ -301,16 +301,16 @@ export default function ProjectPage() {
                 <TabsTrigger value="faqs">FAQs</TabsTrigger>
                 <TabsTrigger value="community">Community</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="overview" className="mt-6">
                 <Card className="p-6">
                   <div className="prose max-w-none">
                     <h3 className="text-xl font-semibold mb-4">Pitch</h3>
                     <p className="text-gray-700 whitespace-pre-line">{project.pitch}</p>
-                    
+
                     <h3 className="text-xl font-semibold mt-8 mb-4">About</h3>
                     <p className="text-gray-700">{project.description}</p>
-                    
+
                     <div className="mt-8 grid grid-cols-2 gap-4">
                       <div>
                         <h4 className="text-sm font-medium text-gray-500">Industry</h4>
@@ -329,15 +329,15 @@ export default function ProjectPage() {
                         <p className="mt-1">{project.equity}%</p>
                       </div>
                     </div>
-                    
+
                     {(project.website || project.demo || project.deck) && (
                       <div className="mt-8">
                         <h4 className="text-sm font-medium text-gray-500 mb-2">Resources</h4>
                         <div className="flex flex-wrap gap-2">
                           {project.website && (
-                            <a 
-                              href={project.website} 
-                              target="_blank" 
+                            <a
+                              href={project.website}
+                              target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 hover:bg-gray-200"
                             >
@@ -349,11 +349,11 @@ export default function ProjectPage() {
                               Website
                             </a>
                           )}
-                          
+
                           {project.demo && (
-                            <a 
-                              href={project.demo} 
-                              target="_blank" 
+                            <a
+                              href={project.demo}
+                              target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 hover:bg-gray-200"
                             >
@@ -364,11 +364,11 @@ export default function ProjectPage() {
                               Demo
                             </a>
                           )}
-                          
+
                           {project.deck && (
-                            <a 
-                              href={project.deck} 
-                              target="_blank" 
+                            <a
+                              href={project.deck}
+                              target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 hover:bg-gray-200"
                             >
@@ -388,16 +388,17 @@ export default function ProjectPage() {
                   </div>
                 </Card>
               </TabsContent>
-              
+
               <TabsContent value="comments" className="mt-6">
-                <ProjectComments 
+                <ProjectComments
+                  //@ts-ignore
                   comments={comments}
                   onAddComment={handleAddComment}
                 />
               </TabsContent>
-              
+
               <TabsContent value="faqs" className="mt-6">
-                <ProjectFAQ 
+                <ProjectFAQ
                   faqs={faqs}
                   isFounder={isFounder}
                   onAddFAQ={(question, answer) => {
@@ -409,7 +410,7 @@ export default function ProjectPage() {
                     setFaqs([...faqs, newFAQ]);
                   }}
                   onUpdateFAQ={(id, question, answer) => {
-                    setFaqs(faqs.map(faq => 
+                    setFaqs(faqs.map(faq =>
                       faq.id === id ? { ...faq, question, answer } : faq
                     ));
                   }}
@@ -418,14 +419,14 @@ export default function ProjectPage() {
                   }}
                 />
               </TabsContent>
-              
+
               <TabsContent value="community" className="mt-6">
                 <ProjectCommunity projectId={projectId} />
               </TabsContent>
             </Tabs>
           </div>
         </div>
-        
+
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Founder info */}
@@ -450,7 +451,7 @@ export default function ProjectPage() {
                 <p className="text-sm text-gray-500">{project.founder.companyName}</p>
               </div>
             </div>
-            
+
             {userRole === 'INVESTOR' && (
               <div className="mt-6">
                 <Button
@@ -468,7 +469,7 @@ export default function ProjectPage() {
               </div>
             )}
           </Card>
-          
+
           {/* Project stats */}
           <Card className="p-6">
             <h3 className="font-medium mb-4">Project Engagement</h3>
@@ -487,7 +488,7 @@ export default function ProjectPage() {
               </div>
             </div>
           </Card>
-          
+
           {/* Similar projects */}
           <Card className="p-6">
             <h3 className="font-medium mb-4">Similar Projects</h3>
@@ -515,18 +516,18 @@ export default function ProjectPage() {
               </div>
             </div>
           </Card>
-          
+
           {/* Image */}
           <div className="rounded-lg overflow-hidden shadow-md">
-            <img 
-              src="https://pixabay.com/get/g89690a90445fc95b4e56b093a268066bdcee35689c7d5e0ffd31c9b77fbd0edc5c63e423bae68ee33952c82ef6d0bd516c215a0a68a2709cab9786b503baf814_1280.jpg" 
+            <img
+              src="https://pixabay.com/get/g89690a90445fc95b4e56b093a268066bdcee35689c7d5e0ffd31c9b77fbd0edc5c63e423bae68ee33952c82ef6d0bd516c215a0a68a2709cab9786b503baf814_1280.jpg"
               alt="Startup Pitch Meeting"
               className="w-full h-48 object-cover"
             />
           </div>
         </div>
       </div>
-      
+
       {/* Contact request modal */}
       {showContactModal && (
         <ContactRequestForm
