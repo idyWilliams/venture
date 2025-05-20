@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
-import { useUserRole } from '@/contexts/UserRoleContext';
-import { useApiQuery, useApiMutation } from '@/hooks/useApi';
-import { DealRoom, DealRoomStatus } from '@/lib/services/dealRoomService';
-import DealRoomLayout from '@/components/deal-room/DealRoomLayout';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
+import { useApiQuery, useApiMutation } from '@/src/hooks/useApi';
+import { DealRoom, DealRoomStatus } from '@/src/lib/services/dealRoomService';
+import DealRoomLayout from '@/src/components/deal-room/DealRoomLayout';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -13,12 +13,12 @@ export default function DealRoomDetailPage() {
   const params = useParams();
   const dealRoomId = params.id as string;
   const { role } = useUserRole();
-  
+
   // Using test user IDs for demo purposes
   // In a real app, this would come from authentication
   const userId = role === 'founder' ? 'founder-1' : 'investor-1';
   const userName = role === 'founder' ? 'John Founder' : 'Jane Investor';
-  
+
   // Fetch deal room details
   const {
     data: dealRoom,
@@ -34,7 +34,7 @@ export default function DealRoomDetailPage() {
       refetchInterval: 10000 // Refetch every 10 seconds to keep chat updated
     }
   );
-  
+
   // Mutation for updating deal status
   const updateStatusMutation = useApiMutation<DealRoom, {
     action: 'updateStatus';
@@ -45,7 +45,7 @@ export default function DealRoomDetailPage() {
   }>('patch', `/api/deal-rooms/${dealRoomId}`, {
     invalidateQueries: [['deal-room', dealRoomId]],
   });
-  
+
   // Mutation for archiving/unarchiving
   const toggleArchiveMutation = useApiMutation<DealRoom, {
     action: 'toggleArchive';
@@ -53,7 +53,7 @@ export default function DealRoomDetailPage() {
   }>('patch', `/api/deal-rooms/${dealRoomId}?archive=${!dealRoom?.isArchived}`, {
     invalidateQueries: [['deal-room', dealRoomId], ['deal-rooms']]
   });
-  
+
   // Handle status update
   const handleUpdateStatus = (newStatus: string) => {
     updateStatusMutation.mutate({
@@ -64,7 +64,7 @@ export default function DealRoomDetailPage() {
       userRole: role as 'founder' | 'investor'
     });
   };
-  
+
   // Handle archive toggle
   const handleArchiveToggle = () => {
     toggleArchiveMutation.mutate({
@@ -72,7 +72,7 @@ export default function DealRoomDetailPage() {
       userId
     });
   };
-  
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -81,7 +81,7 @@ export default function DealRoomDetailPage() {
       </div>
     );
   }
-  
+
   if (error || !dealRoom) {
     return (
       <div className="flex justify-center items-center min-h-screen text-center">
@@ -100,7 +100,7 @@ export default function DealRoomDetailPage() {
       </div>
     );
   }
-  
+
   return (
     <DealRoomLayout
       dealRoom={dealRoom}

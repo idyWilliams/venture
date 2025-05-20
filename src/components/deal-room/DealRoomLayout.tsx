@@ -2,15 +2,15 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { DealRoom } from '@/lib/services/dealRoomService';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
+import { DealRoom } from '@/src/lib/services/dealRoomService';
 import DealRoomMessages from './DealRoomMessages';
 import DealRoomTerms from './DealRoomTerms';
 import DealRoomDocuments from './DealRoomDocuments';
 import DealRoomActivity from './DealRoomActivity';
 import { ArrowLeft, Archive, RotateCcw, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/src/components/ui/badge';
 
 // Get the status badge color and text
 function getStatusBadge(status: string) {
@@ -50,11 +50,11 @@ export default function DealRoomLayout({
   onArchive
 }: DealRoomLayoutProps) {
   const [activeTab, setActiveTab] = useState('messages');
-  
+
   const statusBadge = getStatusBadge(dealRoom.status);
   const otherPartyName = currentUserRole === 'founder' ? dealRoom.investorName : dealRoom.founderName;
   const otherPartyRole = currentUserRole === 'founder' ? 'Investor' : 'Founder';
-  
+
   return (
     <div className="container mx-auto py-6 max-w-6xl">
       <div className="flex justify-between items-center mb-6">
@@ -73,7 +73,7 @@ export default function DealRoomLayout({
             </span>
           </div>
         </div>
-        
+
         <div className="flex space-x-2">
           {!dealRoom.isArchived && (
             <Button variant="outline" size="sm" onClick={onArchive}>
@@ -93,7 +93,7 @@ export default function DealRoomLayout({
           </Button>
         </div>
       </div>
-      
+
       <Tabs defaultValue="messages" value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid grid-cols-4 mb-8">
           <TabsTrigger value="messages">Messages</TabsTrigger>
@@ -101,18 +101,18 @@ export default function DealRoomLayout({
           <TabsTrigger value="documents">Documents</TabsTrigger>
           <TabsTrigger value="activity">Activity</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="messages" className="mt-0">
-          <DealRoomMessages 
-            messages={dealRoom.messages} 
+          <DealRoomMessages
+            messages={dealRoom.messages}
             dealRoomId={dealRoom.id}
             currentUserId={currentUserId}
             currentUserRole={currentUserRole}
           />
         </TabsContent>
-        
+
         <TabsContent value="terms" className="mt-0">
-          <DealRoomTerms 
+          <DealRoomTerms
             terms={dealRoom.terms}
             dealRoomId={dealRoom.id}
             projectName={dealRoom.projectName}
@@ -122,16 +122,16 @@ export default function DealRoomLayout({
             onUpdateStatus={onUpdateStatus}
           />
         </TabsContent>
-        
+
         <TabsContent value="documents" className="mt-0">
-          <DealRoomDocuments 
+          <DealRoomDocuments
             documents={dealRoom.documents}
             dealRoomId={dealRoom.id}
             currentUserId={currentUserId}
             currentUserRole={currentUserRole}
           />
         </TabsContent>
-        
+
         <TabsContent value="activity" className="mt-0">
           <DealRoomActivity activities={dealRoom.activities} />
         </TabsContent>

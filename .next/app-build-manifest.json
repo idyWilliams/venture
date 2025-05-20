@@ -21,55 +21,40 @@
       "static/chunks/main-app.js",
       "static/chunks/app/dashboard/page.js"
     ],
-    "/matchmaking/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/matchmaking/page.js"
-    ],
-    "/projects/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/projects/[id]/page.js"
-    ],
     "/features/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/features/page.js"
     ],
-    "/projects/page": [
+    "/pricing/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/projects/page.js"
+      "static/chunks/app/pricing/page.js"
     ],
     "/about/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/about/page.js"
     ],
-    "/auth/register/page": [
+    "/projects/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/auth/register/page.js"
+      "static/chunks/app/projects/page.js"
     ],
-    "/investor/portfolio/page": [
+    "/projects/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/investor/portfolio/page.js"
+      "static/chunks/app/projects/[id]/page.js"
     ],
-    "/deal-rooms/page": [
+    "/matchmaking/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/deal-rooms/page.js"
+      "static/chunks/app/matchmaking/page.js"
     ],
-    "/subscription/page": [
+    "/deal-rooms/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/subscription/page.js"
-    ],
-    "/payment/checkout/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/payment/checkout/page.js"
+      "static/chunks/app/deal-rooms/[id]/page.js"
     ],
     "/_not-found/page": [
       "static/chunks/webpack.js",

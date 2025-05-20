@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
-import { DealRoomMessage } from '@/lib/services/dealRoomService';
+import { DealRoomMessage } from '@/src/lib/services/dealRoomService';
 import { Button } from '@/components/ui/button';
 import { Paperclip, Send } from 'lucide-react';
 import { format } from 'date-fns';
-import { useApiMutation } from '@/hooks/useApi';
+import { useApiMutation } from '@/src/hooks/useApi';
 
 interface DealRoomMessagesProps {
   messages: DealRoomMessage[];
@@ -22,12 +22,12 @@ export default function DealRoomMessages({
 }: DealRoomMessagesProps) {
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+
   // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-  
+
   // Mutation for sending a message
   const sendMessageMutation = useApiMutation<DealRoomMessage, {
     dealRoomId: string;
@@ -38,19 +38,19 @@ export default function DealRoomMessages({
       setNewMessage('');
     }
   });
-  
+
   // Handle send message
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!newMessage.trim()) return;
-    
+
     sendMessageMutation.mutate({
       dealRoomId,
       content: newMessage
     });
   };
-  
+
   // Format timestamp to display in a readable format
   const formatTimestamp = (timestamp: string) => {
     try {
@@ -59,14 +59,14 @@ export default function DealRoomMessages({
       return timestamp;
     }
   };
-  
+
   return (
     <div className="flex flex-col h-[600px] border rounded-lg">
       <div className="flex-grow overflow-y-auto p-4">
         <div className="space-y-4">
           {messages.map((message) => (
-            <div 
-              key={message.id} 
+            <div
+              key={message.id}
               className={`flex ${
                 message.isSystemMessage
                   ? 'justify-center'
@@ -105,13 +105,13 @@ export default function DealRoomMessages({
           <div ref={messagesEndRef} />
         </div>
       </div>
-      
+
       <div className="border-t p-3">
         <form onSubmit={handleSendMessage} className="flex space-x-2">
-          <Button 
-            type="button" 
-            variant="outline" 
-            size="icon" 
+          <Button
+            type="button"
+            variant="outline"
+            size="icon"
             className="shrink-0"
             title="Attach file (coming soon)"
             disabled
@@ -125,7 +125,7 @@ export default function DealRoomMessages({
             className="flex-grow px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Type your message..."
           />
-          <Button 
+          <Button
             type="submit"
             disabled={!newMessage.trim() || sendMessageMutation.isPending}
             className="shrink-0"

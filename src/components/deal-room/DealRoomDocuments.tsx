@@ -1,22 +1,23 @@
 "use client";
 
 import { useState } from 'react';
-import { DocumentInfo } from '@/lib/services/dealRoomService';
+import { DocumentInfo } from '@/src/lib/services/dealRoomService';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { format } from 'date-fns';
-import { 
-  Download, 
-  File, 
-  FileText, 
-  FilePdf, 
-  FileImage, 
-  FileSpreadsheet, 
+import {
+  Download,
+  File,
+  FileText,
+  // FilePdf,
+  FileImage,
+  FileSpreadsheet,
   FileArchive,
   Lock,
-  Upload
+  Upload,
+  FilePenIcon
 } from 'lucide-react';
-import { useApiMutation } from '@/hooks/useApi';
+import { useApiMutation } from '@/src/hooks/useApi';
 
 interface DealRoomDocumentsProps {
   documents: DocumentInfo[];
@@ -34,16 +35,16 @@ export default function DealRoomDocuments({
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isConfidential, setIsConfidential] = useState(false);
   const [description, setDescription] = useState('');
-  
+
   // Convert bytes to readable size
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
-    
+
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(1024));
     return `${parseFloat((bytes / Math.pow(1024, i)).toFixed(2))} ${sizes[i]}`;
   };
-  
+
   // Format date
   const formatDate = (dateString: string): string => {
     try {
@@ -52,11 +53,11 @@ export default function DealRoomDocuments({
       return dateString;
     }
   };
-  
+
   // Get icon for file type
   const getFileIcon = (type: string) => {
     if (type.includes('pdf')) {
-      return <FilePdf className="h-8 w-8 text-red-500" />;
+      return <FilePenIcon className="h-8 w-8 text-red-500" />;
     } else if (type.includes('image')) {
       return <FileImage className="h-8 w-8 text-blue-500" />;
     } else if (type.includes('sheet') || type.includes('excel') || type.includes('csv')) {
@@ -69,7 +70,7 @@ export default function DealRoomDocuments({
       return <File className="h-8 w-8 text-gray-500" />;
     }
   };
-  
+
   // Handle file change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -77,7 +78,7 @@ export default function DealRoomDocuments({
       setSelectedFile(files[0]);
     }
   };
-  
+
   // Upload document mutation
   const uploadMutation = useApiMutation<DocumentInfo, FormData>(
     'post',
@@ -91,26 +92,26 @@ export default function DealRoomDocuments({
       }
     }
   );
-  
+
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!selectedFile) return;
-    
+
     const formData = new FormData();
     formData.append('file', selectedFile);
     formData.append('description', description);
     formData.append('isConfidential', isConfidential.toString());
-    
+
     uploadMutation.mutate(formData);
   };
-  
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col">
         <h2 className="text-xl font-bold mb-4">Shared Documents</h2>
-        
+
         {documents.length === 0 ? (
           <div className="text-center py-8 border rounded-lg bg-gray-50">
             <FileText className="h-12 w-12 text-gray-400 mx-auto mb-3" />
@@ -163,7 +164,7 @@ export default function DealRoomDocuments({
           </div>
         )}
       </div>
-      
+
       <div className="mt-8 border-t pt-6">
         <h3 className="text-lg font-semibold mb-4">Upload New Document</h3>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -181,9 +182,9 @@ export default function DealRoomDocuments({
                 </div>
                 <p className="text-sm font-medium">{selectedFile.name}</p>
                 <p className="text-xs text-gray-500">{formatFileSize(selectedFile.size)}</p>
-                <Button 
-                  type="button" 
-                  variant="outline" 
+                <Button
+                  type="button"
+                  variant="outline"
                   size="sm"
                   onClick={() => setSelectedFile(null)}
                 >
@@ -202,14 +203,14 @@ export default function DealRoomDocuments({
               </label>
             )}
           </div>
-          
+
           {selectedFile && (
             <>
               <div>
                 <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
                   Description (optional)
                 </label>
-                <input 
+                <input
                   type="text"
                   id="description"
                   className="w-full px-3 py-2 border rounded-md"
@@ -218,7 +219,7 @@ export default function DealRoomDocuments({
                   placeholder="Brief description of the document"
                 />
               </div>
-              
+
               <div className="flex items-center">
                 <input
                   type="checkbox"
@@ -231,9 +232,9 @@ export default function DealRoomDocuments({
                   Mark as confidential
                 </label>
               </div>
-              
-              <Button 
-                type="submit" 
+
+              <Button
+                type="submit"
                 disabled={uploadMutation.isPending}
                 className="w-full"
               >

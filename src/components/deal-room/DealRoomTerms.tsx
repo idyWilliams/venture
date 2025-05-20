@@ -1,18 +1,18 @@
 "use client";
 
 import { useState } from 'react';
-import { 
-  DealTerms, 
-  DealType 
-} from '@/lib/services/dealRoomService';
+import {
+  DealTerms,
+  DealType
+} from '@/src/lib/services/dealRoomService';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useApiMutation } from '@/hooks/useApi';
+import { Label } from '@/src/components/ui/label';
+import { Input } from '@/src/components/ui/input';
+import { Textarea } from '@/src/components/ui/textarea';
+import { RadioGroup, RadioGroupItem } from '@/src/components/ui/radio-group';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select';
+import { useApiMutation } from '@/src/hooks/useApi';
 import { Loader2, PenLine } from 'lucide-react';
 
 interface DealRoomTermsProps {
@@ -36,7 +36,7 @@ export default function DealRoomTerms({
 }: DealRoomTermsProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [localTerms, setLocalTerms] = useState<DealTerms>(terms);
-  
+
   // Mutation for updating deal terms
   const updateTermsMutation = useApiMutation<any, {
     dealRoomId: string;
@@ -47,17 +47,17 @@ export default function DealRoomTerms({
       setIsEditing(false);
     }
   });
-  
+
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     updateTermsMutation.mutate({
       dealRoomId,
       terms: localTerms
     });
   };
-  
+
   // Format currency
   const formatCurrency = (value?: number) => {
     if (value === undefined) return '';
@@ -67,17 +67,17 @@ export default function DealRoomTerms({
       maximumFractionDigits: 0
     }).format(value);
   };
-  
+
   // Format percentage
   const formatPercentage = (value?: number) => {
     if (value === undefined) return '';
     return `${value}%`;
   };
-  
+
   // Render deal terms based on deal type
   const renderDealTerms = () => {
     const dealType = terms.dealType || 'equity';
-    
+
     switch (dealType) {
       case 'equity':
         return (
@@ -100,7 +100,7 @@ export default function DealRoomTerms({
             </div>
           </div>
         );
-      
+
       case 'convertible_note':
       case 'safe':
         return (
@@ -125,7 +125,7 @@ export default function DealRoomTerms({
             )}
           </div>
         );
-      
+
       case 'revenue_share':
         return (
           <div className="grid grid-cols-2 gap-6">
@@ -151,7 +151,7 @@ export default function DealRoomTerms({
             </div>
           </div>
         );
-      
+
       default:
         return (
           <div>
@@ -160,7 +160,7 @@ export default function DealRoomTerms({
         );
     }
   };
-  
+
   // Form for editing deal terms
   const renderEditForm = () => {
     return (
@@ -185,7 +185,7 @@ export default function DealRoomTerms({
               </SelectContent>
             </Select>
           </div>
-          
+
           {/* Common fields */}
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -194,13 +194,13 @@ export default function DealRoomTerms({
                 id="investmentAmount"
                 type="number"
                 value={localTerms.investmentAmount || ''}
-                onChange={(e) => setLocalTerms({ 
-                  ...localTerms, 
-                  investmentAmount: e.target.value ? parseFloat(e.target.value) : undefined 
+                onChange={(e) => setLocalTerms({
+                  ...localTerms,
+                  investmentAmount: e.target.value ? parseFloat(e.target.value) : undefined
                 })}
               />
             </div>
-            
+
             {/* Equity-specific fields */}
             {(localTerms.dealType === 'equity' || !localTerms.dealType) && (
               <>
@@ -211,9 +211,9 @@ export default function DealRoomTerms({
                     type="number"
                     step="0.01"
                     value={localTerms.equity || ''}
-                    onChange={(e) => setLocalTerms({ 
-                      ...localTerms, 
-                      equity: e.target.value ? parseFloat(e.target.value) : undefined 
+                    onChange={(e) => setLocalTerms({
+                      ...localTerms,
+                      equity: e.target.value ? parseFloat(e.target.value) : undefined
                     })}
                   />
                 </div>
@@ -223,9 +223,9 @@ export default function DealRoomTerms({
                     id="valuation"
                     type="number"
                     value={localTerms.valuation || ''}
-                    onChange={(e) => setLocalTerms({ 
-                      ...localTerms, 
-                      valuation: e.target.value ? parseFloat(e.target.value) : undefined 
+                    onChange={(e) => setLocalTerms({
+                      ...localTerms,
+                      valuation: e.target.value ? parseFloat(e.target.value) : undefined
                     })}
                   />
                 </div>
@@ -235,15 +235,15 @@ export default function DealRoomTerms({
                     id="minimumInvestment"
                     type="number"
                     value={localTerms.minimumInvestment || ''}
-                    onChange={(e) => setLocalTerms({ 
-                      ...localTerms, 
-                      minimumInvestment: e.target.value ? parseFloat(e.target.value) : undefined 
+                    onChange={(e) => setLocalTerms({
+                      ...localTerms,
+                      minimumInvestment: e.target.value ? parseFloat(e.target.value) : undefined
                     })}
                   />
                 </div>
               </>
             )}
-            
+
             {/* Convertible note / SAFE fields */}
             {(localTerms.dealType === 'convertible_note' || localTerms.dealType === 'safe') && (
               <>
@@ -253,9 +253,9 @@ export default function DealRoomTerms({
                     id="valuationCap"
                     type="number"
                     value={localTerms.valuationCap || ''}
-                    onChange={(e) => setLocalTerms({ 
-                      ...localTerms, 
-                      valuationCap: e.target.value ? parseFloat(e.target.value) : undefined 
+                    onChange={(e) => setLocalTerms({
+                      ...localTerms,
+                      valuationCap: e.target.value ? parseFloat(e.target.value) : undefined
                     })}
                   />
                 </div>
@@ -266,9 +266,9 @@ export default function DealRoomTerms({
                     type="number"
                     step="0.01"
                     value={localTerms.conversionDiscount || ''}
-                    onChange={(e) => setLocalTerms({ 
-                      ...localTerms, 
-                      conversionDiscount: e.target.value ? parseFloat(e.target.value) : undefined 
+                    onChange={(e) => setLocalTerms({
+                      ...localTerms,
+                      conversionDiscount: e.target.value ? parseFloat(e.target.value) : undefined
                     })}
                   />
                 </div>
@@ -280,16 +280,16 @@ export default function DealRoomTerms({
                       type="number"
                       step="0.01"
                       value={localTerms.interestRate || ''}
-                      onChange={(e) => setLocalTerms({ 
-                        ...localTerms, 
-                        interestRate: e.target.value ? parseFloat(e.target.value) : undefined 
+                      onChange={(e) => setLocalTerms({
+                        ...localTerms,
+                        interestRate: e.target.value ? parseFloat(e.target.value) : undefined
                       })}
                     />
                   </div>
                 )}
               </>
             )}
-            
+
             {/* Revenue share specific fields */}
             {localTerms.dealType === 'revenue_share' && (
               <>
@@ -300,9 +300,9 @@ export default function DealRoomTerms({
                     type="number"
                     step="0.01"
                     value={localTerms.revenuePercentage || ''}
-                    onChange={(e) => setLocalTerms({ 
-                      ...localTerms, 
-                      revenuePercentage: e.target.value ? parseFloat(e.target.value) : undefined 
+                    onChange={(e) => setLocalTerms({
+                      ...localTerms,
+                      revenuePercentage: e.target.value ? parseFloat(e.target.value) : undefined
                     })}
                   />
                 </div>
@@ -313,9 +313,9 @@ export default function DealRoomTerms({
                     type="number"
                     step="0.1"
                     value={localTerms.returnCap || ''}
-                    onChange={(e) => setLocalTerms({ 
-                      ...localTerms, 
-                      returnCap: e.target.value ? parseFloat(e.target.value) : undefined 
+                    onChange={(e) => setLocalTerms({
+                      ...localTerms,
+                      returnCap: e.target.value ? parseFloat(e.target.value) : undefined
                     })}
                   />
                 </div>
@@ -323,9 +323,9 @@ export default function DealRoomTerms({
                   <Label htmlFor="paymentFrequency">Payment Frequency</Label>
                   <Select
                     value={localTerms.paymentFrequency || 'monthly'}
-                    onValueChange={(value) => setLocalTerms({ 
-                      ...localTerms, 
-                      paymentFrequency: value as 'monthly' | 'quarterly' | 'annually' 
+                    onValueChange={(value) => setLocalTerms({
+                      ...localTerms,
+                      paymentFrequency: value as 'monthly' | 'quarterly' | 'annually'
                     })}
                   >
                     <SelectTrigger>
@@ -341,7 +341,7 @@ export default function DealRoomTerms({
               </>
             )}
           </div>
-          
+
           <div>
             <Label htmlFor="additionalTerms">Additional Terms or Notes</Label>
             <Textarea
@@ -352,10 +352,10 @@ export default function DealRoomTerms({
             />
           </div>
         </div>
-        
+
         <div className="flex space-x-2">
-          <Button 
-            type="submit" 
+          <Button
+            type="submit"
             disabled={updateTermsMutation.isPending}
           >
             {updateTermsMutation.isPending && (
@@ -363,9 +363,9 @@ export default function DealRoomTerms({
             )}
             Save Terms
           </Button>
-          <Button 
-            type="button" 
-            variant="outline" 
+          <Button
+            type="button"
+            variant="outline"
             onClick={() => {
               setLocalTerms(terms);
               setIsEditing(false);
@@ -377,7 +377,7 @@ export default function DealRoomTerms({
       </form>
     );
   };
-  
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -394,7 +394,7 @@ export default function DealRoomTerms({
           </Button>
         </div>
       </div>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>
@@ -418,7 +418,7 @@ export default function DealRoomTerms({
               {Object.keys(terms).length > 0 ? (
                 <div className="space-y-6">
                   {renderDealTerms()}
-                  
+
                   {terms.additionalTerms && (
                     <div className="mt-6 pt-6 border-t">
                       <h3 className="font-medium mb-2 text-gray-800">Additional Terms & Notes</h3>
@@ -436,7 +436,7 @@ export default function DealRoomTerms({
           )}
         </CardContent>
       </Card>
-      
+
       {!isEditing && Object.keys(terms).length > 0 && (
         <Card>
           <CardHeader>
