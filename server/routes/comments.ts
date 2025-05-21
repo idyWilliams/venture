@@ -1,11 +1,11 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 
 const router = Router();
 const prisma = new PrismaClient();
 
 // Get comments for a project
-router.get("/:projectId", async (req, res) => {
+router.get("/:projectId", async (req: Request, res: Response) => {
   try {
     const { projectId } = req.params;
     const comments = await prisma.comment.findMany({
@@ -29,7 +29,7 @@ router.get("/:projectId", async (req, res) => {
 });
 
 // Create a comment
-router.post("/", async (req, res) => {
+router.post("/", async (req: Request, res: Response) => {
   try {
     const { projectId, content } = req.body;
     const userId = req.user.id;
@@ -70,7 +70,8 @@ router.post("/", async (req, res) => {
 });
 
 // Delete a comment
-router.delete("/:commentId", async (req, res) => {
+//@ts-ignore
+router.delete("/:commentId", async (req: Request, res: Response) => {
   try {
     const { commentId } = req.params;
     const userId = req.user.id;

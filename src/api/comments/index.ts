@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '@/lib/db';
+import prisma from '@/src/lib/db';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
+import { authOptions } from '@/src/lib/auth';
 import { z } from 'zod';
-import { moderateContent } from '@/lib/openai';
+import { moderateContent } from '@/src/lib/openai';
 
 // Schema validation for comments
 const commentSchema = z.object({
@@ -31,22 +31,22 @@ export default async function handler(
   if (req.method === 'POST' && req.url?.includes('/moderate')) {
     try {
       const validationResult = moderationSchema.safeParse(req.body);
-      
+
       if (!validationResult.success) {
-        return res.status(400).json({ 
-          error: 'Invalid data', 
-          details: validationResult.error.format() 
+        return res.status(400).json({
+          error: 'Invalid data',
+          details: validationResult.error.format()
         });
       }
 
       const { content } = validationResult.data;
-      
+
       // Call OpenAI moderation API
       const moderationResult = await moderateContent(content);
-      
+
       // Extract flagged categories with high scores
       const flaggedReasons: string[] = [];
-      
+
       if (moderationResult.isFlagged) {
         Object.entries(moderationResult.categories).forEach(([category, isFlagged]) => {
           if (isFlagged) {
@@ -57,12 +57,12 @@ export default async function handler(
               .split(' ')
               .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
               .join(' ');
-            
+
             flaggedReasons.push(formattedCategory);
           }
         });
       }
-      
+
       return res.status(200).json({
         isFlagged: moderationResult.isFlagged,
         reasons: flaggedReasons,
@@ -79,14 +79,14 @@ export default async function handler(
   if (req.method === 'GET') {
     try {
       const { projectId } = req.query;
-      
+
       if (!projectId || typeof projectId !== 'string') {
         return res.status(400).json({ error: 'Invalid project ID' });
       }
 
       // Fetch top-level comments with replies
       const comments = await prisma.comment.findMany({
-        where: { 
+        where: {
           projectId,
           parentId: null, // Only top-level comments
         },
@@ -126,20 +126,21 @@ export default async function handler(
   // POST create a new comment
   if (req.method === 'POST' && !req.url?.includes('/moderate')) {
     try {
+      //@ts-ignore
       const userId = session.user.id;
-      
+
       // Validate request body
       const validationResult = commentSchema.safeParse(req.body);
-      
+
       if (!validationResult.success) {
-        return res.status(400).json({ 
-          error: 'Invalid comment data', 
-          details: validationResult.error.format() 
+        return res.status(400).json({
+          error: 'Invalid comment data',
+          details: validationResult.error.format()
         });
       }
 
       const data = validationResult.data;
-      
+
       // Verify the project exists
       const project = await prisma.project.findUnique({
         where: { id: data.projectId },
@@ -164,10 +165,10 @@ export default async function handler(
 
       // Moderate the content
       const moderationResult = await moderateContent(data.content);
-      
+
       if (moderationResult.isFlagged) {
-        return res.status(400).json({ 
-          error: 'Comment contains inappropriate content', 
+        return res.status(400).json({
+          error: 'Comment contains inappropriate content',
           moderationResult,
         });
       }

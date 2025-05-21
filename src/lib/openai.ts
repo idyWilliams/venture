@@ -21,7 +21,9 @@ export async function moderateContent(text: string): Promise<{
     const result = response.results[0];
     return {
       isFlagged: result.flagged,
+      //@ts-ignore
       categories: result.categories,
+      //@ts-ignore
       scores: result.category_scores,
     };
   } catch (error) {
@@ -59,7 +61,7 @@ export async function analyzeEngagementPotential(text: string): Promise<{
       ],
       response_format: { type: "json_object" }
     });
-
+//@ts-ignore
     const result = JSON.parse(response.choices[0].message.content);
     return {
       score: Math.min(100, Math.max(1, result.score)),

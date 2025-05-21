@@ -25,26 +25,47 @@ export const trackEngagement = async (
     }
 
     // Update or create project view
-    await prisma.projectView.upsert({
-      where: {
-        userId_projectId: {
-          userId,
-          projectId,
-        },
-      },
-      update: {
-        viewCount: {
-          increment: 1,
-        },
-        lastViewed: new Date(),
-      },
-      create: {
-        userId,
-        projectId,
-        viewCount: 1,
-        lastViewed: new Date(),
-      },
-    });
+    // await prisma.projectView.upsert({
+    //   where: {
+    //     userId_projectId: {
+    // projectId,
+    //   viewerId: userId, // userId is the viewerId in your schema
+
+    //     },
+    //   },
+    //   update: {
+    //     viewCount: {
+    //       increment: 1,
+    //     },
+    //     lastViewed: new Date(),
+    //   },
+    //   create: {
+    //     userId,
+    //     projectId,
+    //     viewCount: 1,
+    //     lastViewed: new Date(),
+    //   },
+    // });
+await prisma.projectView.upsert({
+  where: {
+    projectId_viewerId: {
+      projectId,
+      viewerId: userId, // userId is the viewerId in your schema
+    },
+  },
+  update: {
+    viewCount: {
+      increment: 1,
+    },
+    lastViewed: new Date(),
+  },
+  create: {
+    projectId,
+    viewerId: userId,
+    viewCount: 1,
+    lastViewed: new Date(),
+  },
+});
 
     next();
   } catch (error) {

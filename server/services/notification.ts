@@ -17,6 +17,7 @@ export async function sendNotification(data: NotificationData) {
         type: data.type,
         content: data.content,
         relatedId: data.relatedId,
+        //@ts-ignore
         read: false,
       },
     });

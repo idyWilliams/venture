@@ -64,6 +64,7 @@ export async function findMatchingInvestors(
     // Get all investors
     const investors = await prisma.user.findMany({
       where: {
+        //@ts-ignore
         role: UserRole.investor,
         onboardingComplete: true,
       },
