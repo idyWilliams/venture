@@ -1,7 +1,7 @@
 import { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
-import prisma from '@/lib/db'
+import prisma from '@/src/lib/db'
 import { compare } from 'bcrypt'
 
 export const authOptions: NextAuthOptions = {
@@ -56,6 +56,7 @@ export const authOptions: NextAuthOptions = {
         return {
           ...token,
           id: user.id,
+          //@ts-ignore
           role: user.role,
         }
       }

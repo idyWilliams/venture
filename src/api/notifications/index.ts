@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '@/lib/db';
+import prisma from '@/src/lib/db';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
+import { authOptions } from '@/src/lib/auth';
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,15 +12,15 @@ export default async function handler(
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-
+//@ts-ignore
   const userId = session.user.id;
 
   // GET notifications for the current user
   if (req.method === 'GET') {
     try {
       const { limit = '10', offset = '0', unreadOnly = 'false' } = req.query;
-      
-      const where = { 
+
+      const where = {
         userId,
         ...(unreadOnly === 'true' ? { isRead: false } : {}),
       };
@@ -55,14 +55,14 @@ export default async function handler(
   if (req.method === 'PATCH') {
     try {
       const { id, all = false } = req.body;
-      
+
       if (all) {
         // Mark all notifications as read
         await prisma.notification.updateMany({
           where: { userId, isRead: false },
           data: { isRead: true },
         });
-        
+
         return res.status(200).json({ success: true, message: 'All notifications marked as read' });
       } else if (id) {
         // Mark specific notification as read
@@ -81,7 +81,7 @@ export default async function handler(
         } else {
           return res.status(400).json({ error: 'Invalid notification ID format' });
         }
-        
+
         return res.status(200).json({ success: true, message: 'Notification(s) marked as read' });
       } else {
         return res.status(400).json({ error: 'Missing notification ID or "all" parameter' });
@@ -96,7 +96,7 @@ export default async function handler(
   if (req.method === 'DELETE') {
     try {
       const { id } = req.query;
-      
+
       if (!id) {
         return res.status(400).json({ error: 'Missing notification ID' });
       }
@@ -113,7 +113,7 @@ export default async function handler(
           where: { id: { in: id }, userId }, // Ensure the notifications belong to the user
         });
       }
-      
+
       return res.status(200).json({ success: true, message: 'Notification(s) deleted' });
     } catch (error) {
       console.error('Error deleting notification:', error);

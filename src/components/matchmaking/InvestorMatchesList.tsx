@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MatchResult, InvestorProfile } from '@/lib/services/matchmakingService';
+import { MatchResult, InvestorProfile } from '@/src/lib/services/matchmakingService';
 
 interface InvestorMatchesListProps {
   matches: MatchResult[];
@@ -11,8 +11,8 @@ interface InvestorMatchesListProps {
   onContact?: (investorId: string) => void;
 }
 
-export default function InvestorMatchesList({ 
-  matches, 
+export default function InvestorMatchesList({
+  matches,
   investors,
   onContact
 }: InvestorMatchesListProps) {
@@ -69,7 +69,7 @@ export default function InvestorMatchesList({
         matchesWithInvestors.map(match => {
           const colorClasses = getStrengthColor(match.recommendationStrength);
           return (
-            <Card 
+            <Card
               key={match.investorId}
               className={`${colorClasses.bg} ${colorClasses.border} border overflow-hidden transition-all duration-200`}
             >
@@ -79,8 +79,8 @@ export default function InvestorMatchesList({
                     <CardTitle className="text-xl flex items-center gap-2">
                       {match.investor?.name || 'Unknown Investor'}
                       <span className={`text-sm px-2 py-0.5 rounded-full ${colorClasses.text} bg-white`}>
-                        {match.recommendationStrength === 'strong' ? 'Strong Match' : 
-                         match.recommendationStrength === 'medium' ? 'Good Match' : 
+                        {match.recommendationStrength === 'strong' ? 'Strong Match' :
+                         match.recommendationStrength === 'medium' ? 'Good Match' :
                          'Potential Match'}
                       </span>
                     </CardTitle>
@@ -91,7 +91,7 @@ export default function InvestorMatchesList({
                   <div className="text-2xl font-bold flex items-center gap-2">
                     {match.score}%
                     <div className="w-16 h-3 bg-gray-200 rounded-full overflow-hidden">
-                      <div 
+                      <div
                         className={`h-full ${colorClasses.progress}`}
                         style={{ width: `${match.score}%` }}
                       ></div>
@@ -99,7 +99,7 @@ export default function InvestorMatchesList({
                   </div>
                 </div>
               </CardHeader>
-              
+
               <CardContent>
                 <div className="flex flex-wrap gap-2 mb-3">
                   {match.investor?.interests.slice(0, 4).map((interest, i) => (
@@ -108,7 +108,7 @@ export default function InvestorMatchesList({
                     </span>
                   ))}
                 </div>
-                
+
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Funding Models:</span>
@@ -125,12 +125,12 @@ export default function InvestorMatchesList({
                     <span className="font-medium">{match.investor?.esgFocus ? 'Yes' : 'No'}</span>
                   </div>
                 </div>
-                
+
                 {expandedMatch === match.investorId && (
                   <div className="mt-4 bg-white p-4 rounded-lg border-gray-100 border">
                     <h4 className="font-medium mb-2">Match Details</h4>
                     <p className="text-gray-700 text-sm mb-3">{match.explanation}</p>
-                    
+
                     <h4 className="font-medium mb-2">Match Reasons</h4>
                     <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
                       {match.reasons.map((reason, i) => (
@@ -140,7 +140,7 @@ export default function InvestorMatchesList({
                   </div>
                 )}
               </CardContent>
-              
+
               <CardFooter className="flex justify-between border-t border-gray-100 pt-4">
                 <Button
                   variant="outline"
@@ -149,7 +149,7 @@ export default function InvestorMatchesList({
                 >
                   {expandedMatch === match.investorId ? 'Hide Details' : 'Show Details'}
                 </Button>
-                
+
                 {onContact && (
                   <Button
                     size="sm"

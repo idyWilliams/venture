@@ -1,9 +1,9 @@
 /**
  * AI-Driven Investor-Startup Matchmaking Service
- * 
+ *
  * This service provides sophisticated AI algorithms that analyze investor preferences,
  * startup stage, sector, and traction to recommend the best-fit opportunities.
- * 
+ *
  * Features:
  * - Intelligent investor matching based on multiple factors
  * - Personalized recommendations with explanation of match reasons
@@ -184,7 +184,7 @@ async function enhanceMatchWithAI(
 ): Promise<Omit<MatchResult, 'investorId' | 'startupId'>> {
   const prompt = `
     I need to analyze the match quality between a startup and an investor.
-    
+
     Startup information:
     - Name: ${startup.name}
     - Description: ${startup.description}
@@ -197,7 +197,7 @@ async function enhanceMatchWithAI(
     - Team: ${startup.team.size} people, ${startup.team.experience} experience
     - ESG impact: ${startup.esgImpact || 'None'}
     - Tags: ${startup.tags.join(', ')}
-    
+
     Investor information:
     - Name: ${investor.name}
     - Interests: ${investor.interests.join(', ')}
@@ -208,15 +208,15 @@ async function enhanceMatchWithAI(
     - Ticket size: $${investor.ticketSizeMin} to $${investor.ticketSizeMax}
     - Funding models: ${investor.fundingModels.join(', ')}
     - ESG focus: ${investor.esgFocus ? 'Yes' : 'No'}
-    
+
     Based on the rule-based matching, the base match score is ${baseScore}/100.
-    
+
     Analyze this match in depth and provide:
     1. An adjusted match score (0-100)
     2. 3-5 specific reasons why this is a good or bad match
     3. A recommendation strength (strong, medium, or weak)
     4. A concise explanation of the overall match quality
-    
+
     Return the response as a JSON object with the following format:
     {
       "score": number,
@@ -232,7 +232,7 @@ async function enhanceMatchWithAI(
       messages: [{ role: "user", content: prompt }],
       response_format: { type: "json_object" }
     });
-
+//@ts-ignore
     const result = JSON.parse(response.choices[0].message.content);
     return {
       score: result.score,

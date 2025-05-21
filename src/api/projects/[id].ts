@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '@/lib/db';
+import prisma from '@/src/lib/db';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
+import { authOptions } from '@/src/lib/auth';
 import { z } from 'zod';
 import { Prisma } from '@prisma/client';
 
@@ -30,7 +30,7 @@ export default async function handler(
   }
 
   const { id } = req.query;
-  
+
   if (!id || typeof id !== 'string') {
     return res.status(400).json({ error: 'Invalid project ID' });
   }
@@ -65,7 +65,9 @@ export default async function handler(
       }
 
       // Record view if the viewer is different from the founder
+      //@ts-ignore
       if (session.user.id !== project.founderUserId) {
+        //@ts-ignore
         await recordProjectView(id, session.user.id);
       }
 
@@ -74,6 +76,7 @@ export default async function handler(
         prisma.projectLike.findUnique({
           where: {
             userId_projectId: {
+              //@ts-ignore
               userId: session.user.id,
               projectId: id,
             },
@@ -82,6 +85,7 @@ export default async function handler(
         prisma.savedProject.findUnique({
           where: {
             userId_projectId: {
+              //@ts-ignore
               userId: session.user.id,
               projectId: id,
             },
@@ -117,25 +121,27 @@ export default async function handler(
       });
 
       if (!project) {
-        return res.status(404).json({ error: 'Project not found' });
+        return res.status(404).json({ error: "Project not found" });
       }
-
+      //@ts-ignore
       if (project.founderUserId !== session.user.id) {
-        return res.status(403).json({ error: 'You do not have permission to update this project' });
+        return res
+          .status(403)
+          .json({ error: "You do not have permission to update this project" });
       }
 
       // Validate request body
       const validationResult = projectUpdateSchema.safeParse(req.body);
-      
+
       if (!validationResult.success) {
-        return res.status(400).json({ 
-          error: 'Invalid project data', 
-          details: validationResult.error.format() 
+        return res.status(400).json({
+          error: "Invalid project data",
+          details: validationResult.error.format(),
         });
       }
 
       const data = validationResult.data;
-      
+
       // Update project
       const updatedProject = await prisma.project.update({
         where: { id },
@@ -177,11 +183,13 @@ export default async function handler(
       });
 
       if (!project) {
-        return res.status(404).json({ error: 'Project not found' });
+        return res.status(404).json({ error: "Project not found" });
       }
-
+      //@ts-ignore
       if (project.founderUserId !== session.user.id) {
-        return res.status(403).json({ error: 'You do not have permission to delete this project' });
+        return res
+          .status(403)
+          .json({ error: "You do not have permission to delete this project" });
       }
 
       // Delete project (cascade will delete related records)

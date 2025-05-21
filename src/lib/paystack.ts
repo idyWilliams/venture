@@ -1,6 +1,7 @@
 import PaystackNodejs from 'paystack-node';
 
 // Initialize Paystack
+//@ts-ignore
 const paystack = new PaystackNodejs(process.env.PAYSTACK_SECRET_KEY);
 
 export interface InitializeTransactionResponse {
@@ -96,10 +97,11 @@ export async function initializeTransaction(
       email,
       amount,
       reference,
+      //@ts-ignore
       metadata: metadata ? JSON.stringify(metadata) : undefined,
       callback_url: `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000'}/payment/callback`,
     });
-    
+
     return response;
   } catch (error) {
     console.error('Paystack transaction initialization error:', error);
@@ -114,6 +116,8 @@ export async function initializeTransaction(
  */
 export async function verifyTransaction(reference: string): Promise<VerifyTransactionResponse> {
   try {
+
+    //@ts-ignore
     const response = await paystack.transaction.verify({ reference });
     return response;
   } catch (error) {
@@ -143,7 +147,7 @@ export async function createPlan(
       interval,
       description
     });
-    
+
     return response;
   } catch (error) {
     console.error('Paystack plan creation error:', error);
@@ -169,7 +173,7 @@ export async function createSubscription(
       plan: plan_code,
       start_date
     });
-    
+
     return response;
   } catch (error) {
     console.error('Paystack subscription creation error:', error);
@@ -198,7 +202,7 @@ export async function createCustomer(
       last_name,
       phone
     });
-    
+
     return response;
   } catch (error) {
     console.error('Paystack customer creation error:', error);

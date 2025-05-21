@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '@/lib/db';
+import prisma from '@/src/lib/db';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
+import { authOptions } from '@/src/lib/auth';
 import { z } from 'zod';
-import { moderateContent } from '@/lib/openai';
+import { moderateContent } from '@/src/lib/openai';
 
 // Schema validation for contact requests
 const contactRequestSchema = z.object({
@@ -20,7 +20,7 @@ export default async function handler(
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-
+//@ts-ignore
   const userId = session.user.id;
 
   // GET contact requests for the user

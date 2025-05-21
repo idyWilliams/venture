@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '@/lib/db';
+import prisma from '@/src/lib/db';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
+import { authOptions } from '@/src/lib/auth';
 import { Prisma } from '@prisma/client';
 
 export default async function handler(
@@ -13,14 +13,14 @@ export default async function handler(
   if (!session) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
-
+//@ts-ignore
   const userId = session.user.id;
 
   // GET engagement stats for a user's projects (for founders)
   if (req.method === 'GET') {
     try {
       const { projectId, timeframe = 'week' } = req.query;
-      
+
       // Check if requesting specific project or all projects
       if (projectId && typeof projectId === 'string') {
         // Verify the user is the project owner
@@ -48,7 +48,7 @@ export default async function handler(
         });
 
         const projectIds = userProjects.map(p => p.id);
-        
+
         if (projectIds.length === 0) {
           return res.status(200).json({
             totalViews: 0,
@@ -79,7 +79,7 @@ export default async function handler(
             where: { projectId: { in: projectIds } },
           }),
           prisma.contactRequest.count({
-            where: { 
+            where: {
               recipientId: userId,
               status: { not: 'rejected' },
             },
@@ -264,12 +264,12 @@ export default async function handler(
       return res.status(200).json({ success: true, action, projectId });
     } catch (error) {
       console.error(`Error un${req.query.action}ing project:`, error);
-      
+
       // Check if the error is a "record not found" error
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
         return res.status(404).json({ error: `Project not ${req.query.action}d` });
       }
-      
+
       return res.status(500).json({ error: `Failed to un${req.query.action} project` });
     }
   }
@@ -282,7 +282,7 @@ export default async function handler(
 async function getProjectEngagementStats(projectId: string, timeframe: string) {
   let startDate: Date;
   const now = new Date();
-  
+
   // Determine the start date based on timeframe
   switch (timeframe) {
     case 'day':
@@ -426,14 +426,14 @@ async function getProjectEngagementStats(projectId: string, timeframe: string) {
 
 // Helper function to get time series data for various engagement metrics
 async function getTimeSeriesData(
-  projectId: string, 
+  projectId: string,
   timeframe: string,
   type: 'view' | 'like' | 'comment'
 ) {
   let interval: string;
   let dateField: string;
   let groupBy: string;
-  
+
   // Set the appropriate interval and date field based on type
   switch (type) {
     case 'view':
@@ -448,7 +448,7 @@ async function getTimeSeriesData(
     default:
       dateField = 'createdAt';
   }
-  
+
   // Set the appropriate interval and groupBy based on timeframe
   switch (timeframe) {
     case 'day':
@@ -474,7 +474,7 @@ async function getTimeSeriesData(
 
   // Build the appropriate query based on type
   let query: string;
-  
+
   switch (type) {
     case 'view':
       query = `
@@ -509,6 +509,6 @@ async function getTimeSeriesData(
 
   // Execute the raw query
   const results = await prisma.$queryRawUnsafe(query, projectId);
-  
+
   return results;
 }

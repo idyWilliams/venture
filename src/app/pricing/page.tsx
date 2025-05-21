@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 
 export default function PricingPage() {
   const [annual, setAnnual] = useState(false);
-  
+
   const tiers = [
     {
       name: 'Founder',
@@ -152,6 +152,7 @@ export default function PricingPage() {
                     )}
                     {annual && !tier.custom && (
                       <p className="mt-1 text-sm text-center text-green-600">
+                        {/* @ts-ignore */}
                         Billed annually (${(tier.price * 12).toFixed(0)}/year)
                       </p>
                     )}

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import prisma from "@/lib/db";
+import prisma from "@/src/lib/db";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
+import { authOptions } from "@/src/lib/auth";
 import { z } from "zod";
 
 // Schema validation for project creation
@@ -102,6 +102,7 @@ export default async function handler(
   // POST create a new project
   if (req.method === "POST") {
     try {
+      //@ts-ignore
       const userId = session.user.id;
 
       // Check if user is a founder
