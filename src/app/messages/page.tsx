@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUserRole } from '@/contexts/UserRoleContext';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { Button } from '@/components/ui/button';
 import {
   Archive,
@@ -114,7 +114,7 @@ export default function MessagesPage() {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
-  
+
   // Redirect if not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
@@ -131,7 +131,7 @@ export default function MessagesPage() {
   const filteredConversations = conversations.filter(conv => {
     // Filter for the current user's conversations
     const isParticipant = conv.participants.some(p => p.id === userId);
-    
+
     // Apply additional filters
     if (filter === 'unread') {
       return isParticipant && conv.unreadCount > 0;
@@ -149,25 +149,25 @@ export default function MessagesPage() {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
-    
+
     // If today, show time
     if (date.toDateString() === now.toDateString()) {
       return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
-    
+
     // If yesterday, show "Yesterday"
     const yesterday = new Date(now);
     yesterday.setDate(now.getDate() - 1);
     if (date.toDateString() === yesterday.toDateString()) {
       return 'Yesterday';
     }
-    
+
     // If within a week, show day name
     const daysDiff = Math.round((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
     if (daysDiff < 7) {
       return date.toLocaleDateString([], { weekday: 'short' });
     }
-    
+
     // Otherwise show date
     return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
   };
@@ -202,24 +202,24 @@ export default function MessagesPage() {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            
+
             <div className="flex space-x-2">
-              <Button 
-                variant={filter === 'all' ? 'default' : 'outline'} 
+              <Button
+                variant={filter === 'all' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setFilter('all')}
               >
                 All
               </Button>
-              <Button 
-                variant={filter === 'unread' ? 'default' : 'outline'} 
+              <Button
+                variant={filter === 'unread' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setFilter('unread')}
               >
                 Unread
               </Button>
-              <Button 
-                variant={filter === 'deal-rooms' ? 'default' : 'outline'} 
+              <Button
+                variant={filter === 'deal-rooms' ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setFilter('deal-rooms')}
               >
@@ -227,7 +227,7 @@ export default function MessagesPage() {
               </Button>
             </div>
           </div>
-          
+
           {/* Conversation List */}
           <div className="overflow-y-auto" style={{ maxHeight: 'calc(100vh - 300px)' }}>
             {filteredConversations.length === 0 ? (
@@ -240,7 +240,7 @@ export default function MessagesPage() {
               filteredConversations.map((conversation) => {
                 const otherPerson = getOtherParticipant(conversation);
                 return (
-                  <div 
+                  <div
                     key={conversation.id}
                     className={`border-b p-4 hover:bg-gray-50 cursor-pointer ${
                       selectedConversation === conversation.id ? 'bg-blue-50' : ''
@@ -253,27 +253,27 @@ export default function MessagesPage() {
                       }`}>
                         {otherPerson.avatar}
                       </div>
-                      
+
                       <div className="flex-grow min-w-0">
                         <div className="flex justify-between items-center mb-1">
                           <div className="font-medium truncate">{otherPerson.name}</div>
                           <div className="text-xs text-gray-500">{formatDate(conversation.lastMessage.timestamp)}</div>
                         </div>
-                        
+
                         <div className="text-sm text-gray-600 truncate mb-1">
                           {conversation.lastMessage.sender === userId ? (
                             <span className="text-gray-400">You: </span>
                           ) : null}
                           {conversation.lastMessage.text}
                         </div>
-                        
+
                         <div className="flex items-center">
                           <span className="text-xs text-gray-500 truncate mr-2">
                             {conversation.projectName}
                           </span>
-                          
+
                           {conversation.hasDealRoom && (
-                            <Link 
+                            <Link
                               href={`/deal-rooms?project=${conversation.projectName}`}
                               className="text-xs text-blue-600 hover:underline inline-flex items-center"
                               onClick={(e) => e.stopPropagation()}
@@ -281,7 +281,7 @@ export default function MessagesPage() {
                               View Deal Room
                             </Link>
                           )}
-                          
+
                           {conversation.unreadCount > 0 && (
                             <div className="ml-auto bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                               {conversation.unreadCount}
@@ -296,7 +296,7 @@ export default function MessagesPage() {
             )}
           </div>
         </div>
-        
+
         {/* Right Column - Message View */}
         <div className="col-span-2 border rounded-lg bg-white overflow-hidden flex flex-col">
           {selectedConversation ? (
@@ -316,7 +316,7 @@ export default function MessagesPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="flex space-x-2">
                   <Button variant="outline" size="sm">
                     <Phone className="h-4 w-4 mr-1" />
@@ -331,7 +331,7 @@ export default function MessagesPage() {
                   </Button>
                 </div>
               </div>
-              
+
               {/* Message Area */}
               <div className="flex-grow p-4 bg-gray-50 overflow-y-auto" style={{ minHeight: '300px' }}>
                 <div className="flex justify-center mb-4">
@@ -339,7 +339,7 @@ export default function MessagesPage() {
                     Today
                   </span>
                 </div>
-                
+
                 <div className="space-y-4">
                   <div className="flex flex-col max-w-[70%] ml-auto">
                     <div className="rounded-lg bg-blue-600 text-white p-3">
@@ -349,7 +349,7 @@ export default function MessagesPage() {
                       3:15 PM <Check className="h-3 w-3 inline ml-1" />
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-col max-w-[70%]">
                     <div className="rounded-lg bg-gray-200 p-3">
                       Thanks for your interest! I'd be happy to walk you through our technology and business model in more detail. Would you like to schedule a call this week?
@@ -358,7 +358,7 @@ export default function MessagesPage() {
                       3:20 PM
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-col max-w-[70%] ml-auto">
                     <div className="rounded-lg bg-blue-600 text-white p-3">
                       That sounds great. How about Thursday at 2 PM? We can discuss your traction so far and potential investment terms.
@@ -367,7 +367,7 @@ export default function MessagesPage() {
                       3:23 PM <Check className="h-3 w-3 inline ml-1" />
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-col max-w-[70%]">
                     <div className="rounded-lg bg-gray-200 p-3">
                       Thursday at 2 PM works perfectly for me. I'll send over our latest pitch deck and financials in advance. Looking forward to our conversation!
@@ -378,7 +378,7 @@ export default function MessagesPage() {
                   </div>
                 </div>
               </div>
-              
+
               {/* Message Input */}
               <div className="p-3 border-t">
                 <div className="flex items-center">

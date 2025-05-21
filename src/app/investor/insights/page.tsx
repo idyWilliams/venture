@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUserRole } from '@/contexts/UserRoleContext';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { Button } from '@/components/ui/button';
 import {
   BarChart2,
@@ -36,10 +36,10 @@ const marketTrends = [
 ];
 
 const startupsToWatch = [
-  { 
-    id: 'startup-1', 
-    name: 'NeuralFinance', 
-    category: 'Fintech', 
+  {
+    id: 'startup-1',
+    name: 'NeuralFinance',
+    category: 'Fintech',
     description: 'AI-driven financial planning platform with predictive analytics',
     traction: 'MRR: $45K, Growth: 18% MoM',
     stage: 'Seed',
@@ -47,10 +47,10 @@ const startupsToWatch = [
     matchScore: 88,
     logo: 'NF'
   },
-  { 
-    id: 'startup-2', 
-    name: 'EcoSolutions', 
-    category: 'CleanTech', 
+  {
+    id: 'startup-2',
+    name: 'EcoSolutions',
+    category: 'CleanTech',
     description: 'Carbon capture technology for commercial buildings',
     traction: 'Revenue: $320K, 15 enterprise clients',
     stage: 'Series A',
@@ -58,10 +58,10 @@ const startupsToWatch = [
     matchScore: 92,
     logo: 'ES'
   },
-  { 
-    id: 'startup-3', 
-    name: 'MediSync', 
-    category: 'HealthTech', 
+  {
+    id: 'startup-3',
+    name: 'MediSync',
+    category: 'HealthTech',
     description: 'Remote patient monitoring using wearable tech',
     traction: 'MRR: $78K, Growth: 22% MoM',
     stage: 'Seed',
@@ -69,10 +69,10 @@ const startupsToWatch = [
     matchScore: 85,
     logo: 'MS'
   },
-  { 
-    id: 'startup-4', 
-    name: 'EduVerse', 
-    category: 'EdTech', 
+  {
+    id: 'startup-4',
+    name: 'EduVerse',
+    category: 'EdTech',
     description: 'VR-based educational platform for STEM subjects',
     traction: 'ARR: $550K, 45 school districts',
     stage: 'Series A',
@@ -80,10 +80,10 @@ const startupsToWatch = [
     matchScore: 76,
     logo: 'EV'
   },
-  { 
-    id: 'startup-5', 
-    name: 'DataSense', 
-    category: 'AI/ML', 
+  {
+    id: 'startup-5',
+    name: 'DataSense',
+    category: 'AI/ML',
     description: 'Enterprise data analytics with automated insights',
     traction: 'MRR: $120K, Growth: 15% MoM',
     stage: 'Seed',
@@ -137,7 +137,7 @@ export default function InvestorInsightsPage() {
   const { role, isAuthenticated } = useUserRole();
   const [timeframe, setTimeframe] = useState<'month' | 'quarter' | 'year'>('quarter');
   const [region, setRegion] = useState<'global' | 'africa' | 'nigeria'>('nigeria');
-  
+
   // Redirect if not authenticated or not an investor
   useEffect(() => {
     if (!isAuthenticated) {
@@ -158,7 +158,7 @@ export default function InvestorInsightsPage() {
           <h1 className="text-3xl font-bold">Investor Insights</h1>
           <p className="text-gray-600">AI-powered market intelligence and startup opportunities</p>
         </div>
-        
+
         <div className="flex space-x-3">
           <div className="flex border rounded-md overflow-hidden">
             <Button
@@ -186,7 +186,7 @@ export default function InvestorInsightsPage() {
               Global
             </Button>
           </div>
-          
+
           <div className="relative">
             <select
               className="appearance-none bg-white border rounded-md py-2 pl-3 pr-10 text-sm leading-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -199,7 +199,7 @@ export default function InvestorInsightsPage() {
             </select>
             <ChevronDown className="absolute right-3 top-2.5 h-4 w-4 text-gray-500" />
           </div>
-          
+
           <Button variant="outline">
             <Download className="h-4 w-4 mr-2" />
             Export
@@ -223,7 +223,7 @@ export default function InvestorInsightsPage() {
                 Full Report
               </Button>
             </div>
-            
+
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead>
@@ -270,7 +270,7 @@ export default function InvestorInsightsPage() {
                 </tbody>
               </table>
             </div>
-            
+
             <div className="flex justify-center mt-4">
               <div className="flex items-center text-sm text-gray-600">
                 <Globe className="h-4 w-4 mr-1.5 text-blue-600" />
@@ -281,7 +281,7 @@ export default function InvestorInsightsPage() {
               </div>
             </div>
           </div>
-          
+
           {/* AI Prediction Performance */}
           <div className="bg-white rounded-lg shadow-sm border p-5">
             <div className="flex justify-between items-center mb-4">
@@ -294,7 +294,7 @@ export default function InvestorInsightsPage() {
                 <span>Based on our proprietary AI success prediction model</span>
               </div>
             </div>
-            
+
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead>
@@ -335,8 +335,8 @@ export default function InvestorInsightsPage() {
                       <td className="px-4 py-3 whitespace-nowrap">
                         <div className="flex items-center">
                           <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            pred.accuracy >= 90 ? 'bg-green-100 text-green-800' : 
-                            pred.accuracy >= 80 ? 'bg-blue-100 text-blue-800' : 
+                            pred.accuracy >= 90 ? 'bg-green-100 text-green-800' :
+                            pred.accuracy >= 80 ? 'bg-blue-100 text-blue-800' :
                             'bg-yellow-100 text-yellow-800'
                           }`}>
                             {pred.accuracy}%
@@ -348,7 +348,7 @@ export default function InvestorInsightsPage() {
                 </tbody>
               </table>
             </div>
-            
+
             <div className="mt-4 pt-4 border-t">
               <div className="flex justify-between items-center">
                 <div className="text-sm text-gray-600">
@@ -362,7 +362,7 @@ export default function InvestorInsightsPage() {
             </div>
           </div>
         </div>
-        
+
         {/* Right Column */}
         <div className="space-y-6">
           {/* AI Investment Recommendations */}
@@ -377,7 +377,7 @@ export default function InvestorInsightsPage() {
                 Filter
               </Button>
             </div>
-            
+
             <div className="space-y-4">
               {startupsToWatch.map((startup) => (
                 <div key={startup.id} className="border rounded-lg hover:shadow-md transition-shadow p-4">
@@ -385,7 +385,7 @@ export default function InvestorInsightsPage() {
                     <div className={`flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium`}>
                       {startup.logo}
                     </div>
-                    
+
                     <div className="flex-grow">
                       <div className="flex justify-between">
                         <h3 className="font-medium">{startup.name}</h3>
@@ -393,19 +393,19 @@ export default function InvestorInsightsPage() {
                           {startup.stage}
                         </span>
                       </div>
-                      
+
                       <div className="text-xs text-gray-500 mb-2">
                         {startup.category}
                       </div>
-                      
+
                       <p className="text-sm text-gray-700 mb-2">
                         {startup.description}
                       </p>
-                      
+
                       <div className="text-xs text-gray-600 mb-3">
                         <span className="font-medium">Traction:</span> {startup.traction}
                       </div>
-                      
+
                       <div className="flex justify-between items-center">
                         <div className="flex items-center space-x-3">
                           <div className="flex items-center">
@@ -414,7 +414,7 @@ export default function InvestorInsightsPage() {
                               AI Score: <span className="font-medium">{startup.aiScore}</span>
                             </span>
                           </div>
-                          
+
                           <div className="flex items-center">
                             <User className="h-3.5 w-3.5 text-blue-600 mr-1" />
                             <span className="text-xs">
@@ -422,7 +422,7 @@ export default function InvestorInsightsPage() {
                             </span>
                           </div>
                         </div>
-                        
+
                         <div>
                           <Link href={`/projects/${startup.id}`}>
                             <Button variant="outline" size="sm" className="h-7 text-xs">View</Button>
@@ -435,14 +435,14 @@ export default function InvestorInsightsPage() {
               ))}
             </div>
           </div>
-          
+
           {/* Resource Hub */}
           <div className="bg-white rounded-lg shadow-sm border p-5">
             <h2 className="text-lg font-medium flex items-center mb-4">
               <Laptop className="h-5 w-5 mr-2 text-indigo-600" />
               Resource Hub
             </h2>
-            
+
             <div className="space-y-3">
               <div className="flex items-start p-3 border rounded-md hover:bg-gray-50">
                 <FileText className="h-5 w-5 text-blue-600 mr-3 mt-0.5" />
@@ -457,7 +457,7 @@ export default function InvestorInsightsPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex items-start p-3 border rounded-md hover:bg-gray-50">
                 <CalendarDays className="h-5 w-5 text-green-600 mr-3 mt-0.5" />
                 <div>
@@ -471,7 +471,7 @@ export default function InvestorInsightsPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="flex items-start p-3 border rounded-md hover:bg-gray-50">
                 <BarChart2 className="h-5 w-5 text-amber-600 mr-3 mt-0.5" />
                 <div>

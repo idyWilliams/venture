@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
 import {
   Briefcase, TrendingUp, Building, BarChart3,
   Users, Search, LineChart, Award, Filter,
   BookOpen, Settings, FileText, Clock, Heart, MessageSquare
 } from 'lucide-react';
-import { useUserRole } from '@/contexts/UserRoleContext';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
 
 // Mock data - would be fetched from API in real app
 const mockPortfolio = [
