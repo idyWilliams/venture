@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDealRoom, toggleArchiveDealRoom, updateDealStatus } from '@/lib/services/dealRoomService';
+import { getDealRoom, toggleArchiveDealRoom, updateDealStatus } from '@/src/lib/services/dealRoomService';
 
 interface Params {
   params: {
@@ -11,17 +11,17 @@ interface Params {
 export async function GET(req: NextRequest, { params }: Params) {
   try {
     const dealRoomId = params.id;
-    
+
     // Get deal room
     const dealRoom = await getDealRoom(dealRoomId);
-    
+
     if (!dealRoom) {
       return NextResponse.json(
         { error: 'Deal room not found' },
         { status: 404 }
       );
     }
-    
+
     return NextResponse.json(dealRoom);
   } catch (error) {
     console.error('Error fetching deal room:', error);
@@ -37,16 +37,16 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   try {
     const dealRoomId = params.id;
     const { action, status, userId, userName, userRole } = await req.json();
-    
+
     if (!dealRoomId || !userId || !action) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       );
     }
-    
+
     let result;
-    
+
     if (action === 'updateStatus' && status && userName && userRole) {
       // Update deal status
       result = await updateDealStatus(
@@ -66,7 +66,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
         { status: 400 }
       );
     }
-    
+
     return NextResponse.json(result);
   } catch (error) {
     console.error('Error updating deal room:', error);

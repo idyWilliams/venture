@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 
 interface SuccessPredictionResult {
@@ -179,7 +179,7 @@ export default function ProjectSuccessAnalytics({ projectId }: ProjectSuccessAna
             <TabsTrigger value="valuation">Valuation</TabsTrigger>
             <TabsTrigger value="insights">Insights</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="overview">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -210,7 +210,7 @@ export default function ProjectSuccessAnalytics({ projectId }: ProjectSuccessAna
                   <p className="text-sm text-gray-500">Overall Success Probability</p>
                 </div>
               </div>
-              
+
               <div>
                 <h3 className="text-lg font-semibold mb-2">Valuation Estimate</h3>
                 <div className="h-[200px]">
@@ -231,7 +231,7 @@ export default function ProjectSuccessAnalytics({ projectId }: ProjectSuccessAna
               </div>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="timeline">
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-2">Success Timeline</h3>
@@ -252,7 +252,7 @@ export default function ProjectSuccessAnalytics({ projectId }: ProjectSuccessAna
               </p>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="valuation">
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-2">Detailed Valuation Estimates</h3>
@@ -287,7 +287,7 @@ export default function ProjectSuccessAnalytics({ projectId }: ProjectSuccessAna
               </p>
             </div>
           </TabsContent>
-          
+
           <TabsContent value="insights">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -323,7 +323,7 @@ export default function ProjectSuccessAnalytics({ projectId }: ProjectSuccessAna
             </div>
           </TabsContent>
         </Tabs>
-        
+
         <div className="mt-4 pt-4 border-t border-gray-200">
           <p className="text-xs text-gray-500">
             Analysis powered by Tensorflow.js and OpenAI. This analysis should be used as a guide only and not as a definitive prediction of future performance.
