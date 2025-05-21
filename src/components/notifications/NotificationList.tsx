@@ -18,7 +18,7 @@ interface NotificationListProps {
 }
 
 export default function NotificationList({ notifications, onMarkAllRead }: NotificationListProps) {
-  if (notifications.length === 0) {
+  if (!notifications) {
     return (
       <div className="text-center py-4 text-gray-500">
         No notifications to display
@@ -77,11 +77,12 @@ export default function NotificationList({ notifications, onMarkAllRead }: Notif
 
   return (
     <div>
+
       {notifications.length > 0 && (
         <div className="flex justify-end mb-2">
-          <Button 
-            variant="outline" 
-            size="sm" 
+          <Button
+            variant="outline"
+            size="sm"
             onClick={onMarkAllRead}
             className="text-xs"
           >
@@ -89,11 +90,11 @@ export default function NotificationList({ notifications, onMarkAllRead }: Notif
           </Button>
         </div>
       )}
-      
+
       <div className="space-y-3">
         {notifications.map((notification) => (
-          <div 
-            key={notification.id} 
+          <div
+            key={notification.id}
             className={`flex items-start p-3 rounded-lg ${notification.isRead ? 'bg-white' : 'bg-blue-50'}`}
           >
             {getNotificationIcon(notification.type)}

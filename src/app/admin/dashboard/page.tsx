@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Input } from '@/src/components/ui/input';
+import { Label } from '@/src/components/ui/label';
+import { Textarea } from '@/src/components/ui/textarea';
 
 interface UserData {
   total: number;
@@ -53,7 +54,7 @@ export default function AdminDashboardPage() {
   const [reportedItems, setReportedItems] = useState<ReportedItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   useEffect(() => {
     const fetchAdminData = async () => {
       setLoading(true);
@@ -61,7 +62,7 @@ export default function AdminDashboardPage() {
         // In a real implementation, these would be server fetches
         // const userResponse = await fetch('/api/admin/users/stats');
         // const userData = await userResponse.json();
-        
+
         // For this demo, we'll use mock data
         const mockUserData: UserData = {
           total: 1248,
@@ -71,7 +72,7 @@ export default function AdminDashboardPage() {
           investors: 465,
           accelerators: 41
         };
-        
+
         const mockProjectData: ProjectData = {
           total: 629,
           active: 512,
@@ -79,7 +80,7 @@ export default function AdminDashboardPage() {
           published: 487,
           draft: 142
         };
-        
+
         const mockEngagementData: EngagementData = {
           views: 28745,
           likes: 4231,
@@ -87,7 +88,7 @@ export default function AdminDashboardPage() {
           contactRequests: 342,
           dealRooms: 128
         };
-        
+
         const mockReportedItems: ReportedItem[] = [
           {
             id: 'report-1',
@@ -167,10 +168,10 @@ export default function AdminDashboardPage() {
     //   headers: { 'Content-Type': 'application/json' },
     //   body: JSON.stringify({ status: newStatus })
     // });
-    
+
     // For this demo, we'll update the state directly
-    setReportedItems(reports => 
-      reports.map(report => 
+    setReportedItems(reports =>
+      reports.map(report =>
         report.id === reportId ? { ...report, status: newStatus } : report
       )
     );
@@ -214,7 +215,7 @@ export default function AdminDashboardPage() {
           Monitor platform activity, manage users, and moderate content
         </p>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card>
           <CardHeader className="pb-2">
@@ -248,7 +249,7 @@ export default function AdminDashboardPage() {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-lg">Projects</CardTitle>
@@ -281,7 +282,7 @@ export default function AdminDashboardPage() {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-lg">Engagement</CardTitle>
@@ -315,7 +316,7 @@ export default function AdminDashboardPage() {
           </CardContent>
         </Card>
       </div>
-      
+
       <Tabs defaultValue="moderation" className="mb-8">
         <TabsList className="mb-6">
           <TabsTrigger value="moderation">Content Moderation</TabsTrigger>
@@ -323,7 +324,7 @@ export default function AdminDashboardPage() {
           <TabsTrigger value="projects">Project Management</TabsTrigger>
           <TabsTrigger value="settings">Platform Settings</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="moderation">
           <Card>
             <CardHeader>
@@ -360,16 +361,16 @@ export default function AdminDashboardPage() {
                             <p className="font-medium">Reason: {item.reason}</p>
                           </div>
                           <div className="flex gap-2">
-                            <Button 
-                              size="sm" 
+                            <Button
+                              size="sm"
                               variant={item.status === 'resolved' ? 'default' : 'outline'}
                               onClick={() => handleStatusChange(item.id, 'resolved')}
                               disabled={item.status === 'resolved'}
                             >
                               Resolve
                             </Button>
-                            <Button 
-                              size="sm" 
+                            <Button
+                              size="sm"
                               variant={item.status === 'dismissed' ? 'default' : 'outline'}
                               onClick={() => handleStatusChange(item.id, 'dismissed')}
                               disabled={item.status === 'dismissed'}
@@ -378,11 +379,11 @@ export default function AdminDashboardPage() {
                             </Button>
                           </div>
                         </div>
-                        
+
                         <div className="bg-gray-50 p-4 rounded-md mb-4">
                           <p className="text-gray-800 italic">"{item.content}"</p>
                         </div>
-                        
+
                         <div className="flex justify-between items-center text-sm">
                           <div>
                             <span className="text-gray-500">Posted by: </span>
@@ -411,7 +412,7 @@ export default function AdminDashboardPage() {
                   </div>
                 )}
               </div>
-              
+
               {reportedItems.length > 0 && (
                 <div className="flex justify-center mt-6">
                   <Button variant="outline">
@@ -422,7 +423,7 @@ export default function AdminDashboardPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="users">
           <Card>
             <CardHeader>
@@ -435,15 +436,15 @@ export default function AdminDashboardPage() {
                 </div>
                 <div className="relative w-full md:w-64">
                   <Input placeholder="Search users..." className="pl-10" />
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    width="24" 
-                    height="24" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4"
                   >
@@ -495,7 +496,7 @@ export default function AdminDashboardPage() {
                   </tbody>
                 </table>
               </div>
-              
+
               <div className="flex justify-between items-center mt-6">
                 <div className="text-sm text-gray-500">
                   Showing 1-10 of 1,248 users
@@ -512,7 +513,7 @@ export default function AdminDashboardPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="projects">
           <Card>
             <CardHeader>
@@ -525,15 +526,15 @@ export default function AdminDashboardPage() {
                 </div>
                 <div className="relative w-full md:w-64">
                   <Input placeholder="Search projects..." className="pl-10" />
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    width="24" 
-                    height="24" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
                     strokeLinejoin="round"
                     className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4"
                   >
@@ -548,7 +549,7 @@ export default function AdminDashboardPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="settings">
           <Card>
             <CardHeader>
@@ -585,7 +586,7 @@ export default function AdminDashboardPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="pt-6 border-t">
                   <h3 className="text-lg font-medium mb-4">User Registration Settings</h3>
                   <div className="space-y-4">
@@ -603,7 +604,7 @@ export default function AdminDashboardPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="pt-6 border-t">
                   <h3 className="text-lg font-medium mb-4">AI Settings</h3>
                   <div className="space-y-4">
@@ -627,7 +628,7 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="mt-8 flex justify-end">
                 <Button>Save Settings</Button>
               </div>

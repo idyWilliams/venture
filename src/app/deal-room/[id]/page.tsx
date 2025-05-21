@@ -114,20 +114,20 @@ export default function DealRoomPage() {
             id: "user-789",
             name: "Sarah Johnson",
             email: "sarah@vcfirm.com",
-            role: "INVESTOR"
+            role: "investor"
           },
           participants: [
             {
               id: "user-123",
               name: "Jane Investor",
               email: "jane@investment.com",
-              role: "INVESTOR"
+              role: "investor"
             },
             {
               id: "user-456",
               name: "Alex Chen",
               email: "alex@ecotech.com",
-              role: "FOUNDER"
+              role: "founder"
             }
           ],
           documents: [
@@ -534,8 +534,8 @@ export default function DealRoomPage() {
                           <h4 className="font-medium">{participant.name}</h4>
                           <p className="text-sm text-gray-500">{participant.email}</p>
                           <p className="text-xs text-gray-400 mt-1">
-                            {participant.role === 'FOUNDER' ? 'Founder' :
-                             participant.role === 'INVESTOR' ? 'Investor' : participant.role}
+                            {participant.role === 'founder' ? 'Founder' :
+                             participant.role === 'investor' ? 'Investor' : participant.role}
                           </p>
                         </div>
                       </CardContent>

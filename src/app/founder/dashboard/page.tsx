@@ -5,36 +5,36 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  Briefcase, TrendingUp, BriefcaseBusiness, 
-  Users, MessageSquare, LineChart, Award, 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
+import {
+  Briefcase, TrendingUp, BriefcaseBusiness,
+  Users, MessageSquare, LineChart, Award,
   PlusCircle, Settings, FileText, Clock
 } from 'lucide-react';
-import { useUserRole } from '@/contexts/UserRoleContext';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
 
 // Mock data - would be fetched from API in real app
 const mockProjects = [
-  { 
-    id: '1', 
-    title: 'Green Energy Storage Solution', 
-    description: 'Revolutionary battery technology for renewable energy storage systems.', 
+  {
+    id: '1',
+    title: 'Green Energy Storage Solution',
+    description: 'Revolutionary battery technology for renewable energy storage systems.',
     fundingStage: 'Seed',
     industry: 'CleanTech',
     engagement: { views: 245, likes: 32, comments: 12 }
   },
-  { 
-    id: '2', 
-    title: 'AI-Driven Healthcare Assistant', 
-    description: 'Personalized patient care recommendation system using advanced ML algorithms.', 
+  {
+    id: '2',
+    title: 'AI-Driven Healthcare Assistant',
+    description: 'Personalized patient care recommendation system using advanced ML algorithms.',
     fundingStage: 'Series A',
     industry: 'HealthTech',
     engagement: { views: 178, likes: 27, comments: 8 }
   },
-  { 
-    id: '3', 
-    title: 'Sustainable Packaging Platform', 
-    description: 'B2B marketplace connecting brands with eco-friendly packaging suppliers.', 
+  {
+    id: '3',
+    title: 'Sustainable Packaging Platform',
+    description: 'B2B marketplace connecting brands with eco-friendly packaging suppliers.',
     fundingStage: 'Pre-seed',
     industry: 'Sustainability',
     engagement: { views: 92, likes: 14, comments: 5 }
@@ -69,26 +69,26 @@ const mockRecentActivity = [
 export default function FounderDashboard() {
   const router = useRouter();
   const { role, isAuthenticated } = useUserRole();
-  
+
   // Check if user is authenticated and has the right role
   useEffect(() => {
     if (!isAuthenticated) {
       router.push('/auth/login');
-    } else if (role !== 'FOUNDER') {
+    } else if (role !== 'founder') {
       // If authenticated but not a founder, redirect to appropriate dashboard
-      if (role === 'INVESTOR') {
+      if (role === 'investor') {
         router.push('/investor/dashboard');
       } else {
         router.push('/dashboard');
       }
     }
   }, [isAuthenticated, role, router]);
-  
+
   // If not authenticated or not the right role, don't render the dashboard
-  if (!isAuthenticated || role !== 'FOUNDER') {
+  if (!isAuthenticated || role !== 'founder') {
     return null;
   }
-  
+
   return (
     <div className="min-h-screen bg-gray-50 pb-12">
       <header className="bg-white shadow">
@@ -99,7 +99,7 @@ export default function FounderDashboard() {
           </p>
         </div>
       </header>
-      
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
         {/* Key Metrics */}
         <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
@@ -122,7 +122,7 @@ export default function FounderDashboard() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -142,7 +142,7 @@ export default function FounderDashboard() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -162,7 +162,7 @@ export default function FounderDashboard() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -180,7 +180,7 @@ export default function FounderDashboard() {
             </CardContent>
           </Card>
         </section>
-        
+
         {/* Main Dashboard Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left column - Projects & Analytics */}
@@ -191,7 +191,7 @@ export default function FounderDashboard() {
                 <TabsTrigger value="analytics">Analytics</TabsTrigger>
                 <TabsTrigger value="dealrooms">Deal Rooms</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="projects">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-lg font-medium">Your Projects</h2>
@@ -200,7 +200,7 @@ export default function FounderDashboard() {
                     Add New Project
                   </Button>
                 </div>
-                
+
                 <div className="grid gap-4">
                   {mockProjects.map(project => (
                     <Card key={project.id}>
@@ -250,7 +250,7 @@ export default function FounderDashboard() {
                   ))}
                 </div>
               </TabsContent>
-              
+
               <TabsContent value="analytics">
                 <Card>
                   <CardHeader>
@@ -274,7 +274,7 @@ export default function FounderDashboard() {
                   </CardContent>
                 </Card>
               </TabsContent>
-              
+
               <TabsContent value="dealrooms">
                 <Card>
                   <CardHeader>
@@ -292,7 +292,7 @@ export default function FounderDashboard() {
               </TabsContent>
             </Tabs>
           </div>
-          
+
           {/* Right column - Investor matches & Activity */}
           <div className="space-y-8">
             {/* Investor Matches */}
@@ -332,7 +332,7 @@ export default function FounderDashboard() {
                 </div>
               </CardContent>
             </Card>
-            
+
             {/* Recent Activity */}
             <Card>
               <CardHeader>
@@ -382,7 +382,7 @@ export default function FounderDashboard() {
                 </div>
               </CardContent>
             </Card>
-            
+
             {/* Quick Actions */}
             <Card>
               <CardHeader>

@@ -5,10 +5,10 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/src/components/ui/input';
+import { Label } from '@/src/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
+import { Textarea } from '@/src/components/ui/textarea';
 
 export default function ExpertFeedbackRequestPage() {
   const router = useRouter();
@@ -192,7 +192,7 @@ export default function ExpertFeedbackRequestPage() {
           Get valuable insights and recommendations to improve your startup project
         </p>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-2">
           <form onSubmit={handleSubmit}>
@@ -209,8 +209,8 @@ export default function ExpertFeedbackRequestPage() {
                     <div
                       key={project.id}
                       className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-                        projectId === project.id 
-                          ? 'border-blue-500 bg-blue-50' 
+                        projectId === project.id
+                          ? 'border-blue-500 bg-blue-50'
                           : 'border-gray-200 hover:border-blue-300'
                       }`}
                       onClick={() => handleSelectProject(project)}
@@ -240,7 +240,7 @@ export default function ExpertFeedbackRequestPage() {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card className="mb-6">
               <CardHeader>
                 <CardTitle>Choose Feedback Type</CardTitle>
@@ -249,7 +249,7 @@ export default function ExpertFeedbackRequestPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Tabs 
+                <Tabs
                   defaultValue={feedbackType}
                   onValueChange={(value) => setFeedbackType(value)}
                   className="w-full"
@@ -259,7 +259,7 @@ export default function ExpertFeedbackRequestPage() {
                     <TabsTrigger value="investor">Investor</TabsTrigger>
                     <TabsTrigger value="ai">AI Analysis</TabsTrigger>
                   </TabsList>
-                  
+
                   {feedbackOptions.map(option => (
                     <TabsContent key={option.id} value={option.id}>
                       <div className="bg-white border rounded-lg p-6">
@@ -293,7 +293,7 @@ export default function ExpertFeedbackRequestPage() {
                 </Tabs>
               </CardContent>
             </Card>
-            
+
             <Card className="mb-6">
               <CardHeader>
                 <CardTitle>Additional Information</CardTitle>
@@ -332,7 +332,7 @@ export default function ExpertFeedbackRequestPage() {
             </Card>
           </form>
         </div>
-        
+
         <div>
           <Card className="sticky top-8">
             <CardHeader>
@@ -354,7 +354,7 @@ export default function ExpertFeedbackRequestPage() {
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3 flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-green-600">
@@ -369,7 +369,7 @@ export default function ExpertFeedbackRequestPage() {
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3 flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-purple-600">
@@ -385,7 +385,7 @@ export default function ExpertFeedbackRequestPage() {
                     </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center mr-3 flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-yellow-600">
@@ -400,7 +400,7 @@ export default function ExpertFeedbackRequestPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="mt-6 pt-6 border-t">
                 <h3 className="font-medium mb-2">Customer Success Stories</h3>
                 <div className="bg-gray-50 rounded-lg p-4 italic text-sm">

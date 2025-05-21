@@ -291,7 +291,7 @@ router.post("/", async (req, res) => {
     const user = req.user;
 
     // Check if user is a founder
-    if (user.role !== "FOUNDER") {
+    if (user.role !== "founder") {
       return res
         .status(403)
         .json({ error: "Only founders can create projects" });

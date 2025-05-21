@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/src/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/components/ui/tabs';
 
 interface ForumPost {
   id: string;
@@ -50,7 +50,7 @@ export default function CommunityForumPage() {
             author: {
               id: 'user-1',
               name: 'David Kumar',
-              role: 'FOUNDER',
+              role: 'founder',
               profileImage: '/avatars/david.jpg'
             },
             tags: ['Fundraising', 'Pre-seed', 'Venture Capital'],
@@ -67,7 +67,7 @@ export default function CommunityForumPage() {
             author: {
               id: 'user-2',
               name: 'Elena Rodriguez',
-              role: 'FOUNDER',
+              role: 'founder',
               profileImage: '/avatars/elena.jpg'
             },
             tags: ['Term Sheets', 'Legal', 'Fundraising'],
@@ -83,7 +83,7 @@ export default function CommunityForumPage() {
             author: {
               id: 'user-3',
               name: 'Michael Chen',
-              role: 'INVESTOR',
+              role: 'investor',
               profileImage: '/avatars/michael.jpg'
             },
             tags: ['Pitch Deck', 'Investor Insights', 'Fundraising'],
@@ -99,7 +99,7 @@ export default function CommunityForumPage() {
             author: {
               id: 'user-4',
               name: 'Sarah Johnson',
-              role: 'FOUNDER',
+              role: 'founder',
               profileImage: '/avatars/sarah.jpg'
             },
             tags: ['Accelerators', 'Y Combinator', 'Founder Story'],
@@ -115,7 +115,7 @@ export default function CommunityForumPage() {
             author: {
               id: 'user-5',
               name: 'Omar Patel',
-              role: 'FOUNDER',
+              role: 'founder',
               profileImage: '/avatars/omar.jpg'
             },
             tags: ['Product-Market Fit', 'Business Model', 'Growth Strategy'],
@@ -131,7 +131,7 @@ export default function CommunityForumPage() {
             author: {
               id: 'user-6',
               name: 'Jennifer Wu',
-              role: 'INVESTOR',
+              role: 'investor',
               profileImage: '/avatars/jennifer.jpg'
             },
             tags: ['Due Diligence', 'Investor Resources', 'Best Practices'],
@@ -161,17 +161,17 @@ export default function CommunityForumPage() {
 
   // Filter posts based on search term, active tag, and category
   const filteredPosts = posts.filter(post => {
-    const matchesSearch = searchTerm === '' || 
+    const matchesSearch = searchTerm === '' ||
       post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       post.content.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesTag = !activeTag || post.tags.includes(activeTag);
-    
-    const matchesCategory = activeCategory === 'all' || 
-      (activeCategory === 'founders' && post.author.role === 'FOUNDER') ||
-      (activeCategory === 'investors' && post.author.role === 'INVESTOR') ||
+
+    const matchesCategory = activeCategory === 'all' ||
+      (activeCategory === 'founders' && post.author.role === 'founder') ||
+      (activeCategory === 'investors' && post.author.role === 'investor') ||
       (activeCategory === 'pinned' && post.isPinned === true);
-    
+
     return matchesSearch && matchesTag && matchesCategory;
   });
 
@@ -188,7 +188,7 @@ export default function CommunityForumPage() {
     const date = new Date(dateString);
     const diffTime = Math.abs(now.getTime() - date.getTime());
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    
+
     if (diffDays === 0) {
       const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
       if (diffHours === 0) {
@@ -199,10 +199,10 @@ export default function CommunityForumPage() {
     } else if (diffDays < 7) {
       return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
     } else {
-      return date.toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric' 
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
       });
     }
   };
@@ -254,7 +254,7 @@ export default function CommunityForumPage() {
           Create New Post
         </Button>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
         {/* Sidebar */}
         <div className="md:col-span-1 space-y-6">
@@ -264,29 +264,29 @@ export default function CommunityForumPage() {
             </CardHeader>
             <CardContent className="pt-0">
               <div className="space-y-2">
-                <Button 
-                  variant={activeCategory === 'all' ? 'default' : 'ghost'} 
+                <Button
+                  variant={activeCategory === 'all' ? 'default' : 'ghost'}
                   className="w-full justify-start"
                   onClick={() => setActiveCategory('all')}
                 >
                   All Posts
                 </Button>
-                <Button 
-                  variant={activeCategory === 'founders' ? 'default' : 'ghost'} 
+                <Button
+                  variant={activeCategory === 'founders' ? 'default' : 'ghost'}
                   className="w-full justify-start"
                   onClick={() => setActiveCategory('founders')}
                 >
                   Founder Stories
                 </Button>
-                <Button 
-                  variant={activeCategory === 'investors' ? 'default' : 'ghost'} 
+                <Button
+                  variant={activeCategory === 'investors' ? 'default' : 'ghost'}
                   className="w-full justify-start"
                   onClick={() => setActiveCategory('investors')}
                 >
                   Investor Insights
                 </Button>
-                <Button 
-                  variant={activeCategory === 'pinned' ? 'default' : 'ghost'} 
+                <Button
+                  variant={activeCategory === 'pinned' ? 'default' : 'ghost'}
                   className="w-full justify-start"
                   onClick={() => setActiveCategory('pinned')}
                 >
@@ -295,7 +295,7 @@ export default function CommunityForumPage() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <CardTitle className="text-lg">Popular Tags</CardTitle>
@@ -303,9 +303,9 @@ export default function CommunityForumPage() {
             <CardContent className="pt-0">
               <div className="flex flex-wrap gap-2">
                 {allTags.map(tag => (
-                  <Button 
-                    key={tag} 
-                    size="sm" 
+                  <Button
+                    key={tag}
+                    size="sm"
                     variant={activeTag === tag ? 'default' : 'outline'}
                     className="rounded-full"
                     onClick={() => {
@@ -323,7 +323,7 @@ export default function CommunityForumPage() {
             </CardContent>
           </Card>
         </div>
-        
+
         {/* Main content */}
         <div className="md:col-span-3 space-y-6">
           <div className="relative">
@@ -334,15 +334,15 @@ export default function CommunityForumPage() {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
             />
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              width="24" 
-              height="24" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
               strokeLinejoin="round"
               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
             >
@@ -350,7 +350,7 @@ export default function CommunityForumPage() {
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
           </div>
-          
+
           <Tabs defaultValue="latest" className="mb-4">
             <TabsList>
               <TabsTrigger value="latest">Latest</TabsTrigger>
@@ -358,7 +358,7 @@ export default function CommunityForumPage() {
               <TabsTrigger value="unanswered">Unanswered</TabsTrigger>
             </TabsList>
           </Tabs>
-          
+
           <div className="space-y-4">
             {sortedPosts.length > 0 ? (
               sortedPosts.map(post => (
@@ -368,9 +368,9 @@ export default function CommunityForumPage() {
                       <div className="flex items-start space-x-4">
                         <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
                           {post.author.profileImage ? (
-                            <img 
-                              src={post.author.profileImage} 
-                              alt={post.author.name} 
+                            <img
+                              src={post.author.profileImage}
+                              alt={post.author.name}
                               className="w-full h-full object-cover"
                             />
                           ) : (
@@ -383,13 +383,13 @@ export default function CommunityForumPage() {
                           <div className="flex items-center space-x-2">
                             <p className="font-medium">{post.author.name}</p>
                             <span className="text-xs text-gray-500">
-                              {post.author.role === 'FOUNDER' ? 'Founder' : 'Investor'}
+                              {post.author.role === 'founder' ? 'Founder' : 'Investor'}
                             </span>
                           </div>
                           <p className="text-xs text-gray-500">{formatDate(post.createdAt)}</p>
                         </div>
                       </div>
-                      
+
                       {post.isPinned && (
                         <div className="flex items-center text-blue-600 text-sm">
                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">
@@ -399,18 +399,18 @@ export default function CommunityForumPage() {
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="mt-4">
                       <Link href={`/community/forum/${post.id}`} className="text-xl font-semibold hover:text-blue-600 transition-colors">
                         {post.title}
                       </Link>
                       <p className="mt-2 text-gray-700 line-clamp-2">{post.content}</p>
                     </div>
-                    
+
                     <div className="mt-4 flex flex-wrap gap-2">
                       {post.tags.map(tag => (
-                        <span 
-                          key={`${post.id}-${tag}`} 
+                        <span
+                          key={`${post.id}-${tag}`}
                           className="px-2 py-1 bg-gray-100 rounded-full text-xs text-gray-600"
                           onClick={() => setActiveTag(tag)}
                         >
@@ -418,7 +418,7 @@ export default function CommunityForumPage() {
                         </span>
                       ))}
                     </div>
-                    
+
                     <div className="mt-4 flex items-center space-x-6 text-sm text-gray-500">
                       <div className="flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">
@@ -458,7 +458,7 @@ export default function CommunityForumPage() {
               </Card>
             )}
           </div>
-          
+
           {sortedPosts.length > 0 && (
             <div className="flex justify-center">
               <Button variant="outline">

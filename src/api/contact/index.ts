@@ -27,14 +27,14 @@ export default async function handler(
   if (req.method === 'GET') {
     try {
       const { status, role } = req.query;
-      
+
       let where: any = {};
-      
+
       // Filter by status if provided
       if (status && ['pending', 'accepted', 'rejected'].includes(status as string)) {
         where.status = status;
       }
-      
+
       // Filter by role (sent or received)
       if (role === 'sender') {
         where.senderId = userId;
@@ -85,16 +85,16 @@ export default async function handler(
     try {
       // Validate request body
       const validationResult = contactRequestSchema.safeParse(req.body);
-      
+
       if (!validationResult.success) {
-        return res.status(400).json({ 
-          error: 'Invalid contact request data', 
-          details: validationResult.error.format() 
+        return res.status(400).json({
+          error: 'Invalid contact request data',
+          details: validationResult.error.format()
         });
       }
 
       const data = validationResult.data;
-      
+
       // Check if the recipient exists
       const recipient = await prisma.user.findUnique({
         where: { id: data.recipientId },
@@ -109,23 +109,23 @@ export default async function handler(
       if (!recipient.openForContact) {
         return res.status(403).json({ error: 'Recipient is not open for contact' });
       }
-      
+
       // Verify sender is an investor if recipient is a founder, or vice versa
       const sender = await prisma.user.findUnique({
         where: { id: userId },
         select: { role: true },
       });
-      
+
       if (!sender) {
         return res.status(404).json({ error: 'Sender not found' });
       }
 
       if (
-        (sender.role === 'FOUNDER' && recipient.role === 'FOUNDER') ||
-        (sender.role === 'INVESTOR' && recipient.role === 'INVESTOR')
+        (sender.role === 'founder' && recipient.role === 'founder') ||
+        (sender.role === 'investor' && recipient.role === 'investor')
       ) {
-        return res.status(403).json({ 
-          error: `Contact requests can only be sent between founders and investors, not between two ${sender.role.toLowerCase()}s` 
+        return res.status(403).json({
+          error: `Contact requests can only be sent between founders and investors, not between two ${sender.role.toLowerCase()}s`
         });
       }
 
@@ -139,7 +139,7 @@ export default async function handler(
       });
 
       if (existingRequest) {
-        return res.status(400).json({ 
+        return res.status(400).json({
           error: 'A contact request already exists between these users',
           existingRequest,
         });
@@ -147,10 +147,10 @@ export default async function handler(
 
       // Moderate the message content
       const moderationResult = await moderateContent(data.message);
-      
+
       if (moderationResult.isFlagged) {
-        return res.status(400).json({ 
-          error: 'Message contains inappropriate content', 
+        return res.status(400).json({
+          error: 'Message contains inappropriate content',
           moderationResult,
         });
       }
@@ -206,13 +206,13 @@ export default async function handler(
   if (req.method === 'PATCH') {
     try {
       const { id } = req.query;
-      
+
       if (!id || typeof id !== 'string') {
         return res.status(400).json({ error: 'Invalid contact request ID' });
       }
 
       const { status } = req.body;
-      
+
       if (!status || !['accepted', 'rejected'].includes(status)) {
         return res.status(400).json({ error: 'Invalid status. Must be "accepted" or "rejected"' });
       }

@@ -18,7 +18,7 @@ interface Message {
   id: string;
   userId: string;
   userName: string;
-  userRole: 'FOUNDER' | 'INVESTOR';
+  userRole: 'founder' | 'investor';
   content: string;
   timestamp: string;
 }
@@ -34,11 +34,11 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
   const [currentUser, setCurrentUser] = useState<{
     id: string;
     name: string;
-    role: 'FOUNDER' | 'INVESTOR';
+    role: 'founder' | 'investor';
   }>({
     id: 'current-user', // This would come from auth in a real app
     name: 'You', // This would come from auth in a real app
-    role: 'INVESTOR', // This would come from auth in a real app
+    role: 'investor', // This would come from auth in a real app
   });
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -74,7 +74,7 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
         id: '1',
         userId: 'founder-1',
         userName: 'John Smith (Founder)',
-        userRole: 'FOUNDER',
+        userRole: 'founder',
         content: 'Welcome to our community discussion! Feel free to ask any questions about our healthcare assistant.',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
       },
@@ -82,7 +82,7 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
         id: '2',
         userId: 'investor-1',
         userName: 'Sarah Johnson',
-        userRole: 'INVESTOR',
+        userRole: 'investor',
         content: 'Thanks for creating this space. I\'m curious about your ML model training process. How large is your dataset?',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(), // 12 hours ago
       },
@@ -90,7 +90,7 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
         id: '3',
         userId: 'founder-1',
         userName: 'John Smith (Founder)',
-        userRole: 'FOUNDER',
+        userRole: 'founder',
         content: 'Great question! We\'ve trained our models on over 1M anonymized health records in partnership with three major research hospitals.',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 11).toISOString(), // 11 hours ago
       },
@@ -98,7 +98,7 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
         id: '4',
         userId: 'investor-2',
         userName: 'Michael Wong',
-        userRole: 'INVESTOR',
+        userRole: 'investor',
         content: 'How are you addressing data privacy concerns, especially with health data being so sensitive?',
         timestamp: new Date(Date.now() - 1000 * 60 * 60 * 6).toISOString(), // 6 hours ago
       },
@@ -169,7 +169,7 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
                     className={`max-w-[80%] rounded-lg px-4 py-2 ${
                       message.userId === currentUser.id
                         ? 'bg-blue-500 text-white'
-                        : message.userRole === 'FOUNDER'
+                        : message.userRole === 'founder'
                           ? 'bg-blue-100'
                           : 'bg-gray-200'
                     }`}
@@ -178,7 +178,7 @@ export default function ProjectCommunity({ projectId }: ProjectCommunityProps) {
                       <span className={`font-medium text-sm ${
                         message.userId === currentUser.id
                           ? 'text-blue-100'
-                          : message.userRole === 'FOUNDER'
+                          : message.userRole === 'founder'
                             ? 'text-blue-800'
                             : 'text-gray-800'
                       }`}>

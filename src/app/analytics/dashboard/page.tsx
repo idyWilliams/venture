@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUserRole } from '@/contexts/UserRoleContext';
+import { useUserRole } from '@/src/contexts/UserRoleContext';
 import { Button } from '@/components/ui/button';
 import {
   Activity,
@@ -20,10 +20,10 @@ import {
   Users,
 } from 'lucide-react';
 import Link from 'next/link';
-import ProjectSuccessAnalytics from '@/components/ai-analytics/ProjectSuccessAnalytics';
-import EngagementLineChart from '@/components/analytics/EngagementLineChart';
-import EngagementBarChart from '@/components/analytics/EngagementBarChart';
-import EngagementDonutChart from '@/components/analytics/EngagementDonutChart';
+import ProjectSuccessAnalytics from '@/src/components/ai-analytics/ProjectSuccessAnalytics';
+import EngagementLineChart from '@/src/components/analytics/EngagementLineChart';
+import EngagementBarChart from '@/src/components/analytics/EngagementBarChart';
+import EngagementDonutChart from '@/src/components/analytics/EngagementDonutChart';
 
 // Mock data for analytics
 const timeSeriesData = [
@@ -101,7 +101,7 @@ export default function AnalyticsDashboardPage() {
   const { role, isAuthenticated } = useUserRole();
   const [timeframe, setTimeframe] = useState<'7d' | '30d' | '90d' | 'all'>('30d');
   const [selectedProject, setSelectedProject] = useState('project-1');
-  
+
   // Redirect if not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
@@ -125,7 +125,7 @@ export default function AnalyticsDashboardPage() {
             AI-powered insights for {isFounder ? 'your projects' : 'your investment opportunities'}
           </p>
         </div>
-        
+
         <div className="flex flex-wrap gap-2">
           <div className="flex items-center border rounded-md overflow-hidden">
             <Button
@@ -161,7 +161,7 @@ export default function AnalyticsDashboardPage() {
               All Time
             </Button>
           </div>
-          
+
           {isFounder && (
             <div className="relative">
               <select
@@ -195,14 +195,14 @@ export default function AnalyticsDashboardPage() {
                 Expand
               </Button>
             </div>
-            
-            <EngagementLineChart 
-              data={timeSeriesData} 
-              title="" 
+
+            <EngagementLineChart
+              data={timeSeriesData}
+              title=""
               timeframes={['7d', '30d', '90d', 'all']}
             />
           </div>
-          
+
           {/* Charts Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {isFounder ? (
@@ -212,19 +212,19 @@ export default function AnalyticsDashboardPage() {
                     <PieChart className="h-5 w-5 mr-2 text-indigo-600" />
                     Investor Interest by Type
                   </h3>
-                  <EngagementDonutChart 
+                  <EngagementDonutChart
                     data={investorInterestData}
                     title=""
                     height={220}
                   />
                 </div>
-                
+
                 <div className="bg-white rounded-lg shadow-sm border p-5">
                   <h3 className="text-md font-medium mb-3 flex items-center">
                     <BarChart3 className="h-5 w-5 mr-2 text-green-600" />
                     Industry Comparison
                   </h3>
-                  <EngagementBarChart 
+                  <EngagementBarChart
                     data={industryComparisonData}
                     title=""
                     layout="horizontal"
@@ -239,22 +239,22 @@ export default function AnalyticsDashboardPage() {
                     <BarChart4 className="h-5 w-5 mr-2 text-blue-600" />
                     Top Founder Engagement
                   </h3>
-                  <EngagementBarChart 
+                  <EngagementBarChart
                     data={founderEngagementData}
                     title=""
                     layout="horizontal"
                     height={220}
                   />
                 </div>
-                
+
                 <div className="bg-white rounded-lg shadow-sm border p-5">
                   <h3 className="text-md font-medium mb-3 flex items-center">
                     <Users className="h-5 w-5 mr-2 text-purple-600" />
                     Portfolio Performance
                   </h3>
                   <div className="h-[220px] flex items-center justify-center">
-                    <Link 
-                      href="/investor/portfolio" 
+                    <Link
+                      href="/investor/portfolio"
                       className="border border-dashed border-gray-300 rounded-lg p-4 text-center w-full"
                     >
                       <LineChart className="h-8 w-8 mx-auto mb-2 text-gray-400" />
@@ -269,7 +269,7 @@ export default function AnalyticsDashboardPage() {
             )}
           </div>
         </div>
-        
+
         {/* Right Column - AI Insights & Predictions */}
         <div className="space-y-6">
           {/* AI Insights */}
@@ -281,14 +281,14 @@ export default function AnalyticsDashboardPage() {
               </h2>
               <Button variant="outline" size="sm">View All</Button>
             </div>
-            
+
             <div className="space-y-3">
               {aiInsights.map((insight) => (
-                <div 
-                  key={insight.id} 
+                <div
+                  key={insight.id}
                   className={`p-3 rounded-md border ${
-                    insight.type === 'positive' ? 'bg-green-50 border-green-100' : 
-                    insight.type === 'warning' ? 'bg-yellow-50 border-yellow-100' : 
+                    insight.type === 'positive' ? 'bg-green-50 border-green-100' :
+                    insight.type === 'warning' ? 'bg-yellow-50 border-yellow-100' :
                     'bg-blue-50 border-blue-100'
                   }`}
                 >
@@ -319,7 +319,7 @@ export default function AnalyticsDashboardPage() {
               ))}
             </div>
           </div>
-          
+
           {/* Success Prediction */}
           <div className="bg-white rounded-lg shadow-sm border p-5">
             <div className="flex justify-between items-center mb-4">
@@ -329,7 +329,7 @@ export default function AnalyticsDashboardPage() {
               </h2>
               <Button variant="outline" size="sm">Refresh</Button>
             </div>
-            
+
             <ProjectSuccessAnalytics projectId={selectedProject} />
           </div>
         </div>

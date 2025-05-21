@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
+import {
   Briefcase, TrendingUp, Building, BarChart3,
   Users, Search, LineChart, Award, Filter,
   BookOpen, Settings, FileText, Clock, Heart, MessageSquare
@@ -15,18 +15,18 @@ import { useUserRole } from '@/contexts/UserRoleContext';
 
 // Mock data - would be fetched from API in real app
 const mockPortfolio = [
-  { 
-    id: '1', 
-    title: 'Green Energy Storage Solution', 
-    description: 'Revolutionary battery technology for renewable energy storage systems.', 
+  {
+    id: '1',
+    title: 'Green Energy Storage Solution',
+    description: 'Revolutionary battery technology for renewable energy storage systems.',
     fundingStage: 'Seed',
     industry: 'CleanTech',
     investment: { amount: 250000, equity: 5, date: '2023-09-15' }
   },
-  { 
-    id: '2', 
-    title: 'AI-Driven Healthcare Assistant', 
-    description: 'Personalized patient care recommendation system using advanced ML algorithms.', 
+  {
+    id: '2',
+    title: 'AI-Driven Healthcare Assistant',
+    description: 'Personalized patient care recommendation system using advanced ML algorithms.',
     fundingStage: 'Series A',
     industry: 'HealthTech',
     investment: { amount: 500000, equity: 3, date: '2023-11-20' }
@@ -43,30 +43,30 @@ const mockStats = {
 };
 
 const mockRecommendedProjects = [
-  { 
-    id: '3', 
-    title: 'Sustainable Packaging Platform', 
-    description: 'B2B marketplace connecting brands with eco-friendly packaging suppliers.', 
+  {
+    id: '3',
+    title: 'Sustainable Packaging Platform',
+    description: 'B2B marketplace connecting brands with eco-friendly packaging suppliers.',
     fundingStage: 'Pre-seed',
     industry: 'Sustainability',
     aiMatchScore: 92,
     founder: 'Sarah Johnson',
     company: 'EcoPack'
   },
-  { 
-    id: '4', 
-    title: 'Smart Home Energy Management', 
-    description: 'IoT solution for optimizing home energy consumption and integrating renewable sources.', 
+  {
+    id: '4',
+    title: 'Smart Home Energy Management',
+    description: 'IoT solution for optimizing home energy consumption and integrating renewable sources.',
     fundingStage: 'Seed',
     industry: 'CleanTech',
     aiMatchScore: 89,
     founder: 'Michael Chen',
     company: 'EnergyFlow'
   },
-  { 
-    id: '5', 
-    title: 'Precision Agriculture Drone System', 
-    description: 'Drone and AI platform for precision farming, reducing water and pesticide usage.', 
+  {
+    id: '5',
+    title: 'Precision Agriculture Drone System',
+    description: 'Drone and AI platform for precision farming, reducing water and pesticide usage.',
     fundingStage: 'Seed',
     industry: 'AgTech',
     aiMatchScore: 85,
@@ -92,26 +92,26 @@ const mockIndustryTrends = [
 export default function InvestorDashboard() {
   const router = useRouter();
   const { role, isAuthenticated } = useUserRole();
-  
+
   // Check if user is authenticated and has the right role
   useEffect(() => {
     if (!isAuthenticated) {
       router.push('/auth/login');
-    } else if (role !== 'INVESTOR') {
+    } else if (role !== 'investor') {
       // If authenticated but not an investor, redirect to appropriate dashboard
-      if (role === 'FOUNDER') {
+      if (role === 'founder') {
         router.push('/founder/dashboard');
       } else {
         router.push('/dashboard');
       }
     }
   }, [isAuthenticated, role, router]);
-  
+
   // If not authenticated or not the right role, don't render the dashboard
-  if (!isAuthenticated || role !== 'INVESTOR') {
+  if (!isAuthenticated || role !== 'investor') {
     return null;
   }
-  
+
   return (
     <div className="min-h-screen bg-gray-50 pb-12">
       <header className="bg-white shadow">
@@ -122,7 +122,7 @@ export default function InvestorDashboard() {
           </p>
         </div>
       </header>
-      
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
         {/* Key Metrics */}
         <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
@@ -145,7 +145,7 @@ export default function InvestorDashboard() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -165,7 +165,7 @@ export default function InvestorDashboard() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -182,7 +182,7 @@ export default function InvestorDashboard() {
               </div>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
@@ -200,7 +200,7 @@ export default function InvestorDashboard() {
             </CardContent>
           </Card>
         </section>
-        
+
         {/* Main Dashboard Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left column - Portfolio & Deal flow */}
@@ -212,7 +212,7 @@ export default function InvestorDashboard() {
                 <TabsTrigger value="dealflow">Deal Flow</TabsTrigger>
                 <TabsTrigger value="market">Market Intelligence</TabsTrigger>
               </TabsList>
-              
+
               <TabsContent value="portfolio">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-lg font-medium">Your Portfolio ({mockPortfolio.length})</h2>
@@ -221,7 +221,7 @@ export default function InvestorDashboard() {
                     Filter
                   </Button>
                 </div>
-                
+
                 <div className="grid gap-4">
                   {mockPortfolio.map(project => (
                     <Card key={project.id}>
@@ -254,7 +254,7 @@ export default function InvestorDashboard() {
                   ))}
                 </div>
               </TabsContent>
-              
+
               <TabsContent value="recommended">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-lg font-medium">AI-Recommended Projects</h2>
@@ -269,7 +269,7 @@ export default function InvestorDashboard() {
                     </Button>
                   </div>
                 </div>
-                
+
                 <div className="grid gap-4">
                   {mockRecommendedProjects.map(project => (
                     <Card key={project.id}>
@@ -315,7 +315,7 @@ export default function InvestorDashboard() {
                   ))}
                 </div>
               </TabsContent>
-              
+
               <TabsContent value="dealflow">
                 <Card>
                   <CardHeader>
@@ -337,7 +337,7 @@ export default function InvestorDashboard() {
                   </CardContent>
                 </Card>
               </TabsContent>
-              
+
               <TabsContent value="market">
                 <Card>
                   <CardHeader>
@@ -380,7 +380,7 @@ export default function InvestorDashboard() {
               </TabsContent>
             </Tabs>
           </div>
-          
+
           {/* Right column - Activity, Insights & Actions */}
           <div className="space-y-8">
             {/* Recent Activity */}
@@ -432,7 +432,7 @@ export default function InvestorDashboard() {
                 </div>
               </CardContent>
             </Card>
-            
+
             {/* AI Insights */}
             <Card>
               <CardHeader>
@@ -463,7 +463,7 @@ export default function InvestorDashboard() {
                 </div>
               </CardContent>
             </Card>
-            
+
             {/* Quick Actions */}
             <Card>
               <CardHeader>

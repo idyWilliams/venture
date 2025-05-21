@@ -13,9 +13,32 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Dynamic imports for routes (due to ESM)
+// const importRoutes = async () => {
+//   const projectRoutes = (await import("./routes/projects.js")).default;
+//   const userRoutes = (await import("./routes/users.js")).default;
+//   const engagementRoutes = (await import("./routes/engagement.js")).default;
+//   const commentRoutes = (await import("./routes/comments.js")).default;
+//   const contactRoutes = (await import("./routes/contact.js")).default;
+//   const notificationRoutes = (await import("./routes/notifications.js"))
+//     .default;
+//   const { authMiddleware } = await import("./middleware/auth.js");
+//   const { trackEngagement } = await import("./middleware/engagement.js");
+
+//   return {
+//     projectRoutes,
+//     userRoutes,
+//     engagementRoutes,
+//     commentRoutes,
+//     contactRoutes,
+//     notificationRoutes,
+//     authMiddleware,
+//     trackEngagement,
+//   };
+// };
+
 const importRoutes = async () => {
   const projectRoutes = (await import("./routes/projects.js")).default;
-  const userRoutes = (await import("./routes/users.js")).default;
+  const { userRouter } = await import("./routes/users.js"); // Destructure the named export
   const engagementRoutes = (await import("./routes/engagement.js")).default;
   const commentRoutes = (await import("./routes/comments.js")).default;
   const contactRoutes = (await import("./routes/contact.js")).default;
@@ -26,7 +49,7 @@ const importRoutes = async () => {
 
   return {
     projectRoutes,
-    userRoutes,
+    userRouter, // Return it directly as userRouter
     engagementRoutes,
     commentRoutes,
     contactRoutes,
@@ -87,7 +110,7 @@ const setupRoutes = async () => {
     routes.trackEngagement,
     routes.projectRoutes
   );
-  app.use("/api/users", routes.authMiddleware, routes.userRoutes);
+  app.use("/api/users", routes.authMiddleware, routes.userRouter);
   app.use("/api/engagement", routes.authMiddleware, routes.engagementRoutes);
   app.use("/api/comments", routes.authMiddleware, routes.commentRoutes);
   app.use("/api/contact", routes.authMiddleware, routes.contactRoutes);

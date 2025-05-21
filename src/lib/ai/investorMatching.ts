@@ -64,7 +64,7 @@ export async function findMatchingInvestors(
     // Get all investors
     const investors = await prisma.user.findMany({
       where: {
-        role: UserRole.INVESTOR,
+        role: UserRole.investor,
         onboardingComplete: true,
       },
       select: {
@@ -86,7 +86,7 @@ export async function findMatchingInvestors(
       if (
         investor.investmentSectors.length > 0 &&
         !investor.investmentSectors.includes(project.industry) &&
-        !investor.investmentSectors.some(sector =>
+        !investor.investmentSectors.some((sector) =>
           project.marketSegments.includes(sector)
         )
       ) {
@@ -148,7 +148,10 @@ export async function findMatchingInvestors(
 /**
  * Use OpenAI to calculate a detailed match score between a project and an investor
  */
-async function calculateInvestorMatchScore(project: any, investor: any): Promise<InvestorMatchResult> {
+async function calculateInvestorMatchScore(
+  project: any,
+  investor: any
+): Promise<InvestorMatchResult> {
   const matchingPrompt = `
   You are an expert in matching startups with the right investors.
 
@@ -169,7 +172,7 @@ async function calculateInvestorMatchScore(project: any, investor: any): Promise
   Market Segments: ${project.marketSegments.join(", ") || "Not specified"}
   Technical Stack: ${project.technicalStack.join(", ") || "Not specified"}
 
-  INVESTOR DETAILS:
+  investor DETAILS:
   Name: ${investor.name}
   Company: ${investor.companyName || "Independent investor"}
   Investment Sectors: ${investor.investmentSectors.join(", ")}
@@ -194,7 +197,7 @@ async function calculateInvestorMatchScore(project: any, investor: any): Promise
     response_format: { type: "json_object" },
     temperature: 0.7,
   });
-//@ts-ignore
+  //@ts-ignore
   return JSON.parse(response.choices[0].message.content) as InvestorMatchResult;
 }
 
@@ -202,18 +205,26 @@ async function calculateInvestorMatchScore(project: any, investor: any): Promise
  * Update the AI-generated match scores in the project record
  * This is used to optimize database queries by pre-calculating scores
  */
-export async function updateProjectMatchScores(projectId: string): Promise<void> {
+export async function updateProjectMatchScores(
+  projectId: string
+): Promise<void> {
   try {
     const matchingInvestors = await findMatchingInvestors(projectId, 20);
 
     // Calculate overall match score based on top investors
     let avgScore = 0;
     if (matchingInvestors.length > 0) {
-      avgScore = matchingInvestors.reduce((sum, match) => sum + match.investor.matchScore, 0) / matchingInvestors.length;
+      avgScore =
+        matchingInvestors.reduce(
+          (sum, match) => sum + match.investor.matchScore,
+          0
+        ) / matchingInvestors.length;
     }
 
     // Extract key insights to generate tags
-    const allMatchReasons = matchingInvestors.flatMap(match => match.investor.matchReasons);
+    const allMatchReasons = matchingInvestors.flatMap(
+      (match) => match.investor.matchReasons
+    );
     const aiTags = extractKeyTerms(allMatchReasons);
 
     // Update the project with AI insights
@@ -223,7 +234,7 @@ export async function updateProjectMatchScores(projectId: string): Promise<void>
         aiMatchScore: avgScore,
         aiTags: aiTags,
         aiInsights: JSON.stringify({
-          topMatches: matchingInvestors.slice(0, 5).map(m => ({
+          topMatches: matchingInvestors.slice(0, 5).map((m) => ({
             investorName: m.investor.name,
             score: m.investor.matchScore,
             reasons: m.investor.matchReasons,
@@ -244,13 +255,35 @@ export async function updateProjectMatchScores(projectId: string): Promise<void>
 function extractKeyTerms(matchReasons: string[]): string[] {
   const allText = matchReasons.join(" ").toLowerCase();
   const commonTerms = [
-    "fintech", "healthtech", "edtech", "ai", "machine learning", "blockchain",
-    "saas", "b2b", "b2c", "marketplace", "platform", "hardware", "software",
-    "mobile", "web", "analytics", "data", "cloud", "enterprise", "consumer",
-    "early-stage", "growth", "scaling", "seed", "series a", "impact",
+    "fintech",
+    "healthtech",
+    "edtech",
+    "ai",
+    "machine learning",
+    "blockchain",
+    "saas",
+    "b2b",
+    "b2c",
+    "marketplace",
+    "platform",
+    "hardware",
+    "software",
+    "mobile",
+    "web",
+    "analytics",
+    "data",
+    "cloud",
+    "enterprise",
+    "consumer",
+    "early-stage",
+    "growth",
+    "scaling",
+    "seed",
+    "series a",
+    "impact",
   ];
 
-  return commonTerms.filter(term => allText.includes(term.toLowerCase()));
+  return commonTerms.filter((term) => allText.includes(term.toLowerCase()));
 }
 
 /**
@@ -261,7 +294,8 @@ function generateApproachSuggestion(matches: ProjectInvestorMatch[]): string {
     return "Consider refining your pitch to better highlight your market opportunity and business model.";
   }
 
-  const avgScore = matches.reduce((sum, m) => sum + m.investor.matchScore, 0) / matches.length;
+  const avgScore =
+    matches.reduce((sum, m) => sum + m.investor.matchScore, 0) / matches.length;
 
   if (avgScore > 8) {
     return "Your project has strong investor appeal. Focus on highlighting your traction and team expertise when contacting these investors.";

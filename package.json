@@ -37,6 +37,7 @@
     "@types/ws": "^8.18.1",
     "autoprefixer": "^10.4.16",
     "axios": "^1.9.0",
+    "bcrypt": "^6.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cors": "^2.8.5",
@@ -69,6 +70,7 @@
     "zod": "^3.24.4"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "concurrently": "^9.1.2"
   }
 }

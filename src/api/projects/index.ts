@@ -1,8 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '@/lib/db';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
-import { z } from 'zod';
+import { NextApiRequest, NextApiResponse } from "next";
+import prisma from "@/lib/db";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+import { z } from "zod";
 
 // Schema validation for project creation
 const projectSchema = z.object({
@@ -13,9 +13,9 @@ const projectSchema = z.object({
   fundingStage: z.string().min(1),
   fundingAmount: z.number().optional(),
   equity: z.number().optional(),
-  website: z.string().url().optional().or(z.literal('')),
-  demo: z.string().url().optional().or(z.literal('')),
-  deck: z.string().url().optional().or(z.literal('')),
+  website: z.string().url().optional().or(z.literal("")),
+  demo: z.string().url().optional().or(z.literal("")),
+  deck: z.string().url().optional().or(z.literal("")),
 });
 
 export default async function handler(
@@ -25,34 +25,34 @@ export default async function handler(
   const session = await getServerSession(req, res, authOptions);
 
   if (!session) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    return res.status(401).json({ error: "Unauthorized" });
   }
 
   // GET all projects with optional filters
-  if (req.method === 'GET') {
+  if (req.method === "GET") {
     try {
-      const { 
-        industry, 
-        fundingStage, 
-        search, 
-        limit = '10', 
-        offset = '0' 
+      const {
+        industry,
+        fundingStage,
+        search,
+        limit = "10",
+        offset = "0",
       } = req.query;
 
       const filters: any = {};
-      
+
       if (industry) {
         filters.industry = industry as string;
       }
-      
+
       if (fundingStage) {
         filters.fundingStage = fundingStage as string;
       }
-      
+
       if (search) {
         filters.OR = [
-          { title: { contains: search as string, mode: 'insensitive' } },
-          { description: { contains: search as string, mode: 'insensitive' } },
+          { title: { contains: search as string, mode: "insensitive" } },
+          { description: { contains: search as string, mode: "insensitive" } },
         ];
       }
 
@@ -79,7 +79,7 @@ export default async function handler(
         take: parseInt(limit as string),
         skip: parseInt(offset as string),
         orderBy: {
-          createdAt: 'desc',
+          createdAt: "desc",
         },
       });
 
@@ -90,41 +90,44 @@ export default async function handler(
       return res.status(200).json({
         projects,
         totalCount,
-        hasMore: parseInt(offset as string) + parseInt(limit as string) < totalCount,
+        hasMore:
+          parseInt(offset as string) + parseInt(limit as string) < totalCount,
       });
     } catch (error) {
-      console.error('Error fetching projects:', error);
-      return res.status(500).json({ error: 'Failed to fetch projects' });
+      console.error("Error fetching projects:", error);
+      return res.status(500).json({ error: "Failed to fetch projects" });
     }
   }
 
   // POST create a new project
-  if (req.method === 'POST') {
+  if (req.method === "POST") {
     try {
       const userId = session.user.id;
-      
+
       // Check if user is a founder
       const user = await prisma.user.findUnique({
         where: { id: userId },
         select: { role: true },
       });
 
-      if (!user || user.role !== 'FOUNDER') {
-        return res.status(403).json({ error: 'Only founders can create projects' });
+      if (!user || user.role !== "founder") {
+        return res
+          .status(403)
+          .json({ error: "Only founders can create projects" });
       }
 
       // Validate request body
       const validationResult = projectSchema.safeParse(req.body);
-      
+
       if (!validationResult.success) {
-        return res.status(400).json({ 
-          error: 'Invalid project data', 
-          details: validationResult.error.format() 
+        return res.status(400).json({
+          error: "Invalid project data",
+          details: validationResult.error.format(),
         });
       }
 
       const data = validationResult.data;
-      
+
       // Create project
       const project = await prisma.project.create({
         data: {
@@ -155,11 +158,11 @@ export default async function handler(
 
       return res.status(201).json(project);
     } catch (error) {
-      console.error('Error creating project:', error);
-      return res.status(500).json({ error: 'Failed to create project' });
+      console.error("Error creating project:", error);
+      return res.status(500).json({ error: "Failed to create project" });
     }
   }
 
   // Method not allowed
-  return res.status(405).json({ error: 'Method not allowed' });
+  return res.status(405).json({ error: "Method not allowed" });
 }

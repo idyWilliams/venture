@@ -70,7 +70,7 @@ const mockComments = [
       id: 'u1',
       name: 'Sarah Johnson',
       profileImage: null,
-      role: 'INVESTOR'
+      role: 'investor'
     },
     createdAt: '2023-05-20T14:30:00.000Z',
     replies: [
@@ -81,7 +81,7 @@ const mockComments = [
           id: 'f1',
           name: 'John Smith',
           profileImage: null,
-          role: 'FOUNDER'
+          role: 'founder'
         },
         createdAt: '2023-05-20T16:45:00.000Z',
       }
@@ -94,7 +94,7 @@ const mockComments = [
       id: 'u2',
       name: 'Michael Wong',
       profileImage: null,
-      role: 'INVESTOR'
+      role: 'investor'
     },
     createdAt: '2023-05-22T09:15:00.000Z',
     replies: []
@@ -111,7 +111,7 @@ export default function ProjectPage() {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
-  const [userRole, setUserRole] = useState<'FOUNDER' | 'INVESTOR'>('INVESTOR'); // For demo purposes
+  const [userRole, setUserRole] = useState<'founder' | 'investor'>('investor'); // For demo purposes
 
   // In a real app, fetch project data from the API
   useEffect(() => {
@@ -239,7 +239,7 @@ export default function ProjectPage() {
         content,
         user: {
           id: 'current-user',
-          name: userRole === 'FOUNDER' ? 'You (Founder)' : 'You (Investor)',
+          name: userRole === 'founder' ? 'You (Founder)' : 'You (Investor)',
           profileImage: null,
           role: userRole
         },
@@ -276,7 +276,7 @@ export default function ProjectPage() {
     }
   };
 
-  const isFounder = userRole === 'FOUNDER' && project.founder.id === 'current-user';
+  const isFounder = userRole === 'founder' && project.founder.id === 'current-user';
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -452,7 +452,7 @@ export default function ProjectPage() {
               </div>
             </div>
 
-            {userRole === 'INVESTOR' && (
+            {userRole === 'investor' && (
               <div className="mt-6">
                 <Button
                   onClick={() => setShowContactModal(true)}

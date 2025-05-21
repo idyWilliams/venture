@@ -20,7 +20,7 @@ interface User {
   id: string;
   name: string;
   profileImage: string | null;
-  role: "FOUNDER" | "INVESTOR" | "ADMIN";
+  role: "founder" | "investor" | "ADMIN";
 }
 
 interface Comment {
@@ -119,12 +119,12 @@ export default function ProjectComments({
             <span className="text-xs text-gray-500 ml-2">
               {formatDate(comment.createdAt)}
             </span>
-            {comment.user.role === "FOUNDER" && (
+            {comment.user.role === "founder" && (
               <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
                 Founder
               </span>
             )}
-            {comment.user.role === "INVESTOR" && (
+            {comment.user.role === "investor" && (
               <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
                 Investor
               </span>
