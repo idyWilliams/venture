@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyTransaction } from '@/lib/paystack';
+import { verifyTransaction } from '@/src//lib/paystack';
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     if (response.data.status === 'success') {
       // Here, you'd typically update your database to mark the payment as successful
       // and possibly upgrade the user's subscription or grant access to paid features
-      
+
       return NextResponse.json({
         success: true,
         data: response.data,

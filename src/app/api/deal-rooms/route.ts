@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createDealRoom, getUserDealRooms } from '@/lib/services/dealRoomService';
+import { createDealRoom, getUserDealRooms } from '@/src/lib/services/dealRoomService';
 
 // GET /api/deal-rooms - Get all deal rooms for the current user
 export async function GET(req: NextRequest) {
@@ -10,17 +10,17 @@ export async function GET(req: NextRequest) {
     const userId = searchParams.get('userId');
     const role = searchParams.get('role') as 'founder' | 'investor';
     const filter = searchParams.get('filter') as 'active' | 'archived' | 'all' | undefined;
-    
+
     if (!userId || !role) {
       return NextResponse.json(
         { error: 'User ID and role are required' },
         { status: 400 }
       );
     }
-    
+
     // Get deal rooms for the user
     const dealRooms = await getUserDealRooms(userId, role, filter);
-    
+
     return NextResponse.json(dealRooms);
   } catch (error) {
     console.error('Error fetching deal rooms:', error);
@@ -34,16 +34,16 @@ export async function GET(req: NextRequest) {
 // POST /api/deal-rooms - Create a new deal room
 export async function POST(req: NextRequest) {
   try {
-    const { 
-      projectId, 
-      projectName, 
-      founderUserId, 
-      founderName, 
-      investorUserId, 
+    const {
+      projectId,
+      projectName,
+      founderUserId,
+      founderName,
+      investorUserId,
       investorName,
       initialTerms
     } = await req.json();
-    
+
     // Validate required fields
     if (!projectId || !projectName || !founderUserId || !founderName || !investorUserId || !investorName) {
       return NextResponse.json(
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    
+
     // Create new deal room
     const dealRoom = await createDealRoom(
       projectId,
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
       investorName,
       initialTerms
     );
-    
+
     return NextResponse.json(dealRoom, { status: 201 });
   } catch (error) {
     console.error('Error creating deal room:', error);

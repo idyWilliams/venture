@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { initializeTransaction } from '@/lib/paystack';
+import { initializeTransaction } from '@/src/lib/paystack';
 import crypto from 'crypto';
 
 export async function POST(req: NextRequest) {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { updateDealTerms, DealTerms } from '@/lib/services/dealRoomService';
+import { updateDealTerms, DealTerms } from '@/src/lib/services/dealRoomService';
 
 interface Params {
   params: {
@@ -12,14 +12,14 @@ export async function PUT(req: NextRequest, { params }: Params) {
   try {
     const dealRoomId = params.id;
     const { terms, userId, userName, userRole } = await req.json();
-    
+
     if (!dealRoomId || !terms || !userId || !userName || !userRole) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       );
     }
-    
+
     // Update deal terms
     const result = await updateDealTerms(
       dealRoomId,
@@ -28,7 +28,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
       userName,
       userRole as 'founder' | 'investor'
     );
-    
+
     return NextResponse.json(result);
   } catch (error) {
     console.error('Error updating deal terms:', error);
